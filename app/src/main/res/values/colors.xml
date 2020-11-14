@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pale">#f5c6bc</color>
+    <color name="colorAccent">#FFC700</color>
+    <color name="colorPrimary">#e25336</color>
+    <color name="colorPrimaryDark">#602b20</color>
+    <color name="dark">#391a13</color>
+    <color name="veryDark">#1c1817</color>
+    <color name="textColor">#4A4A4A</color>
+    <color name="juicy">#ff2b00</color>
+</resources>

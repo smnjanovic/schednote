@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <CalendarView
+        android:id="@+id/date_setter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:theme="@style/CalendarTheme" />
+
+    <TimePicker
+        android:id="@+id/time_setter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:headerBackground="@color/colorPrimaryDark"
+        android:numbersSelectorColor="@color/colorPrimary"
+        android:timePickerMode="spinner" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/semester_setter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Spinner
+            android:id="@+id/week"
+            style="@style/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/day"
+            style="@style/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/week" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/date"
+            android:drawableStart="@drawable/ic_date_range_black_40dp"
+            android:textSize="0sp" />
+
+        <TextView
+            android:id="@+id/timeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/time"
+            android:drawableStart="@drawable/ic_schedule_black_40dp"
+            android:textSize="0sp" />
+
+        <TextView
+            android:id="@+id/semester_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/time"
+            android:drawableStart="@drawable/ic_semester_40dp"
+            android:textSize="0sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,81 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/veryDark</item>
+    </style>
+
+    <style name="CalendarTheme" parent="AppTheme">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="button_as_menu_item">
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">#00FFFFFF</item>
+        <item name="android:foreground">@android:drawable/divider_horizontal_textfield</item>
+        <item name="android:foregroundGravity">fill_horizontal|bottom</item>
+        <item name="android:foregroundTint">#00000000</item>
+        <item name="android:foregroundTintMode">src_in</item>
+        <item name="android:minWidth">50dip</item>
+        <item name="android:minHeight">24dip</item>
+    </style>
+
+    <style name="adapter_action_button">
+        <item name="android:background">#00FFFFFF</item>
+        <item name="android:minWidth">50dip</item>
+        <item name="android:minHeight">24dip</item>
+    </style>
+
+    <style name="spinner">
+        <item name="android:background">@drawable/spinner</item>
+        <item name="android:backgroundTintMode">screen</item>
+        <item name="android:foreground">@drawable/ic_arrow_drop_down_black_24dp</item>
+        <item name="android:foregroundGravity">center_vertical|right</item>
+        <item name="android:foregroundTintMode">src_atop</item>
+    </style>
+
+    <style name="lesson_set_spinner" parent="spinner">
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
+    </style>
+
+    <style name="border_button">
+        <item name="android:background">@drawable/button_border</item>
+        <item name="android:textColor">@color/juicy</item>
+        <item name="android:tint">@color/juicy</item>
+        <item name="android:drawableTint">@color/juicy</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="juicy_button">
+        <item name="android:background">@drawable/juicy_button</item>
+        <item name="android:textColor">@color/veryDark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="error_row">
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_span">2</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:drawablePadding">4sp</item>
+        <item name="android:drawableStart">@drawable/ic_touch_app_black_24dp</item>
+        <item name="android:drawableTint">@color/design_default_color_error</item>
+        <item name="android:textColor">@color/design_default_color_error</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:gravity">center|start</item>
+    </style>
+
+    <style name="icon">
+        <item name="android:width">24dp</item>
+        <item name="android:height">24dp</item>
+        <item name="android:background">#00000000</item>
+    </style>
+</resources>

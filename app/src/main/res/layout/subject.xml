@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sub_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/abb_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="3"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/name_field"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/name_field"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/name_field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sub_edit_btn"
+        app:layout_constraintEnd_toStartOf="@+id/missed_notes"
+        app:layout_constraintStart_toEndOf="@+id/abb_field"
+        app:layout_constraintTop_toTopOf="@+id/sub_edit_btn" />
+
+    <TextView
+        android:id="@+id/missed_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.65"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/note_splitter"
+        app:layout_constraintEnd_toStartOf="@+id/note_splitter"
+        app:layout_constraintTop_toTopOf="@+id/note_splitter" />
+
+    <TextView
+        android:id="@+id/note_splitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.65"
+        android:text="—"
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/sub_edit_btn"
+        app:layout_constraintEnd_toStartOf="@+id/incoming_notes"
+        app:layout_constraintTop_toTopOf="@+id/sub_edit_btn"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/incoming_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.65"
+        android:textColor="@color/textColor"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/missed_notes"
+        app:layout_constraintEnd_toStartOf="@+id/note_icon"
+        app:layout_constraintTop_toTopOf="@+id/missed_notes"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/sub_edit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/edit"
+        android:tint="#FFD600"
+        app:layout_constraintBottom_toBottomOf="@+id/sub_del_btn"
+        app:layout_constraintEnd_toStartOf="@+id/sub_del_btn"
+        app:layout_constraintTop_toTopOf="@+id/sub_del_btn"
+        app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/sub_del_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/delete"
+        android:tint="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    <ImageView
+        android:id="@+id/note_icon"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginEnd="16dp"
+        android:alpha="0.65"
+        android:contentDescription="@string/notes"
+        android:tint="@color/textColor"
+        app:layout_constraintBottom_toBottomOf="@+id/sub_edit_btn"
+        app:layout_constraintEnd_toStartOf="@+id/sub_edit_btn"
+        app:layout_constraintTop_toTopOf="@+id/sub_edit_btn"
+        app:srcCompat="?attr/actionModePasteDrawable" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

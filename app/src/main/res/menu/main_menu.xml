@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/schedule"
+        android:enabled="true"
+        android:icon="@drawable/ic_grid_on_black_24dp"
+        android:title="@string/lesson_schedule" />
+    <item
+        android:id="@+id/subjects"
+        android:enabled="true"
+        android:icon="@drawable/ic_books"
+        android:title="@string/subjects" />
+    <item
+        android:id="@+id/notes"
+        android:enabled="true"
+        android:icon="?attr/actionModePasteDrawable"
+        android:title="@string/notes" />
+    <item
+        android:id="@+id/alarms"
+        android:enabled="true"
+        android:icon="@drawable/ic_alarm_white24dp"
+        android:title="@string/reminders" />
+    <item
+        android:id="@+id/semester"
+        android:enabled="true"
+        android:icon="@drawable/ic_semester"
+        android:title="@string/semester" />
+</menu>

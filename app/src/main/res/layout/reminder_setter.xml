@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <NumberPicker
+        android:id="@+id/day_advance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hour_advance"
+        app:layout_constraintEnd_toStartOf="@+id/hour_advance"
+        app:layout_constraintTop_toTopOf="@+id/hour_advance" />
+
+    <NumberPicker
+        android:id="@+id/hour_advance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <NumberPicker
+        android:id="@+id/minute_advance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hour_advance"
+        app:layout_constraintStart_toEndOf="@+id/hour_advance"
+        app:layout_constraintTop_toTopOf="@+id/hour_advance" />
+
+    <TextView
+        android:id="@+id/dd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/days"
+        app:layout_constraintBottom_toTopOf="@+id/day_advance"
+        app:layout_constraintEnd_toEndOf="@+id/day_advance"
+        app:layout_constraintStart_toStartOf="@+id/day_advance" />
+
+    <TextView
+        android:id="@+id/hh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/hours"
+        app:layout_constraintBottom_toTopOf="@+id/hour_advance"
+        app:layout_constraintEnd_toEndOf="@+id/hour_advance"
+        app:layout_constraintStart_toStartOf="@+id/hour_advance" />
+
+    <TextView
+        android:id="@+id/mm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/minutes"
+        app:layout_constraintBottom_toTopOf="@+id/minute_advance"
+        app:layout_constraintEnd_toEndOf="@+id/minute_advance"
+        app:layout_constraintStart_toStartOf="@+id/minute_advance" />
+
+    <Switch
+        android:id="@+id/advance_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/alarm_advance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/confirm_change"
+        style="@style/border_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

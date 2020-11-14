@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DEDEDE"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".activities.Settings">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Switch
+            android:id="@+id/dualWeekEnabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="#77FFFFFF"
+            android:gravity="center|start"
+            android:minHeight="40dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="@string/dual_week_schedule" />
+
+        <Switch
+            android:id="@+id/voice_cmd_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="#77FFFFFF"
+            android:gravity="center|start"
+            android:minHeight="40dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="@string/enable_voice_commands" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:background="#77FFFFFF"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/work_week" />
+
+            <ImageButton
+                android:id="@+id/previous_work_week"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/previous"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+
+            <TextView
+                android:id="@+id/work_week_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxEms="12"
+                android:textAlignment="center" />
+
+            <ImageButton
+                android:id="@+id/next_work_week"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/next"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:background="#77FFFFFF"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/lesson_labeling" />
+
+            <ImageButton
+                android:id="@+id/previous_lesson_format"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/previous"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+
+            <TextView
+                android:id="@+id/lesson_format_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxEms="12"
+                android:textAlignment="center" />
+
+            <ImageButton
+                android:id="@+id/next_lesson_format"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/next"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alarm_snooze"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:background="#77FFFFFF"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <TextView
+                android:id="@+id/snooze_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:text="@string/alarm_snooze" />
+
+            <ImageButton
+                android:id="@+id/previous_snooze"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/previous"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:src="@drawable/ic_chevron_left_black_24dp" />
+
+            <TextView
+                android:id="@+id/snooze_minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxEms="12"
+                android:textAlignment="center" />
+
+            <ImageButton
+                android:id="@+id/next_snooze"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/next"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:src="@drawable/ic_chevron_right_black_24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/date_time_format"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:background="#77FFFFFF"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="@string/date_time_format" />
+
+            <ImageButton
+                android:id="@+id/previous_datetime_format"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/previous"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:src="@drawable/ic_chevron_left_black_24dp" />
+
+            <TextView
+                android:id="@+id/datetime_format_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxEms="12"
+                android:textAlignment="center" />
+
+            <ImageButton
+                android:id="@+id/next_datetime_format"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:contentDescription="@string/next"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:src="@drawable/ic_chevron_right_black_24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/alarm_tone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="#77FFFFFF"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:paddingStart="4dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:text="@string/alarm_tone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=":"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/alarm_tune_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_audiotrack_black_24dp"
+                android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
+                android:drawableTint="@color/colorPrimaryDark"
+                android:gravity="center|start"
+                android:text="@string/default_" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
