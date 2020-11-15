@@ -27,13 +27,33 @@ import java.util.*
 import kotlin.collections.component1
 import kotlin.collections.component2
 
+/**
+ * Trieda slúži na vykreslenie tabuľky s rozvrhom. Jej inštancia umožňuje meniť vzhľad tejto triedy
+ */
 class ScheduleIllustrator private constructor(private val clickAllowed: Boolean = true) {
     companion object {
+        /**
+         * Funkcia vytvorí novú inštanciu, ktorá bude vykresľovať rozvrh a následne umožňovať
+         * vykonávať v ňom zmeny.
+         * @param illustrator Namiesto tvorby novej inštancie je možné použiť starú, pokiaľ nie je null.
+         * @param allowClick Rozhoduje o tom, či budú bunky reagovať na kliknutie
+         * @return [ScheduleIllustrator]
+         */
         fun schedule(
             illustrator: ScheduleIllustrator?,
             allowClick: Boolean = true
-        ): ScheduleIllustrator = illustrator ?: ScheduleIllustrator(allowClick)
+        ): ScheduleIllustrator {
+            if (illustrator == null || illustrator.clickAllowed != allowClick)
+                return ScheduleIllustrator(allowClick)
+            return illustrator
+        }
 
+        /**
+         * Vykreslenie rozvrhu ako obrázok
+         * @param workWeek Pracovný týždeň
+         * @param reg Párny, nepárny alebo každý týždeň
+         * @return [Bitmap] obrázok s nakresleným rozvrhom
+         */
         fun drawSchedule(workWeek: WorkWeek, reg: Regularity): Bitmap {
             // data
             val colors = PaletteStorage()
@@ -190,16 +210,33 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
         fillContent()
     }
 
+    /**
+     * Nastavenie rodiča tabuľky rozvrhu
+     * @param v nový rodič
+     * @return [ScheduleIllustrator] Vracia objekt, v ktorom sa nachádza
+     */
     fun attachTo(v: ViewGroup) = also {
         (table.parent as ViewGroup?)?.removeView(table)
         v.addView(table)
     }
 
+    /**
+     * Nastavenie ktoré okno sa použije ako farba pozadia
+     * @param bg Okno s meniteľným pozadím
+     * @return [ScheduleIllustrator] Vracia objekt, v ktorom sa nachádza
+     */
     fun background(bg: View?) = also {
         background = bg
         bg?.setBackgroundColor(colors[-BACKGROUND.ordinal]!!.color)
     }
 
+    /**
+     * Zahrnutie tlačidiel, ktoré prevezmu určitu rolu. Tlačidlá budú skryté pokiaľ nie je
+     * povolený dvojtýždenný rozvrh.
+     * @param odd Tlačidlo bude slúžiť na zobrazenie rozvrhu pre nepárny týždeň
+     * @param even Tlačidlo bude slúžiť na zobrazenie rozvrhu pre párny týždeň
+     * @return [ScheduleIllustrator] Vracia objekt, v ktorom sa nachádza
+     */
     fun involveButtons(odd: View?, even: View?) = also {
         oddWeek = odd?.also { b -> b.tag = ODD }
         evenWeek = even?.also { b -> b.tag = EVEN }
@@ -209,10 +246,19 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
         setButtonsVisible(regularity != EVERY)
     }
 
+    /**
+     * Nastavenie metódy, ktorá sa vykoná po kliknutí na niektorú z vyučovacích hodín
+     * @param fn Metóda, ktrá sa má vykonať po kliknutí na ľubovoľnú hodinu
+     */
     fun setOnLessonClick(fn: (lesson: Lesson) -> Unit) {
         onLessonClick = fn
     }
 
+    /**
+     * Zmeniť šírku tabuľky a jej stĺpcov tak, aby boli všetky stĺpce rovnako široké, až na posledný.
+     * Posledný stĺpec môže byť širší od ostatných o zvyšok po delení šírky tabuľky počtom jej stĺpcov.
+     * @param w Nastavenie šírky tabuľky.
+     */
     fun customizeColumnWidth(w: Int = cols.width) {
         val c = cols.childCount
         // ani w ani c nesmu byt 0
@@ -226,26 +272,24 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
             if (ch < cols.childCount - 1) allParams else lastParam
     }
 
-    fun empty() {
-        range = 0..0
-        clear()
-        fillTop()
-        for ((d, r) in days) r.addView(bodyCell(Free(EVERY, d, range)))
-    }
-
-    fun put(added: ScheduleEvent): Boolean {
+    /**
+     * Údajne došlo k zmenám rozvrhu, treba ho prekresliť a následne overiť, či k týmto zmenám naozaj došlo
+     * @param scheduleEvent rozvrhová udalosť ktorá sa vkladá
+     * @return true, ak sa žiadaná zmena dokázala vykonať včas pred zavolaním tejto funkcie
+     */
+    fun put(scheduleEvent: ScheduleEvent): Boolean {
         val oldRange = range
         range = App.data.scheduleRange(workWeek, regularity)
         redraw()
 
         if (range != oldRange) return true
 
-        val row = days[added.day]!!
+        val row = days[scheduleEvent.day]!!
         for (ch in row.children) {
             val timeRange = ch.tag as ScheduleEvent
-            if (added is Lesson && added.time == timeRange.time) return true
-            else if (added is Free && added.time.first >= timeRange.time.first
-                && added.time.last <= timeRange.time.last
+            if (scheduleEvent is Lesson && scheduleEvent.time == timeRange.time) return true
+            else if (scheduleEvent is Free && scheduleEvent.time.first >= timeRange.time.first
+                && scheduleEvent.time.last <= timeRange.time.last
             ) return true
         }
 
@@ -284,7 +328,10 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
         for (scheduleEvent in schedule) days[scheduleEvent.day]?.addView(bodyCell(scheduleEvent))
     }
 
-    private fun redraw() {
+    /**
+     * Tu dochádza k prekresleniu celého rozvrhu
+     */
+    fun redraw() {
         clear()
         fillTop()
         fillContent()
@@ -355,6 +402,11 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
         }
     }
 
+    /**
+     * Vizuálne sa zmenia farby tématickych prvkov ako sú množiny buniek v tabuľke a pozadie.
+     * @param type typ bunky ku ktorej je farba nastavovaná
+     * @param palette Dynamicky nastaviteľná farba
+     */
     fun recolor(type: Int, palette: Palette) {
         colors[type] = palette
 
@@ -402,5 +454,9 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
         }
     }
 
+    /**
+     * Natrvalo uložiť súčasné zafarbenie prvkov daného typu [type]
+     * @param type typ
+     */
     fun storeColor(type: Int) = colors.save(type)
 }

@@ -14,7 +14,10 @@ import com.moriak.schednote.events.ShakeSensor
 import com.moriak.schednote.settings.Prefs
 
 /**
- * Aktivita s implementovanými senzormi pohybu a
+ * Aktivita s implementovanými senzormi pohybu. Každý potomok tejto aktivity po zatrasení
+ * zobrazí dialóg, v ktorom bude možné zadať hlasovú inštrukciu. Dialóg bude poskytovať možné inštrukcie
+ * vo vybranom jazyku. Pre zobrazenie tohoto dialógu treba povoliť nahrávanie zvuku a v nastaveniach povoliť
+ * hlasové inštrukcie.
  */
 abstract class ShakeCompatActivity : AppCompatActivity() {
     companion object {
@@ -25,12 +28,11 @@ abstract class ShakeCompatActivity : AppCompatActivity() {
     private val shake = ShakeSensor()
 
     /**
-     * Keď zatrasiem, potrebujem povolenie zvukového nahrávania, aby aby bolo možné zadávať hlasové príkazy
-     * @param savedInstanceState uložená záloha
+     * Nastavenie citlivosti otrasu a následné vykonanie udalosti
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        shake.threshold = 10
+        shake.threshold = 15
         shake.setOnShake { onShake() }
     }
 
@@ -44,11 +46,9 @@ abstract class ShakeCompatActivity : AppCompatActivity() {
         request: Int,
         permissions: Array<out String>,
         granted: IntArray
-    ) {
-        when (request) {
-            GIMME_VOICE -> if (granted.firstOrNull() != PERMISSION_GRANTED) App.toast(R.string.permission_denied) else onShake()
-            else -> super.onRequestPermissionsResult(request, permissions, granted)
-        }
+    ) = when (request) {
+        GIMME_VOICE -> if (granted.firstOrNull() != PERMISSION_GRANTED) App.toast(R.string.permission_denied) else onShake()
+        else -> super.onRequestPermissionsResult(request, permissions, granted)
     }
 
     /**
@@ -75,8 +75,8 @@ abstract class ShakeCompatActivity : AppCompatActivity() {
     }
 
     /**
-     * Čo sa má stať, keď uživateľ zatrasie telefónom
-     * pôvodne sa zobrazí dialóg s inštrukciami, ktoré môže užívateľ vysloviť do mikrofónu
+     * Udalosť sa spustí po zatrasení zariadenia. Pôvodne sa má zobraziť dialóg s inštrukciami,
+     * ktoré môže užívateľ vysloviť do mikrofónu
      */
     protected open fun onShake() {
         if (!SpeechRecognizer.isRecognitionAvailable(this)) App.toast(R.string.voice_err_unavailable)

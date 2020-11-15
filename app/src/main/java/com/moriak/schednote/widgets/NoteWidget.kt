@@ -18,7 +18,6 @@ import com.moriak.schednote.database.data.Subject
 import com.moriak.schednote.other.Redirection
 import com.moriak.schednote.other.TimeCategory
 import com.moriak.schednote.settings.Prefs
-import java.util.*
 
 class NoteWidget : AppWidgetProvider() {
     companion object {
@@ -36,13 +35,6 @@ class NoteWidget : AppWidgetProvider() {
                 .putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, all(context))
         )
 
-        private fun nextMidnight() = App.now.apply {
-            add(Calendar.DAY_OF_YEAR, 1)
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }.timeInMillis
-
         private fun scheduledUpdate(context: Context = App.ctx): PendingIntent {
             val intent = Intent(App.ctx, NoteWidget::class.java)
                 .setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
@@ -53,8 +45,7 @@ class NoteWidget : AppWidgetProvider() {
         fun setNextUpdateTime(context: Context = App.ctx) {
             val pendingIntent = scheduledUpdate(context)
             val alarm = App.ctx.getSystemService(ALARM_SERVICE) as AlarmManager
-            val nextTime =
-                App.data.scheduleNextWidgetUpdate()?.coerceAtMost(nextMidnight()) ?: nextMidnight()
+            val nextTime = App.data.scheduleNextWidgetUpdate()
             alarm.setExact(RTC_WAKEUP, nextTime, pendingIntent)
         }
 

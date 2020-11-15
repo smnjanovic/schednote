@@ -59,12 +59,12 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addLesson"
+        app:layout_constraintEnd_toStartOf="@+id/addLessonUnit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sched_empty" />
 
     <ImageButton
-        android:id="@+id/addLesson"
+        android:id="@+id/addLessonUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

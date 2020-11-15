@@ -80,7 +80,7 @@ class NotesFragment : SubActivity() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val onConfirm = fun DateTimeDialog.() {
+        val onConfirm = fun(position: Int, millis: Long) {
             if (millis <= System.currentTimeMillis()) App.toast(R.string.time_out)
             else {
                 val id = adapter.getItemId(position)
@@ -129,10 +129,10 @@ class NotesFragment : SubActivity() {
             }
         }
 
-        adapter.setOnFindViewHolder { view.note_list.holder(it) }
         adapter.setOnDateTimeSetAttempt { pos, deadline ->
             val dateTime = DateTimeDialog()
             dateTime.storeItemPositionAndDate(pos, deadline)
+            dateTime.setOnConfirm(onConfirm)
             dateTime.setOnConfirm(onConfirm)
             dateTime.show(fragmentManager!!, DATE_TIME)
         }

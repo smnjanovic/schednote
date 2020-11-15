@@ -18,6 +18,9 @@ import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.note.view.*
 import java.util.*
 
+/**
+ * V adaptéri zobrazujem mením a pridávam poznámky
+ */
 class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val subjects = App.data.subjects()
     private val items = ArrayList<Note?>()
@@ -51,7 +54,6 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private lateinit var onDateTimeSetAttempt: (Int, Long?) -> Unit
-    private lateinit var findViewHolder: (Int) -> NoteHolder
 
     private val nextSubject = View.OnClickListener {
         val holder = it.tag as NoteHolder
@@ -129,14 +131,19 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         addNewHolder()
     }
 
-    fun setOnFindViewHolder(fn: (Int) -> NoteHolder) {
-        findViewHolder = fn
-    }
-
+    /**
+     * Nastavenie správania, čo sa má stať pri pokuse o zmenu dátumu
+     * @param fn Metóda prijíma vstupy: Pozícia položky zoznamu [Int] a id úlohy [Long],
+     * ktoré môže byť null, ak práve vytváram novú úlohu
+     */
     fun setOnDateTimeSetAttempt(fn: (Int, Long?) -> Unit) {
         onDateTimeSetAttempt = fn
     }
 
+    /**
+     * Odstránenie poznámky
+     * @param position pozícia na ktorej sa poznámka nachádza
+     */
     fun removeOutcast(position: Int): Int? {
         if (position !in items.indices || editPos == position) return null
         val id = items[position]?.id ?: -1L
@@ -160,6 +167,9 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    /**
+     * Odstrániť všetky poznámky patriace pod súčasne vybranú kategóriu
+     */
     fun clear() {
         App.data.clearNotesOfCategory(category)
         activeHolder = null
@@ -170,6 +180,10 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         addNewHolder()
     }
 
+    /**
+     * Načítanie úloh patriacich pod vybranú kategóriu
+     * @param cat vybraná kategória
+     */
     fun loadCategory(cat: NoteCategory) {
         if (!this::category.isInitialized || category != cat) {
             category = cat
@@ -180,6 +194,9 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    /**
+     * Opätovné načítanie zoznamu úloh
+     */
     fun reload() {
         clearChanges()
         items.clear()
@@ -206,20 +223,30 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemId(position: Int): Long =
         if (position in items.indices) items[position]?.id ?: -1L else -1L
 
+    /**
+     * Získanie pozície úlohy s danym id
+     * @param id
+     */
     fun indexOfNote(id: Long) =
         if (id == -1L) items.lastIndex else items.indexOfFirst { it?.id == id }
 
+    /**
+     * Opätovné načítanie množiny predmetov
+     */
     fun reloadSubjects() {
         subjects.clear()
         subjects.addAll(App.data.subjects())
     }
 
+    /**
+     * Holder, ktorý uchováva a zobrazuje dáta o danej úlohe
+     * @constructor Vytvorenie vizuálnej reprezentácie úlohy
+     * @property id id úlohy
+     * @property info popis úlohy
+     * @property millis dátum termínu v milisekundách - môže byť null
+     * @property subject predmet, pre ktorý úloha platí
+     */
     inner class NoteHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        init {
-            App.log("created holder")
-        }
-
         private val note
             get() =
                 if (adapterPosition in items.indices) items[adapterPosition]
@@ -270,8 +297,14 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 field = value
             }
 
+        /**
+         * Overuje, či je táto úloha práve upravovaná
+         */
         val isEditing: Boolean get() = editMode
 
+        /**
+         * Vyskladanie viewHoldera
+         */
         fun bind() {
             editMode = (note?.id ?: -1L) == editId
 
@@ -305,12 +338,18 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (editMode) activeHolder = this
         }
 
+        /**
+         * Začať upravovať
+         */
         fun startEditing() {
             editMode = true
             itemView.editable_text.setText(note?.description)
             keepChanges(this)
         }
 
+        /**
+         * Skončiť úpravy
+         */
         fun stopEditing() {
             clearChanges()
             val pos = adapterPosition
@@ -328,6 +367,10 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
+        /**
+         * Nájdenie chýb pred uložením zmien
+         * @return resource id okdazujúci na reťazec, ktorý popisuje danú chybu - null, ak sú úpravy bezchybné
+         */
         @StringRes
         private fun errorPresence(): Int? {
             if (itemView.note_title.tag !is Subject)
@@ -339,6 +382,10 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             return Note.validDescription(itemView.editable_text.text?.toString())
         }
 
+        /**
+         * Pokúsi sa uložiť vykonané zmeny.
+         * @return pri úspechu vráti null, inak vráti id odkazujúci na reťazec, ktorý popisuje chybu
+         */
         fun save(): Int? = if (!editMode) null else errorPresence() ?: null.also {
             val new = note == null
             val newId = if (new) App.data.addNote(subject.id, info!!, millis) else id

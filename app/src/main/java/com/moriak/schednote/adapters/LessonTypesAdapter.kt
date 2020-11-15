@@ -20,6 +20,9 @@ import kotlinx.android.synthetic.main.lesson_type_data.view.*
 import java.util.*
 
 
+/**
+ * Adapter umožňuje spravovať zoznam typov hodín.
+ */
 class LessonTypesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private val itemToAdd = LessonType(-1, "")
@@ -143,6 +146,9 @@ class LessonTypesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 field = value
             }
 
+        /**
+         * Vyskladanie view holdera
+         */
         fun bind() {
             val item = items[adapterPosition]
 
@@ -173,6 +179,10 @@ class LessonTypesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.delete.setOnClickListener(onDelete)
         }
 
+        /**
+         * Pokus o uloženie vykonaných zmien
+         * @return pri úspešnom uložení vráti null, inak vráti id textového zdroja popisujúceho konkrétny problém
+         */
         fun save(): Int? {
             if (editMode && adapterPosition in items.indices) {
                 val isNew = editId == -1
@@ -210,6 +220,9 @@ class LessonTypesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             return null
         }
 
+        /**
+         * Začnem premenovávať typ hodiny
+         */
         fun startEditing() {
             if (adapterPosition in items.indices) {
                 editMode = true
@@ -226,6 +239,9 @@ class LessonTypesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
+        /**
+         * Ukončím úpravu (bez uloženia).
+         */
         fun stopEditing() {
             itemView.type_name_editable.clearFocus()
             if (adapterPosition in items.indices) {
@@ -235,6 +251,9 @@ class LessonTypesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
+        /**
+         * Odstránim úlohu na ktorú sa viaže tento viewHolder
+         */
         fun delete() {
             itemView.type_name_editable.clearFocus()
             val oldPos = adapterPosition

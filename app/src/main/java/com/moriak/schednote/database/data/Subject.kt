@@ -2,22 +2,32 @@ package com.moriak.schednote.database.data
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.Editable
-import android.text.TextWatcher
 import com.moriak.schednote.R
 
+/**
+ * Trieda uchováva dáta o jednom predmete
+ */
 data class Subject(val id: Long, var abb: String, var name: String) : Parcelable, NoteCategory {
+
+    /**
+     * Statický objekt poskytuje dáta a pravidlá spoločné pre všetky predmety
+     * @property abb_limit Maximálny počet znakov v skratke predmetu
+     * @property name_limit Maximálny počet znakov v celom názve predmetu
+     * @property l Výber písmen
+     * @property d Výber číslic
+     */
     companion object CREATOR : Parcelable.Creator<Subject> {
-        override fun createFromParcel(parcel: Parcel) =
-            Subject(parcel)
-
+        override fun createFromParcel(parcel: Parcel) = Subject(parcel)
         override fun newArray(size: Int): Array<Subject?> = arrayOfNulls(size)
-
         const val abb_limit = 5
         const val name_limit = 48
         const val l = "a-zA-ZÀ-ž"
         const val d = "0-9"
 
+        /**
+         * Kontrola správnosti formátu skratky
+         * @param abb skratka predmetu
+         */
         fun validAbb(abb: String) = when {
             abb.trim().isEmpty() -> R.string.subject_abb_missing
             abb.trim().length > abb_limit -> R.string.subject_abb_too_long
@@ -25,53 +35,15 @@ data class Subject(val id: Long, var abb: String, var name: String) : Parcelable
             else -> null
         }
 
+        /**
+         * Kontrola správnosti formátu názvu
+         * @param name Celý názov predmetu
+         */
         fun validName(name: String) = when {
             name.trim().isEmpty() -> R.string.subject_abb_missing
             name.length > name_limit -> R.string.subject_abb_too_long
             !name.matches("^[$l][$l$d ]*$".toRegex()) -> R.string.subject_abb_format_warning
             else -> null
-        }
-    }
-
-    object AbbWatcher : TextWatcher {
-        private var st = 0
-        private var en = 0
-        private val bad = "[^$l]".toRegex()
-        override fun afterTextChanged(s: Editable?) {
-            if (s != null) {
-                if (s.length > abb_limit) s.delete(st, en)
-                if (s.contains(bad)) s.delete(st, en)
-                if (s.contains(bad)) s.replace(0, s.length, s.replace(bad, ""))
-            }
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            st = start
-            en = start + count
-        }
-    }
-
-    object NameWatcher : TextWatcher {
-        private var st = 0
-        private var en = 0
-        private val illegal = "(^[^a-zA-ZÀ-ž])|([^a-zA-ZÀ-ž0-9 ])|([ ][ ]+)|(^[ ]+)".toRegex()
-        override fun afterTextChanged(s: Editable?) {
-            if (s != null) {
-                if (s.length > name_limit) s.delete(st, en)
-                if (s.contains(illegal)) s.delete(st, en)
-                if (s.contains(illegal))
-                    s.replace(
-                        0, s.length, s.replace("[^a-zA-ZÀ-ž0-9 ]+".toRegex(), "")
-                            .trimStart().replace("^[0-9]+".toRegex(), "")
-                    )
-            }
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            st = start
-            en = start + count
         }
     }
 

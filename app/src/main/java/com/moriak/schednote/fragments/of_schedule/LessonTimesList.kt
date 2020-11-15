@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moriak.schednote.App
 import com.moriak.schednote.R
-import com.moriak.schednote.adapters.ScheduleAdapter
-import com.moriak.schednote.database.data.LessonData.Companion.MAX_LESSON_COUNT
+import com.moriak.schednote.adapters.LessonTimeAdapter
+import com.moriak.schednote.database.data.LessonTime.Companion.MAX_LESSON_COUNT
 import com.moriak.schednote.design.ItemTopSpacing
 import com.moriak.schednote.dialogs.LessonDurationSetter
 import com.moriak.schednote.dialogs.ScheduleStartSetter
@@ -27,7 +27,7 @@ class LessonTimesList : SubActivity(), SchedulePart {
     private lateinit var startChanger: ScheduleStartSetter
     private lateinit var lessonEditor: LessonDurationSetter
 
-    private lateinit var adapter: ScheduleAdapter
+    private lateinit var adapter: LessonTimeAdapter
 
     private val scheduleStartChangeEvent =
         View.OnClickListener { showDialog(START_SCHEDULE, startChanger) }
@@ -41,12 +41,11 @@ class LessonTimesList : SubActivity(), SchedulePart {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) =
-        inflater.inflate(R.layout.lesson_time_scheduler, container, false)!!
+    ) = inflater.inflate(R.layout.lesson_time_scheduler, container, false)!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ScheduleAdapter()
+        adapter = LessonTimeAdapter()
 
         // prvotne nastavenie hodnot
         view.schedule_start.text = Prefs.settings.getTimeString(Prefs.settings.earliestMinute)
@@ -61,16 +60,24 @@ class LessonTimesList : SubActivity(), SchedulePart {
         startChanger = requireFragment(START_SCHEDULE, ScheduleStartSetter::class.java)
         lessonEditor = requireFragment(LESSON_SETTER, LessonDurationSetter::class.java)
 
-        startChanger.setAffectedView(view.schedule_start)
-        startChanger.setAffectedAdapter(adapter)
-        lessonEditor.setAdapter(adapter)
+        startChanger.setOnConfirm { scheduleStart ->
+            Prefs.settings.earliestMinute = scheduleStart
+            view.schedule_start?.text = Prefs.settings.getTimeString(scheduleStart)
+            adapter.notifyItemRangeChanged(0, adapter.itemCount)
+        }
+        lessonEditor.setOnConfirm { order, lesDur, breakDur ->
+            if (order > -1L) adapter.update(order, lesDur, breakDur)
+            else adapter.insert(lesDur, breakDur)
+            Prefs.states.lastSetLessonDuration = lesDur
+            Prefs.states.lastSetBreakDuration = breakDur
+        }
 
         adapter.setShowDialog {
             lessonEditor.setValues(it.order, it.lessonDuration, it.breakDuration)
             showDialog(LESSON_SETTER, lessonEditor)
         }
 
-        addLesson.setOnClickListener {
+        addLessonUnit.setOnClickListener {
             if (adapter.itemCount < MAX_LESSON_COUNT) {
                 lessonEditor.setDefault()
                 showDialog(LESSON_SETTER, lessonEditor)

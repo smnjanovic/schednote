@@ -1,12 +1,20 @@
 package com.moriak.schednote.database.data
 
 import android.text.Editable
-import android.text.TextWatcher
 import com.moriak.schednote.other.Day
 import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.Regularity
 
 
+/**
+ * Hodina - udalosť rozvrhu [ScheduleEvent], pri ktorej sa zíde skupina ľudí v určitej miestnosti [room],
+ * jej priebeh má nejakú formu [type] a je tematicky zameraná na jeden predmet [sub].
+ *
+ * @property id
+ * @property type Typ hodiny
+ * @property sub Predmet
+ * @property room Miestnosť
+ */
 data class Lesson(
     val id: Long,
     override val regularity: Regularity,
@@ -20,35 +28,24 @@ data class Lesson(
         ScheduleEvent.rangeCheck(time)
     }
 
+    /**
+     * @property room_limit maximálny počet znakov v popise miestnosti
+     */
     companion object {
         const val room_limit = 20
+
+        /**
+         * Kontrola správnosti formátu popisu miestnosti - dodržanie maximálnej dĺžky
+         * @param editable Kontrolovaný text
+         */
         fun roomValid(editable: Editable?) = editable
             ?.trimStart()
             ?.replace("\\s+".toRegex(), " ")
             ?.let { if (it.length > room_limit) it.substring(0, room_limit) else it }
     }
 
-    object RoomWatcher : TextWatcher {
-        private val invalid = "(\\s\\s+)|(^\\s+)".toRegex()
-        private var st = 0
-        private var en = 0
-        override fun afterTextChanged(s: Editable?) {
-            if (s == null) return
-            if (s.length > 20 || s.contains(invalid)) s.delete(st, en)
-            if (s.length > 20 || s.contains(invalid))
-                s.replace(0, s.length, s.trimStart().replace("\\s+".toRegex(), " "))
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            st = start
-            en = start + count
-        }
-
-    }
-
-    override fun isEqual(scheduleEvent: ScheduleEvent?): Boolean =
-        scheduleEvent is Lesson && sub == scheduleEvent.sub && type == scheduleEvent.type && room == scheduleEvent.room
+    override fun isEqual(other: ScheduleEvent?): Boolean =
+        other is Lesson && sub == other.sub && type == other.type && room == other.room
 
     override fun toString(): String = String.format("%s  — %s%s %s",
         sub.abb,

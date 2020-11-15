@@ -5,7 +5,16 @@ import com.moriak.schednote.R
 import com.moriak.schednote.database.Trigger
 import com.moriak.schednote.database.tables.Lessons.DUR
 import com.moriak.schednote.database.tables.Lessons.START
+import com.moriak.schednote.database.tables.Schedule.BREAK_DUR
+import com.moriak.schednote.database.tables.Schedule.LESSON_DUR
+import com.moriak.schednote.database.tables.Schedule.ORDER
 
+/**
+ * Tabuľka časového harmonogramu hodín
+ * @property ORDER Poradie hodiny
+ * @property LESSON_DUR Trvanie hodiny
+ * @property BREAK_DUR Trvanie prestávky po hodine
+ */
 object Schedule : Table() {
     const val ORDER = "les_order"
     const val LESSON_DUR = "lesson_minutes"

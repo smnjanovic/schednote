@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.moriak.schednote.R
 import com.moriak.schednote.adapters.AlarmAdapter
-import com.moriak.schednote.dialogs.MinuteHourAdvance
+import com.moriak.schednote.dialogs.LessonStartAdvance
 import com.moriak.schednote.dialogs.TimeDialog
 import com.moriak.schednote.fragments.of_main.SubActivity
 import com.moriak.schednote.other.Day
@@ -79,14 +79,14 @@ class AlarmClockSetter : SubActivity(), AlarmDisplay {
         }
 
         view.auto_alarm_set.setOnClickListener {
-            val dialog = MinuteHourAdvance()
+            val dialog = LessonStartAdvance()
             dialog.setOnConfirm { setAlarmsBySchedule(it) }
             dialog.show(fragmentManager!!, ADVANCE)
         }
 
         findFragment(
             ADVANCE,
-            MinuteHourAdvance::class.java
+            LessonStartAdvance::class.java
         )?.setOnConfirm { setAlarmsBySchedule(it) }
 
         view.odd_week.tag = Regularity.ODD

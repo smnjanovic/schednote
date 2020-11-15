@@ -5,7 +5,14 @@ import com.moriak.schednote.R
 import com.moriak.schednote.database.Trigger
 import com.moriak.schednote.database.data.LessonType.Companion.MAX_COUNT
 import com.moriak.schednote.database.data.LessonType.Companion.limit
+import com.moriak.schednote.database.tables.LessonTypes.TYPE
+import com.moriak.schednote.database.tables.LessonTypes.TYPE_NAME
 
+/**
+ * Tabuľka typov hodín
+ * @property TYPE ID typu hodiny
+ * @property TYPE_NAME Názov typu hodiny
+ */
 object LessonTypes : Table() {
     const val TYPE = "type_id"
     const val TYPE_NAME = "type_name"

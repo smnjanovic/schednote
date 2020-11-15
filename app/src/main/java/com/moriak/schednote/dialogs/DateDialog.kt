@@ -10,12 +10,17 @@ import java.util.Calendar.*
 
 /**
  * Trieda zobrazuje dialog na nastavenie dátumu. Pred zobrazením do nej možno vložiť predpripravený dátum na úpravu
- * @property millis Nastavenie datumu v milisekundach
  */
 class DateDialog : DialogFragment(), DatePickerDialog.OnDateSetListener {
     companion object {
-        const val CAL = "CAL"
+        private const val CAL = "CAL"
 
+        /**
+         * Vytvorenie nového dialógu
+         * @param ms počiatočný dátum
+         * @param fn algoritmus, ktorý sa má vykonať po potvrdení dátumu
+         * @return [DateDialog]
+         */
         fun newInstance(ms: Long?, fn: (Long) -> Unit): DateDialog = DateDialog().apply {
             setMillis(ms)
             setOnConfirm(fn)
@@ -27,6 +32,7 @@ class DateDialog : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     /**
      * Nastavenie dátumu v milisekundách
+     * @param ms milisekundy. Ak je hodnota null, nastaví sa súčasný čas
      */
     fun setMillis(ms: Long?) {
         millis = ms ?: System.currentTimeMillis()

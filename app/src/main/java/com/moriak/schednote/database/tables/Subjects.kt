@@ -7,7 +7,16 @@ import com.moriak.schednote.database.data.Subject.CREATOR.abb_limit
 import com.moriak.schednote.database.data.Subject.CREATOR.d
 import com.moriak.schednote.database.data.Subject.CREATOR.l
 import com.moriak.schednote.database.data.Subject.CREATOR.name_limit
+import com.moriak.schednote.database.tables.Subjects.ABB
+import com.moriak.schednote.database.tables.Subjects.NAME
+import com.moriak.schednote.database.tables.Subjects.SUB_ID
 
+/**
+ * Tabuľka predmetov
+ * @property SUB_ID ID predmetu
+ * @property ABB Skratka predmetu
+ * @property NAME Názov predmetu
+ */
 object Subjects : Table() {
     const val SUB_ID = "sub_id"
     const val ABB = "abb"

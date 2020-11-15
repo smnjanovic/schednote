@@ -4,6 +4,9 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Nastavenie veľkosti medzier medzi položkami v zozname
+ */
 class ItemTopSpacing(private val top: Int) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,

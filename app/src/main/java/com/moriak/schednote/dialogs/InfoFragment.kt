@@ -8,9 +8,18 @@ import androidx.fragment.app.DialogFragment
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 
+/**
+ * Dialóg slúži na informovanie alebo poučenie užívateľa
+ */
 class InfoFragment : DialogFragment() {
     companion object {
-        const val MSG = "MSG"
+        private const val MSG = "MSG"
+
+        /**
+         * Vytvorenie dialógu so špecifickou správou
+         * @param res Zdroj reťazca, ktorý sa má vypísať v dialógovom okne
+         * @return Informačný dialóg
+         */
         fun create(@StringRes res: Int) = InfoFragment().also { it.msg = App.str(res) }
     }
 

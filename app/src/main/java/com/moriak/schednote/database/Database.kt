@@ -83,11 +83,21 @@ class Database : DBControl() {
 
     // predmety
 
+    /**
+     * Načítanie predmetu z databázy
+     * @param id ID predmetu
+     * @return [Subject] Vráti null, ak predmet s takým ID neexistuje
+     */
     fun subject(id: Long) =
         one("SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects WHERE $SUB_ID = $id;") {
             Subject(getLong(0), getString(1), getString(2))
         }
 
+    /**
+     * Načítanie predmetu z databázy
+     * @param abb Skratka predmetu
+     * @return [Subject] Vráti null, ak predmet s takou skratkou neexistuje
+     */
     fun subject(abb: String) = one(
         "SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects WHERE $ABB LIKE ?;",
         abb.trim().toUpperCase(Locale.ROOT)
@@ -95,6 +105,11 @@ class Database : DBControl() {
         Subject(getLong(0), getString(1), getString(2))
     }
 
+    /**
+     * Získanie abecedného umiestnenia predmetu
+     * @param id ID predmetu
+     * @return Vráti index, v ktorom sa má predmet nachádzať alebo -1, ak taký predmet neexistuje
+     */
     fun subjectIndex(id: Long) = one(
         """
         SELECT CASE WHEN EXISTS (SELECT 1 FROM $Subjects WHERE $SUB_ID = $id) THEN COUNT(*) ELSE -1 END
@@ -102,15 +117,31 @@ class Database : DBControl() {
     """
     ) { getInt(0) } ?: -1
 
+    /**
+     * Získanie abecedného zoznamu všetkých predmetov
+     * @return výsledný zoznam
+     */
     fun subjects() = all("SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects ORDER BY $ABB") {
         Subject(getLong(0), getString(1), getString(2))
     }
 
+    /**
+     * Pridanie predmetu do databázy
+     * @param abb Skratka predmetu
+     * @param name Celý názov predmetu
+     * @return Vráti id nového predmetu alebo -1, ak vloženie neprebehlo úspešne
+     */
     fun addSubject(abb: String, name: String): Long = insert(Subjects, values {
         put(ABB, trimAndCut(abb, Subject.abb_limit))
         put(SUB_NAME, trimAndCut(name, Subject.name_limit))
     })
 
+    /**
+     * Úprava predmetu v databázy
+     * @param abb Nová skratka predmetu
+     * @param name Nový názov predmetu
+     * @return Vráti počet vykonaných zmien
+     */
     fun editSubject(id: Long, abb: String, name: String): Int {
         val count = update(Subjects, values {
             put(ABB, trimAndCut(abb, Subject.abb_limit))
@@ -124,6 +155,11 @@ class Database : DBControl() {
         return count
     }
 
+    /**
+     * Odstránenie predmetu z databázy
+     * @param id ID predmetu
+     * @return Vráti počet odstránených záznamov
+     */
     fun deleteSubject(id: Long): Int {
         val count = delete(Subjects, "$SUB_ID = $id")
         if (count > 0) {
@@ -133,13 +169,29 @@ class Database : DBControl() {
         return count
     }
 
-    fun hasSubjects() = one("SELECT 1 FROM $Subjects") { true } ?: false
+    /**
+     * Kontrola, či sa v databáze nachádzajú nejaké predmety
+     * @return [Boolean] true, ak nejaké predmety existujú
+     */
+    fun hasSubjects() =
+        one("SELECT COUNT(*) FROM $Subjects") { moveToFirst() && getInt(0) > 0 } ?: false
 
     // casove bloky rozvrhu
 
-    fun isScheduleSet() = one("""SELECT * FROM $Schedule;""") { true } ?: false
+    /**
+     * Kontrola, či je rozvrh zložený z nejakých hodín
+     * @return [Boolean] true, ak je do rozvrhu možné vkladať hodiny
+     */
+    fun isScheduleSet() =
+        one("""SELECT COUNT(*) FROM $Schedule;""") { moveToFirst() && getInt(0) > 0 } ?: false
 
-    fun timetable() = all(
+    /**
+     * Získanie denného časového rozvrhu, teda zoznamu objektov, ktoré popisujú koľko daná hodina trvá,
+     * koľko trvá prestávka po nej a v akom poradí tá hodina je. Od toho sa dá odvodiť, kedy hodina
+     * začne a skončí.
+     * @return Zoznam hodín ako najmenších jednotiek rozvrhu
+     */
+    fun lessonTimes() = all(
         """
         SELECT a.$ORDER, a.$LESSON_DUR, a.$BREAK_DUR,
         COALESCE(SUM(b.$LESSON_DUR + b.$BREAK_DUR), 0) AS st,
@@ -150,17 +202,30 @@ class Database : DBControl() {
         
     """
     ) {
-        LessonData(getInt(0), getInt(1), getInt(2), getInt(3), getInt(4))
+        LessonTime(getInt(0), getInt(1), getInt(2), getInt(3), getInt(4))
     }
 
+    /**
+     * Zistí najskôrší začiatok a najneskorší koniec vyučovania v danom období
+     * @param workWeek Pracovný týždeň
+     * @param regularity Výber párneho, nepárneho alebo každého týždňa
+     * @return [IntRange] Vráti poradie prvej a poslednej hodiny [Lesson] (poradie začína od 1).
+     * Pokiaľ žiadne hodiny v danom období neexistujú vráti obidve nuly.
+     */
     fun scheduleRange(workWeek: WorkWeek, regularity: Regularity) = one(
         """
         SELECT COALESCE(MIN($START), 0), COALESCE(MAX($START + $DUR), 1)
         FROM $Lessons
         WHERE ${workWeek.sql} AND ${regularity.sql}
     """
-    ) { getInt(0) until getInt(1) }!!
+    ) {
+        getInt(0) until getInt(1)
+    }!!
 
+    /**
+     * Zistenie začiatku hodiny
+     * @return vráti čas začiatku hodiny v minútach meraných od začiadku rozvrhu
+     */
     fun lessonStart(order: Int) = one(
         """
         SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR),0)
@@ -169,6 +234,13 @@ class Database : DBControl() {
     """
     ) { getInt(0) } ?: 0
 
+    /**
+     * Zistenie začiatku hodiny
+     * @param day Deň
+     * @param regularity pravidelnosť týždňa
+     * @return vráti čas začiatku prvej vyučovacej hodiny v minútach meraných od počiatku rozvrhu
+     * @see Regularity
+     */
     fun firstLessonStart(day: Day, regularity: Regularity): Int {
         val order =
             "SELECT MIN($START) FROM $Lessons WHERE $DAY = ${day.value} AND ${regularity.sql}"
@@ -176,19 +248,29 @@ class Database : DBControl() {
         return Prefs.settings.earliestMinute + (one(start) { getInt(0) } ?: 0)
     }
 
+    /**
+     * Vráti strom, ktorého kľúči sú dni [Day] a ich hodnoty [Boolean] hovoria o tom,
+     * či v danom dni prebieha aspoň 1 vyučovacia hodina
+     * @param reg pravidelnosť týždňa
+     * @param workWeek pracovný deň
+     * @return Strom hodnôt [TreeMap]<[Day], [Boolean]>
+     */
     fun getBusyDays(reg: Regularity, workWeek: WorkWeek): TreeMap<Day, Boolean> {
         val busy = TreeMap<Day, Boolean>().apply {
             for (day in Day.values())
                 put(day, false)
         }
         all("SELECT $DAY FROM $Lessons WHERE ${reg.sql} AND ${workWeek.sql} GROUP BY $DAY") {
-            busy[Day[getInt(
-                0
-            )]] = true
+            busy[Day[getInt(0)]] = true
         }
         return busy
     }
 
+    /**
+     * Zistenie konca hodiny
+     * @param order poradie hodiny
+     * @return vráti čas konca hodiny [LessonTime] v minútach meraných od počiatku rozvrhu alebo 0, ak hodina v tomto poradí neexistuje
+     */
     fun lessonEnd(order: Int) = one(
         """
         SELECT start + dur FROM (
@@ -196,8 +278,15 @@ class Database : DBControl() {
             (SELECT $LESSON_DUR AS dur FROM $Schedule WHERE $ORDER = $order)
         );
     """
-    ) { getInt(0) } ?: 0
+    ) {
+        getInt(0)
+    } ?: 0
 
+    /**
+     * Prevedie rozsah poradí hodín do rozsahu minút začiatku prvej a konca druhej hodiny [LessonTime] meraných od počiatku rozvrhu
+     * @param range rozsah poradí vyučovacích hodín (od 1)
+     * @return rozsah minút meraných od počiatku rozvrhu
+     */
     fun scheduleRangeToMinuteRange(range: IntRange): IntRange? = one(
         """
         SELECT a, b + c FROM
@@ -205,17 +294,34 @@ class Database : DBControl() {
         (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS b FROM $Schedule WHERE $ORDER < ${range.last}),
         (SELECT $LESSON_DUR AS c FROM $Schedule WHERE $ORDER = ${range.last});
     """
-    ) { getInt(0)..getInt(1) }
+    ) {
+        getInt(0)..getInt(1)
+    }
 
+    /**
+     * celkový súčet minút trvania rozvrhu bez hodiny [LessonTime] ktorá je v poradí [except].
+     * @param except poradie hodiny, ktorá bude pri súčte ignorovaná
+     * @return výsledný súčet dĺžky rozvrhu v minútach meraných od počiatku rozvrhu
+     */
     fun scheduleDuration(except: Int = -1) = one(
         """
         SELECT SUM($LESSON_DUR + $BREAK_DUR)
         FROM $Schedule
         WHERE $ORDER != $except
     """
-    ) { getInt(0) } ?: 0
+    ) {
+        getInt(0)
+    } ?: 0
 
-    fun updateSchedule(id: Int, lessonDuration: Int, breakDuration: Int): Int {
+
+    /**
+     * Upraviť čas hodiny [LessonTime]. Čas musí byť upravený tak, aby rozvrh netrval dlhšie ako 1 deň.
+     * @param id ID časovej jednotky rozvrhu [LessonTime]
+     * @param lessonDuration trvanie hodiny
+     * @param breakDuration trvanie prestávky po hodine
+     * @return vráti počet upravených záznamov
+     */
+    fun updateLessonTime(id: Int, lessonDuration: Int, breakDuration: Int): Int {
         val result =
             if (scheduleDuration(id) + lessonDuration + breakDuration + Prefs.settings.earliestMinute >= 24 * 60) 0
             else update(
@@ -227,12 +333,23 @@ class Database : DBControl() {
         return result
     }
 
-    fun removeFromSchedule(id: Int): Int {
-        val count = delete(Schedule, "$ORDER = $id")
+    /**
+     * Odstráni zvolenú časovú jednotku rozvrhu aj s tými, ktoré po nej nasledujú
+     * Tým sa vymažú aj predmety z rozvrhu, ktoré v danom čase prebiehali
+     * @param order Poradie hodiny [LessonTime]
+     */
+    fun removeFromSchedule(order: Int): Int {
+        val count = delete(Schedule, "$ORDER = $order")
         ScheduleWidget.update()
         return count
     }
 
+    /**
+     * Pridanie časovej jednotky rozvrhu [LessonTime]
+     * @param lessonDuration trvanie hodiny
+     * @param breakDuration trvanie prestávky po hodine
+     * @return Vráti poradie vloženej hodiny [LessonTime] alebo -1, ak pokus o vloženie zlyhal
+     */
     fun insertIntoSchedule(lessonDuration: Int, breakDuration: Int): Int {
         val newId =
             if (scheduleDuration() + lessonDuration + breakDuration + Prefs.settings.earliestMinute >= 24 * 60) -1
@@ -245,14 +362,35 @@ class Database : DBControl() {
 
     // typy hodín
 
-    fun hasLessonTypes() = one("SELECT 1 FROM $LessonTypes;") { true } ?: false
+    /**
+     * @return [Boolean] true, ak existujú nejaké typy hodín
+     */
+    fun hasLessonTypes() =
+        one("SELECT COUNT(*) FROM $LessonTypes;") { moveToFirst() && getInt(0) > 0 } ?: false
 
-    fun lessonTypes() = all("SELECT $TYPE, $TYPE_NAME FROM $LessonTypes ORDER BY $TYPE_NAME;")
-    { LessonType(getInt(0), getString(1)) }
+    /**
+     * Načítanie abecedného zoznamu typov hodín
+     * @return abecedný zoznam typov hodín
+     */
+    fun lessonTypes() = all("SELECT $TYPE, $TYPE_NAME FROM $LessonTypes ORDER BY $TYPE_NAME;") {
+        LessonType(getInt(0), getString(1))
+    }
 
-    fun lessonType(id: Int) = one("SELECT $TYPE, $TYPE_NAME FROM $LessonTypes WHERE $TYPE = $id;")
-    { LessonType(getInt(0), getString(1)) }
+    /**
+     * Získanie dát o časovej jednotke v na tejto pozícii [order]
+     * @param order Pozícia hodiny
+     * @return Časová jednotka rozvrhu [LessonTime]
+     */
+    fun lessonType(order: Int) =
+        one("SELECT $TYPE, $TYPE_NAME FROM $LessonTypes WHERE $TYPE = $order;") {
+            LessonType(getInt(0), getString(1))
+        }
 
+    /**
+     * Zlúčenie typov hodín
+     * @param keptType typ, ktorý sa zachová
+     * @param lostType typ, ktorý zanikne
+     */
     fun joinLessonTypes(keptType: Int, lostType: Int) {
         update(Lessons, values { put(TYPE, keptType) }, "$TYPE = $lostType")
         delete(Colors, "$TYPE = $lostType")
@@ -260,6 +398,10 @@ class Database : DBControl() {
         ScheduleWidget.update()
     }
 
+    /**
+     * Zistenie pozície (od 0) typu hodiny s ID [id] v abecednom zozname typov hodín.
+     * @return poradie hodiny v abecednom zozname alebo -1, ak taká hodina neexistuje
+     */
     fun lessonTypeIndex(id: Int) = one(
         """
         SELECT CASE WHEN EXISTS(SELECT 1 FROM $LessonTypes WHERE $TYPE = $id) THEN COUNT(*) ELSE -1 END
@@ -267,18 +409,40 @@ class Database : DBControl() {
     """
     ) { getInt(0) } ?: -1
 
+    /**
+     * Vloženie nového typu hodiny
+     * @param name Názov typu hodiny
+     * @return id vloženého typu alebo -1 po neúspešnom vložení
+     */
     fun insertLessonType(name: String) =
         insert(LessonTypes, values { put(TYPE_NAME, name) }).toInt()
 
+    /**
+     * Premenovanie typu
+     * @param id ID typu, ktorého sa to týka
+     * @param name Nový názov typu
+     * @return počet zmenených riadkov v tabuľke
+     */
     fun renameLessonType(id: Int, name: String) =
         update(LessonTypes, values { put(TYPE_NAME, name) }, "$TYPE = $id")
 
+    /**
+     * Odstránenie typu hodiny s ID [id]
+     * @param id
+     * @return počet odstránených záznamov
+     */
     fun deleteLessonType(id: Int): Int {
         val result = delete(LessonTypes, "$TYPE = $id")
         ScheduleWidget.update()
         return result
     }
 
+    /**
+     * Načíta zoradený zoznam rozvrhových udalostí.
+     * @param workWeek Pracovný týždeň
+     * @param regularity pravidelnosť týždňa
+     * @return zoradený zoznam udalostí rozvrhu
+     */
     fun fullSchedule(workWeek: WorkWeek, regularity: Regularity): ArrayList<ScheduleEvent> {
         val range = scheduleRange(workWeek, regularity)
         val list: ArrayList<ScheduleEvent> = all(
@@ -374,6 +538,16 @@ class Database : DBControl() {
         return list
     }
 
+    /**
+     * Nastavenie hodiny [Lesson] - udalosti rozvrhu.
+     * @param id ID hodiny, ktorá je upravovaná alebo -1, ak je vkladaná nová hodina
+     * @param regularity Pravidelnosť týždňa
+     * @param day Deň
+     * @param time Rozsah poradí časových jednotiek rozvrhu [LessonTime]
+     * @param type Typ vyučovacej hodiny
+     * @param subject Predmet
+     * @param room Miestnosť
+     */
     fun setLesson(
         id: Long,
         regularity: Regularity,
@@ -398,18 +572,34 @@ class Database : DBControl() {
         return resId
     }
 
+    /**
+     * Odstránenie vyučovacej hodiny [Lesson] z rozvrhu
+     * @param id ID hodiny
+     * @return počet odstránených záznamov
+     */
     fun deleteLesson(id: Long): Int {
         val result = delete(Lessons, "$LES_ID = $id")
         ScheduleWidget.update()
         return result
     }
 
+    /**
+     * Vyprázdnenie celého rozvrhu
+     * @return počet odstránených záznamov
+     */
     fun clearSchedule(): Int {
         val result = delete(Lessons)
         ScheduleWidget.update()
         return result
     }
 
+    /**
+     * Odstránenie hodín v danom časovom úseku rozvrhu
+     * @param day Deň
+     * @param clearTime Rozsah poradí časových jednotiek rozvrhu [LessonTime] - čas ktorý je nutné uvoľniť
+     * @param regularity Výber týždňa podľa párnosti, nepárnosti alebo všetky
+     * @return Vráti počet odstránených záznamov
+     */
     fun clearSchedule(day: Day, clearTime: IntRange, regularity: Regularity): Int {
         val result = delete(
             Lessons, """
@@ -424,12 +614,22 @@ class Database : DBControl() {
         return result
     }
 
+    /**
+     * Získanie údajov o farbe nastavenej pre daný typ hodiny
+     * @param id ID typu hodiny
+     * @param palette Objekt, do ktorého bude farba uložená
+     */
     fun color(id: Int, palette: Palette) {
         one("SELECT $A, $H, $S, $L FROM $Colors WHERE $TYPE = $id;") {
             palette.ahsl(getInt(0), getInt(1), getInt(2), getInt(3))
         } ?: palette.resourceColor(R.color.colorPrimary)
     }
 
+    /**
+     * Vráti strom obsahujúci IDečka typov hodín ako kľúče a farby ako hodnoty
+     * @param treeMap Ak nie je null, tak do tohoto stromu sa budú zapisovať výsledné hodnoty, inak sa vytvorí nový strom
+     * @return vráti strom výsledných hodnôt
+     */
     fun colors(treeMap: TreeMap<Int, Palette>? = null): TreeMap<Int, Palette> =
         (treeMap?.apply { clear() } ?: TreeMap<Int, Palette>()).also { map ->
             all("SELECT l.$TYPE, c.$A, c.$H, c.$S, c.$L FROM $LessonTypes l LEFT JOIN $Colors c ON c.$TYPE = l.$TYPE;") {
@@ -439,7 +639,12 @@ class Database : DBControl() {
             }
         }
 
-
+    /**
+     * Nastavenie farby pre daný typ hodiny
+     * @param type ID typu hodiny
+     * @param color Farba, ktorá sa aplikuje
+     * @return počet zmenených záznamov
+     */
     fun setColor(type: Int, color: Palette): Int {
         val id = replace(Colors, values {
             put(TYPE, type)
@@ -463,6 +668,10 @@ class Database : DBControl() {
         else -> "1 = 1"
     }
 
+    /**
+     * Aktivovať notifikácie všetkých nadchádzajúcich úloh s konečným termínom
+     * @param isEnabled Ak true, nastavia sa upozornenia na úlohy v určenom predstihu, inak sa všetky notifikácie vypnú
+     */
     fun enableNoteNotifications(isEnabled: Boolean = true) = thread {
         Prefs.notifications.reminderEnabled = isEnabled
         val notes = incomingDeadlines()
@@ -475,6 +684,10 @@ class Database : DBControl() {
             )
     }.run()
 
+    /**
+     * Vloží sa množina úloh
+     * @param notes zoznam úloh
+     */
     fun insertMultipleNotes(notes: ArrayList<Note>) {
         if (notes.isNotEmpty()) {
             transaction("INSERT INTO $Notes ($SUB_ID, $NOTE, $DEADLINE) VALUES (?, ?, ?)") {
@@ -494,6 +707,11 @@ class Database : DBControl() {
         }
     }
 
+    /**
+     * Kontrola, či rovnaká úloha už existuje
+     * @param note vzor
+     * @return [Boolean] true, ak existuje
+     */
     fun hasSimilarNote(note: Note) = one("""
         SELECT $SUB_ID, $NOTE, $DEADLINE
         FROM $Notes
@@ -502,6 +720,10 @@ class Database : DBControl() {
         AND ${note.deadline?.let { "$DEADLINE = $it" } ?: "$DEADLINE IS NULL"}
     """, note.description) { true } ?: false
 
+    /**
+     * Načítanie zoznamu úloh s termínom dokončenia, ktorého čas ešte nevypršal
+     * @return zoznam úloh
+     */
     fun incomingDeadlines(): ArrayList<Note> {
         val map = TreeMap<Long, Subject>()
         return all(
@@ -518,6 +740,11 @@ class Database : DBControl() {
         }
     }
 
+    /**
+     * Vráti zoznam úloh vyhovujúcich danej kategórii
+     * @param noteCategory Kategória
+     * @return zoznam úloh
+     */
     fun notes(noteCategory: NoteCategory): ArrayList<Note> {
         val subjects = TreeMap<Long, Subject>()
         val where = noteCategoryWhere(noteCategory)
@@ -537,16 +764,34 @@ class Database : DBControl() {
         }
     }
 
-    fun noteBelongsToCategory(id: Long, category: NoteCategory): Boolean =
-        one("SELECT 1 FROM $Notes WHERE $NOTE_ID = $id AND ${noteCategoryWhere(category)}") { true }
-            ?: false
+    /**
+     * Kontrola či je úloha s ID [id] súčasťou kategórie [category].
+     * @param id ID úlohy
+     * @param category Kategória úlohy
+     * @return true, ak hodina existuje a patrí do kategórie [category]
+     */
+    fun noteBelongsToCategory(id: Long, category: NoteCategory): Boolean = one(
+        "SELECT 1 FROM $Notes WHERE $NOTE_ID = $id AND ${noteCategoryWhere(category)}"
+    ) { true } ?: false
 
+    /**
+     * Vymazať všetky úlohy vyhovujúce kategórii [category]
+     * @param category Kategória úlohy
+     * @return počet odstránených záznamov
+     */
     fun clearNotesOfCategory(category: NoteCategory): Int {
         val count = delete(Notes, noteCategoryWhere(category))
         if (count > 0) NoteWidget.update()
         return count
     }
 
+    /**
+     * Pridať úlohu
+     * @param sub Predmet
+     * @param info Popis úlohy
+     * @param deadline Termín do uplynutia platnosti v milisekundách. Môže byť null
+     * @return ID vloženej úlohy alebo -1 po neúspešnom vložení
+     */
     fun addNote(sub: Long, info: String, deadline: Long?): Long {
         val id = insert(Notes, values {
             put(SUB_ID, sub)
@@ -560,6 +805,14 @@ class Database : DBControl() {
         return id
     }
 
+    /**
+     * Upraviť úlohu
+     * @param id ID úlohy
+     * @param sub Predmet
+     * @param info Popis úlohy
+     * @param deadline Termín do uplynutia platnosti v milisekundách. Môže byť null
+     * @return počet zmených záznamov
+     */
     fun updateNote(id: Long, sub: Long, info: String, deadline: Long?): Int {
         val count = update(Notes, values {
             put(SUB_ID, sub)
@@ -573,6 +826,12 @@ class Database : DBControl() {
         return count
     }
 
+    /**
+     * Zmeniť termín platnosti úlohy
+     * @param id ID úlohy
+     * @param deadline nový termín úlohy v milisekundách. Môže byť null.
+     * @return počet zmenených záznamov
+     */
     fun changeNoteDeadline(id: Long, deadline: Long?): Int {
         val note = one(
             """
@@ -593,16 +852,31 @@ class Database : DBControl() {
         return count
     }
 
-    fun missedNotes(subject: Long) =
-        one("SELECT COUNT(*) FROM $Notes WHERE $SUB_ID = $subject AND $DEADLINE IS NOT NULL AND $DEADLINE <= $now") {
-            getInt(0)
-        }!!
+    /**
+     * Získanie počtu neplatných úloh, ktorých čas už vypršal
+     * @return výsledný počet
+     */
+    fun missedNotes(subject: Long) = one(
+        "SELECT COUNT(*) FROM $Notes WHERE $SUB_ID = $subject AND $DEADLINE IS NOT NULL AND $DEADLINE <= $now"
+    ) {
+        getInt(0)
+    }!!
 
-    fun incomingNotes(subject: Long) =
-        one("SELECT COUNT(*) FROM $Notes WHERE $SUB_ID = $subject AND ($DEADLINE IS NULL OR $DEADLINE > ${now})") {
-            getInt(0)
-        }!!
+    /**
+     * Získanie počtu platných úloh
+     * @return výsledný počet
+     */
+    fun incomingNotes(subject: Long) = one(
+        "SELECT COUNT(*) FROM $Notes WHERE $SUB_ID = $subject AND ($DEADLINE IS NULL OR $DEADLINE > ${now})"
+    ) {
+        getInt(0)
+    }!!
 
+    /**
+     * Odstránenie úlohy
+     * @param id ID úlohy, ktorú chcem odstrániť
+     * @return počet odstránených záznamov
+     */
     fun removeNote(id: Long): Int {
         val count = delete(Notes, "$NOTE_ID = $id")
         if (count > 0) {
@@ -612,6 +886,11 @@ class Database : DBControl() {
         return count
     }
 
+    /**
+     * Určenie kategórie úlohy. Prednosť majú časové kategórie. Ak úloha s ID [id] neexustuje vyberie sa všetko
+     * @param id ID úlohy
+     * @return Kategória [NoteCategory]
+     */
     fun detectNoteCategory(id: Long): NoteCategory =
         one("SELECT $DEADLINE, $SUB_ID FROM $Notes WHERE $NOTE_ID = $id") {
             val ms = getLongOrNull(0)
@@ -625,6 +904,13 @@ class Database : DBControl() {
             }
         } ?: ALL
 
+    /**
+     * Odstránenie nadbytočných dát. Patria sem hodiny mimo pracovného dňa, hodiny pre párne
+     * alebo nepárne týždne, keď nie je povolený 2-týždenný rozvrh, úlohy, ktorých čas splnenia
+     * už vypršal a predmety, ktore nie sú použité v rozvrhu a nie sú k nim zaznamenané žiadne úlohy.
+     *
+     * @return počet odstránených záznamov z tabuliek v databáze
+     */
     fun clearGarbageData(): Int {
         val lessons = delete(Lessons, "NOT(${Prefs.settings.workWeek.sql})")
         val regularity =
@@ -641,10 +927,15 @@ class Database : DBControl() {
         return lessons + regularity + notes + subjects
     }
 
+    /**
+     * Naplánovať čas ďalšej aktualizácie widgetov s úloh. Aktualizácia prebehne o polnoci alebo skôr
+     * ak sa v rámci dňa blíži konečný termín platnosti úlohy
+     *
+     * @return vráti dátum a čas v milisekundách, kedy bude ďaľšia aktualizácia widgetov úloh
+     */
     fun scheduleNextWidgetUpdate() = one(
-        "SELECT MIN($DEADLINE) FROM $Notes WHERE " +
-                "$DEADLINE > ${System.currentTimeMillis()};"
+        "SELECT MIN($DEADLINE) FROM $Notes WHERE $DEADLINE > ${System.currentTimeMillis()};"
     ) {
         getLongOrNull(0)?.coerceAtMost(App.now.nextMidnight + 60000)
-    }
+    } ?: App.now.nextMidnight
 }

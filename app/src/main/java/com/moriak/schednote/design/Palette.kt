@@ -7,29 +7,83 @@ import com.moriak.schednote.App
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class Palette() {
-    constructor(color: Palette) : this() {
-        set(color)
-    }
-
-    constructor(@ColorRes color: Int) : this() {
-        set(color)
-    }
-
+/**
+ * Trieda slúži na dynamickú zmenu farieb a konverziu medzi farebnými modelmi
+ * @property red Červená
+ * @property green Zelená
+ * @property blue Modrá
+ * @property hue Odtieň
+ * @property saturation Sýtosť
+ * @property luminance Svetlosť
+ * @property alpha Priehľadnosť
+ * @property ahex Textové hexadecimálne vyjadrenie farby
+ * @property contrastColor Kontrastná farba
+ * @property contrastColorLowAlpha Kontrastná farba s nízkym kontrastom
+ * @property contrastLuminance Kontrastná svetlosť
+ */
+class Palette {
+    /**
+     * Vínimka ktorá bude hodená, keď hodnoty prvkov farieb budú mimo povoleného rozsahu
+     */
     class ValueOutOfRangeException(num: Int, range: IntRange) :
         IllegalArgumentException("$num is out of range: ${range.first} - ${range.last}")
 
     companion object {
-        const val defaultHex = "#A5A5A5"
+        private const val defaultHex = "#A5A5A5"
         private fun Int.check(range: IntRange) {
             if (this !in range) throw ValueOutOfRangeException(this, range)
         }
 
+        /**
+         * Vytvorenie farby pomocou modelu rgb
+         * @param r Červená 0 - 255
+         * @param g Zelená 0 - 255
+         * @param b Modrá 0 - 255
+         * @return farba v rámci inštancie Palette
+         */
         fun rgb(r: Int, g: Int, b: Int) = Palette().rgb(r, g, b)
+
+        /**
+         * Vytvorenie farby pomocou modelu rgb
+         * @param a Priehľadná 0 - 100
+         * @param r Červená 0 - 255
+         * @param g Zelená 0 - 255
+         * @param b Modrá 0 - 255
+         * @return farba v rámci inštancie Palette
+         */
         fun argb(a: Int, r: Int, g: Int, b: Int) = Palette().argb(a, r, g, b)
+
+        /**
+         * Vytvorenie farby pomocou modelu hsl
+         * @param h Odtieň 0 - 359
+         * @param s Sýtosť 0 - 100
+         * @param l Svetlosť 0 - 100
+         * @return farba v rámci inštancie Palette
+         */
         fun hsl(h: Int, s: Int, l: Int) = Palette().hsl(h, s, l)
+
+        /**
+         * Vytvorenie farby pomocou modelu hsl
+         * @param a Priehľadná 0 - 100
+         * @param h Odtieň 0 - 359
+         * @param s Sýtosť 0 - 100
+         * @param l Svetlosť 0 - 100
+         * @return farba v rámci inštancie Palette
+         */
         fun ahsl(a: Int, h: Int, s: Int, l: Int) = Palette().ahsl(a, h, s, l)
+
+        /**
+         * Vytvorenie farby pomocou modelu rgb v hexadecimálnej sústave
+         * @param hex Zápis farby v hexadecimálnej sústave
+         * @return farba v rámci inštancie Palette
+         */
         fun ahex(hex: String) = Palette().ahex(hex)
+
+        /**
+         * Vytvorenie farby pomocou modelu rgb v hexadecimálnej sústave
+         * @param resId Zdroj farby
+         * @return farba v rámci inštancie Palette
+         */
         fun resource(@ColorRes resId: Int) = Palette().resourceColor(resId)
     }
 
@@ -75,6 +129,11 @@ class Palette() {
         var l: Int = 0
     }
 
+    /**
+     * Nastavenie odtieňa červenej
+     * @param value Červená 0 - 255
+     * @return farba v rámci inštancie Palette
+     */
     fun red(value: Int) = also {
         rgb2hsl(value, g, b)
         r = value
@@ -83,6 +142,11 @@ class Palette() {
         l = HSL.l
     }
 
+    /**
+     * Nastavenie odtieňa zelenej
+     * @param value Zelená 0 - 255
+     * @return farba v rámci inštancie Palette
+     */
     fun green(value: Int) = also {
         rgb2hsl(r, value, b)
         g = value
@@ -91,6 +155,11 @@ class Palette() {
         l = HSL.l
     }
 
+    /**
+     * Nastavenie odtieňa modrej
+     * @param value Modrá 0 - 255
+     * @return farba v rámci inštancie Palette
+     */
     fun blue(value: Int) = also {
         rgb2hsl(r, g, value)
         b = value
@@ -99,6 +168,11 @@ class Palette() {
         l = HSL.l
     }
 
+    /**
+     * Nastavenie odtieňa
+     * @param value Odtieň 0 - 359
+     * @return farba v rámci inštancie Palette
+     */
     fun hue(value: Int) = also {
         hsl2rgb(value, s, l)
         h = value
@@ -107,6 +181,11 @@ class Palette() {
         b = RGB.b
     }
 
+    /**
+     * Nastavenie sýtosti
+     * @param value Sýtosť 0 - 100
+     * @return farba v rámci inštancie Palette
+     */
     fun saturation(value: Int) = also {
         hsl2rgb(h, value, l)
         s = value
@@ -115,6 +194,11 @@ class Palette() {
         b = RGB.b
     }
 
+    /**
+     * Nastavenie svetlosti
+     * @param value Svetlosť 0 - 100
+     * @return farba v rámci inštancie Palette
+     */
     fun luminance(value: Int) = also {
         hsl2rgb(h, s, value)
         l = value
@@ -123,6 +207,11 @@ class Palette() {
         b = RGB.b
     }
 
+    /**
+     * Nastavenie priehľadnosti
+     * @param value Priehľadnosť 0 - 100
+     * @return farba v rámci inštancie Palette
+     */
     fun alpha(value: Int) = also {
         a.check(0..100)
         a = value
@@ -140,8 +229,23 @@ class Palette() {
         else -> defaultHex
     }
 
+    /**
+     * Vytvorenie farby pomocou modelu rgb
+     * @param red Červená 0 - 255
+     * @param green Zelená 0 - 255
+     * @param blue Modrá 0 - 255
+     * @return farba v rámci inštancie Palette
+     */
     fun rgb(red: Int, green: Int, blue: Int) = argb(100, red, green, blue)
 
+    /**
+     * Vytvorenie farby pomocou modelu rgb
+     * @param alpha Priehľadná 0 - 100
+     * @param red Červená 0 - 255
+     * @param green Zelená 0 - 255
+     * @param blue Modrá 0 - 255
+     * @return farba v rámci inštancie Palette
+     */
     fun argb(alpha: Int, red: Int, green: Int, blue: Int) = also {
         alpha.check(0..100)
         rgb2hsl(red, green, blue)
@@ -154,8 +258,13 @@ class Palette() {
         l = HSL.l
     }
 
-    fun ahex(str: String) = also {
-        var dec = fixHex(str).substring(1).toLong(16)
+    /**
+     * Vytvorenie farby pomocou modelu rgb v hexadecimálnej sústave
+     * @param hex Zápis farby v hexadecimálnej sústave
+     * @return farba v rámci inštancie Palette
+     */
+    fun ahex(hex: String) = also {
+        var dec = fixHex(hex).substring(1).toLong(16)
         val pb = (dec % 256).toInt(); dec /= 256
         val pg = (dec % 256).toInt(); dec /= 256
         val pr = (dec % 256).toInt(); dec /= 256
@@ -163,8 +272,23 @@ class Palette() {
         argb(pa, pr, pg, pb)
     }
 
+    /**
+     * Vytvorenie farby pomocou modelu hsl
+     * @param hue Odtieň 0 - 359
+     * @param saturation Sýtosť 0 - 100
+     * @param luminance Svetlosť 0 - 100
+     * @return farba v rámci inštancie Palette
+     */
     fun hsl(hue: Int, saturation: Int, luminance: Int) = ahsl(100, hue, saturation, luminance)
 
+    /**
+     * Vytvorenie farby pomocou modelu hsl
+     * @param alpha Priehľadná 0 - 100
+     * @param hue Odtieň 0 - 359
+     * @param saturation Sýtosť 0 - 100
+     * @param luminance Svetlosť 0 - 100
+     * @return farba v rámci inštancie Palette
+     */
     fun ahsl(alpha: Int, hue: Int, saturation: Int, luminance: Int) = also {
         alpha.check(0..100)
         hsl2rgb(hue, saturation, luminance)
@@ -177,11 +301,21 @@ class Palette() {
         b = RGB.b
     }
 
+    /**
+     * Nastavenie farby
+     * @param resId Zdroj farby
+     * @return farba v rámci inštancie Palette
+     */
     fun resourceColor(@ColorRes resId: Int) = also {
         val c = App.res.getColor(resId, null)
         argb(Color.alpha(c) * 100 / 255, Color.red(c), Color.green(c), Color.blue(c))
     }
 
+    /**
+     * Nastavenie farby
+     * @param col inštancia ktorej hodnoty sa len skopírujú [Color]
+     * @return farba v rámci inštancie Palette
+     */
     fun set(col: Palette) = also {
         r = col.r
         g = col.g
@@ -192,6 +326,11 @@ class Palette() {
         l = col.l
     }
 
+    /**
+     * Nastavenie farby
+     * @param col číselná hodnota farby podľa [Color]
+     * @return farba v rámci inštancie Palette
+     */
     fun set(col: Int) = argb(
         Color.alpha(col) * 100 / 255,
         Color.red(color),

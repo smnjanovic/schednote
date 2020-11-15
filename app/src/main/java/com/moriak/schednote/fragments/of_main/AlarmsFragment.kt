@@ -79,12 +79,5 @@ class AlarmsFragment : SubActivity() {
         hasSavedState = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            if (!hasSavedState) removeFragment(CONTENT, SubActivity::class.java)
-        } catch (e: IllegalStateException) {
-            App.log(e.javaClass.simpleName + ": " + e.message + activity?.supportFragmentManager?.fragments)
-        }
-    }
+    override fun removeAllSubFragments() = removeFragment(CONTENT, SubActivity::class.java)
 }

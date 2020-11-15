@@ -8,11 +8,17 @@ import com.moriak.schednote.database.tables.Lessons.LES_ID
 import com.moriak.schednote.database.tables.Lessons.ROOM
 import com.moriak.schednote.database.tables.Lessons.START
 import com.moriak.schednote.database.tables.Lessons.WEEK_ODDITY
+import com.moriak.schednote.database.tables.LessonsToJoin.LEFT
+import com.moriak.schednote.database.tables.LessonsToJoin.MID
+import com.moriak.schednote.database.tables.LessonsToJoin.RIGHT
 import com.moriak.schednote.database.tables.Subjects.SUB_ID
 
 /**
  * Pohlad na tabulku vyucovacich hodin sleduje ci nejdu 2 alebo 3 rovnake hodiny za sebou
  * To, že sú rovnaké znamená, že sú v rovnakej miestnosti, z rovnakého predmetu, rovnakého typu výuky)
+ * @property LEFT susedná hodina vľavo
+ * @property MID susedná hodina v strede
+ * @property RIGHT susedná hodina vpravo
  */
 object LessonsToJoin : View() {
     const val LEFT = "left_id"

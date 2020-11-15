@@ -3,6 +3,8 @@ package com.moriak.schednote.dialogs
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.DialogFragment
@@ -12,12 +14,21 @@ import com.moriak.schednote.adapters.SubjectAdapter
 import com.moriak.schednote.database.data.Subject
 import kotlinx.android.synthetic.main.sub_edit.view.*
 
+/**
+ * Dialóg je špecialne určený na úpravu a tvorbu Predmetov a následne aktualizovanie adaptéra, z ktorého je predmet upravovaný.
+ */
 class SubjectEditDialog : DialogFragment() {
     companion object {
-        const val ID = "ID"
-        const val ABB = "ABB"
-        const val NAME = "NAME"
+        private const val ID = "ID"
+        private const val ABB = "ABB"
+        private const val NAME = "NAME"
 
+        /**
+         * Vytvorenie dialógu, v ktorom dochádza k manipulácii s existujúcim predmetom alebo tvorba nového predmetu.
+         * @param sub Upravovaný predmet
+         * @param adapter Adapter v ktorom sa zmeny aplikujú
+         * @return Dialóg na manipuláciu s predmetom
+         */
         fun newInstance(sub: Subject, adapter: SubjectAdapter): SubjectEditDialog {
             App.data.subject(sub.id)
                 ?: throw IllegalArgumentException("No such subject in database!")
@@ -29,10 +40,13 @@ class SubjectEditDialog : DialogFragment() {
             return dialog
         }
 
+        /**
+         * Vytvorenie dialógu, v ktorom dochádza k manipulácii s existujúcim predmetom alebo tvorba nového predmetu.
+         * @param adapter Adapter v ktorom sa zmeny aplikujú
+         * @return Dialóg na manipuláciu s predmetom
+         */
         fun newInstance(adapter: SubjectAdapter): SubjectEditDialog =
             SubjectEditDialog().apply { setAdapter(adapter) }
-
-
     }
 
     private var bundle = Bundle()
@@ -43,6 +57,9 @@ class SubjectEditDialog : DialogFragment() {
     private var abb: String = ""
     private var name: String = ""
 
+    /**
+     * Nastavenie adaptéra, v ktorom sa zmena z dialógu aplikuje
+     */
     fun setAdapter(pAdapter: SubjectAdapter) {
         adapter = pAdapter
     }
@@ -53,12 +70,54 @@ class SubjectEditDialog : DialogFragment() {
         v = LayoutInflater.from(context).inflate(R.layout.sub_edit, null, false)
         saved?.let {
             bundle.putAll(saved)
-            id = it.getLong(ID, -1)
-            abb = it.getString(ABB, "")
-            name = it.getString(name, "")
+            id = it.getLong(ID, id)
+            abb = it.getString(ABB, abb)
+            name = it.getString(NAME, name)
         }
-        v!!.sub_abb.addTextChangedListener(Subject.AbbWatcher)
-        v!!.sub_name.addTextChangedListener(Subject.NameWatcher)
+
+        v!!.sub_abb.addTextChangedListener(object : TextWatcher {
+            private var st = 0
+            private var en = 0
+            private val bad = "[^${Subject.l}]".toRegex()
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.length > Subject.abb_limit) s.delete(st, en)
+                    if (s.contains(bad)) s.delete(st, en)
+                    if (s.contains(bad)) s.replace(0, s.length, s.replace(bad, ""))
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                st = start
+                en = start + count
+            }
+        })
+
+        v!!.sub_name.addTextChangedListener(object : TextWatcher {
+            private var st = 0
+            private var en = 0
+            private val illegal = "(^[^a-zA-ZÀ-ž])|([^a-zA-ZÀ-ž0-9 ])|([ ][ ]+)|(^[ ]+)".toRegex()
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.length > Subject.name_limit) s.delete(st, en)
+                    if (s.contains(illegal)) s.delete(st, en)
+                    if (s.contains(illegal))
+                        s.replace(
+                            0, s.length, s.replace("[^a-zA-ZÀ-ž0-9 ]+".toRegex(), "")
+                                .trimStart().replace("^[0-9]+".toRegex(), "")
+                        )
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                st = start
+                en = start + count
+            }
+        })
+
         v!!.sub_abb.setText(abb)
         v!!.sub_name.setText(name)
         builder.setView(v)

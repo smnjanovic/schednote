@@ -25,8 +25,12 @@ import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.voice.view.*
 import java.util.*
 
+/**
+ * Dialóg umožňuje hlasovo zadávať príkazy. Možno v ňom nájsť aj nápovedu, aké príkazy
+ * aplikácia pozná.
+ */
 class VoiceRecognitionDialog : DialogFragment() {
-    companion object {
+    private companion object {
         private const val BACKUP_HINT = "BACKUP_HINT"
         private const val BACKUP_HINT_VISIBILITY = "BACKUP_HINT_VISIBILITY"
         private const val BACKUP_MESSAGE = "BACKUP_MESSAGE"
@@ -111,6 +115,7 @@ class VoiceRecognitionDialog : DialogFragment() {
                 SETTINGS, ALARM_TUNE -> {
                     startActivity(cmd.redirection!!.makeIntent(activity!!, false))
                     notifyResult(result)
+                    dismiss()
                 }
                 LESSON_TYPE -> {
                     startActivity(
@@ -118,6 +123,7 @@ class VoiceRecognitionDialog : DialogFragment() {
                             .putExtra(Redirection.EXTRA_DESIGN_COLOR_GROUP, cmd.tag as Int)
                     )
                     notifyResult(result)
+                    dismiss()
                 }
                 NOTE_CATEGORY -> {
                     startActivity(
@@ -128,6 +134,7 @@ class VoiceRecognitionDialog : DialogFragment() {
                         )
                     )
                     notifyResult(result)
+                    dismiss()
                 }
                 CLEAN_UP -> {
                     App.data.clearGarbageData()

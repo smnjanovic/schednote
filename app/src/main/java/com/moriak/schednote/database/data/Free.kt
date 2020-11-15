@@ -6,6 +6,10 @@ import com.moriak.schednote.other.Day
 import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.Regularity
 
+/**
+ * Udalosť rozvrhu [ScheduleEvent] - čas, kedy má užívateľ voľno
+ * Trieda má využitie pri vykreslení tabuľky
+ */
 data class Free(
     override val regularity: Regularity,
     override val day: Day,
@@ -22,5 +26,5 @@ data class Free(
         return "${App.str(R.string.free)} — $day$reg ${format.rangeFormat(time)}"
     }
 
-    override fun isEqual(scheduleEvent: ScheduleEvent?): Boolean = scheduleEvent is Free
+    override fun isEqual(other: ScheduleEvent?): Boolean = other is Free
 }

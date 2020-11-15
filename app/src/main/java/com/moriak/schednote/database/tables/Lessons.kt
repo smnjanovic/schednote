@@ -5,12 +5,28 @@ import com.moriak.schednote.R
 import com.moriak.schednote.database.Trigger
 import com.moriak.schednote.database.data.Lesson.Companion.room_limit
 import com.moriak.schednote.database.tables.LessonTypes.TYPE
+import com.moriak.schednote.database.tables.Lessons.DAY
+import com.moriak.schednote.database.tables.Lessons.DUR
+import com.moriak.schednote.database.tables.Lessons.LES_ID
+import com.moriak.schednote.database.tables.Lessons.ROOM
+import com.moriak.schednote.database.tables.Lessons.START
+import com.moriak.schednote.database.tables.Lessons.WEEK_ODDITY
 import com.moriak.schednote.database.tables.LessonsToJoin.LEFT
 import com.moriak.schednote.database.tables.LessonsToJoin.MID
 import com.moriak.schednote.database.tables.LessonsToJoin.RIGHT
 import com.moriak.schednote.database.tables.Schedule.ORDER
 import com.moriak.schednote.database.tables.Subjects.SUB_ID
 
+/**
+ * Tabuľka vyučovacích hodín
+ * @property LES_ID ID hodiny
+ * @property WEEK_ODDITY 1, ak hodina prebieha každý nepárny týždeň, 0, ak hodina prebieha každý
+ * párny týždeň a NULL, ak hodina prebieha každý týždeň
+ * @property DAY deň vyučovania
+ * @property START začiatok vyučovania
+ * @property DUR trvanie vyučovania
+ * @property ROOM miestnosť vyučovania
+ */
 object Lessons : Table() {
     const val LES_ID = "les_id"
     const val WEEK_ODDITY = "week_oddity"

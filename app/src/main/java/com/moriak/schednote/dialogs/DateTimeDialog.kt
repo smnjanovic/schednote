@@ -21,6 +21,9 @@ import com.moriak.schednote.settings.TimeFormat
 import kotlinx.android.synthetic.main.datetime_picker.view.*
 import java.util.Calendar.*
 
+/**
+ * Dialóg nastavenia dátumu a času úlohy v adapteri.
+ */
 class DateTimeDialog : DialogFragment() {
     private companion object {
         private const val POS = "POS"
@@ -70,7 +73,7 @@ class DateTimeDialog : DialogFragment() {
         }
     }
 
-    private var onConfirm = fun DateTimeDialog.() {}
+    private var onConfirm = fun(_: Int, _: Long) {}
     private lateinit var root: View
 
     private var pos = -1
@@ -101,13 +104,11 @@ class DateTimeDialog : DialogFragment() {
         }
     }
 
-    val position get() = pos
     private val calendar
         get() = App.cal.apply {
             timeInMillis = 0
             set(year, month, day, hour, minute)
         }
-    val millis get() = calendar.timeInMillis
     private lateinit var weeks: Array<Int>
     private lateinit var days: Array<Day>
 
@@ -134,7 +135,7 @@ class DateTimeDialog : DialogFragment() {
         if (settings.semesterValid) {
             val currDay = calendar.get(DAY_OF_WEEK)
             val days = settings.workWeek.days
-            root.week.setSelection(settings.semesterWeek(millis))
+            root.week.setSelection(settings.semesterWeek(calendar.timeInMillis))
             root.day.setSelection(days.find { currDay == it.value }?.let { days.indexOf(it) } ?: 0)
         }
     }
@@ -149,9 +150,14 @@ class DateTimeDialog : DialogFragment() {
         year = App.cal.get(YEAR)
         month = App.cal.get(MONTH)
         day = App.cal.get(DAY_OF_MONTH)
-        cal.date = millis
+        cal.date = calendar.timeInMillis
     }
 
+    /**
+     * Uloženie pozície položky v adapteri a doteraz nastaveného dátumu
+     * @param itemPos pozícia úlohy v adapteri
+     * @param millis Dátum v milisekundách. Môže byť null.
+     */
     fun storeItemPositionAndDate(itemPos: Int, millis: Long? = null) {
         pos = itemPos
         App.cal.apply {
@@ -164,7 +170,11 @@ class DateTimeDialog : DialogFragment() {
         }
     }
 
-    fun setOnConfirm(fn: DateTimeDialog.() -> Unit) {
+    /**
+     * Určuje, čo sa má stať po potvrdení zmien
+     * @param fn algoritmus, ktorý sa má vykonať
+     */
+    fun setOnConfirm(fn: (Int, Long) -> Unit) {
         onConfirm = fn
     }
 
@@ -180,7 +190,7 @@ class DateTimeDialog : DialogFragment() {
 
         root.time_setter.hour = hour
         root.time_setter.minute = minute
-        root.date_setter.date = millis
+        root.date_setter.date = calendar.timeInMillis
         setSemesterValues()
 
         val mode = View.OnClickListener {
@@ -213,14 +223,14 @@ class DateTimeDialog : DialogFragment() {
         }
         return AlertDialog.Builder(requireContext())
             .setView(buildView())
-            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm() }
+            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm(pos, calendar.timeInMillis) }
             .setNegativeButton(R.string.abort) { _, _ -> }
             .create()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putLong(MILLIS, millis)
+        outState.putLong(MILLIS, calendar.timeInMillis)
         outState.putInt(POS, pos)
         outState.putInt(DISPLAY, display.value)
     }

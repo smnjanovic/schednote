@@ -12,7 +12,10 @@ import com.moriak.schednote.R
 import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.minute_advance.view.*
 
-class MinuteHourAdvance : DialogFragment() {
+/**
+ * Nastavenie časového predstihu budenia pred začiatkom vyučovania hodiny
+ */
+class LessonStartAdvance : DialogFragment() {
     private companion object {
         private const val MINUTES_ADVANCE = "MINUTES_ADVANCE"
     }
@@ -20,6 +23,10 @@ class MinuteHourAdvance : DialogFragment() {
     private var minuteAdvance: Int = Prefs.states.lastScheduleStartAdvance
     private var confirm = fun(_: Int) {}
 
+    /**
+     * Nastavenie, čo sa má stať, keď potrvrdím zmeny
+     * @param fn Metóda, ktorá sa vykoná po potvrdení zmien
+     */
     fun setOnConfirm(fn: (Int) -> Unit) {
         confirm = fn
     }

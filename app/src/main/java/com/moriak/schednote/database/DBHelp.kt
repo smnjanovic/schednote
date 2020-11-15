@@ -6,7 +6,7 @@ import com.moriak.schednote.App
 import com.moriak.schednote.database.tables.*
 
 /**
- * Trieda slúži na pripojenie sa k offline databáze, resp. jej tvorbu
+ * Trieda slúži na tvorbu a pripojenie sa k offline databáze
  */
 class DBHelp : SQLiteOpenHelper(App.ctx, "schednote.db", null, 1) {
     private val tables: Array<Table> =

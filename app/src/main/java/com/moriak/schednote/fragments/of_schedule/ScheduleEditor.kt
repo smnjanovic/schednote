@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.activities.MainActivity
 import com.moriak.schednote.design.LessonTools
@@ -14,31 +13,20 @@ import com.moriak.schednote.fragments.of_main.SubActivity
 import kotlinx.android.synthetic.main.schedule_editor.view.*
 
 class ScheduleEditor : SubActivity(), SchedulePart {
-    private var ms = System.currentTimeMillis()
     private var illustrator: ScheduleIllustrator? = null
     private var editor: LessonTools? = null
 
-    fun notify(msg: String) {
-        val old = ms
-        ms = System.currentTimeMillis()
-        App.log("$msg: ${ms - old}")
-    }
-
     override fun onAttach(context: Context) {
-        notify("before attachment")
         super.onAttach(context)
         activity?.setTitle(R.string.lesson_schedule)
-        notify("after attachment")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        notify("before view creation")
-        return inflater.inflate(R.layout.schedule_editor, container, false)!!
-    }
+        saved: Bundle?
+    ): View =
+        inflater.inflate(R.layout.schedule_editor, container, false)!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,8 +44,12 @@ class ScheduleEditor : SubActivity(), SchedulePart {
             illustrator?.customizeColumnWidth(view.schedule_frame.measuredWidth)
             activity?.let { if (it is MainActivity) editor!!.setEvents(it) }
 
-            editor!!.setOnInput { added -> illustrator!!.put(added) }
-            editor!!.setOnClear { illustrator!!.empty() }
+            editor!!.setOnInput { added ->
+                added?.let { illustrator!!.put(it) } ?: let {
+                    illustrator!!.redraw()
+                    true
+                }
+            }
             editor!!.setOnUpdateEnd {
                 view.default_subject.visibility = View.GONE
                 view.default_subject_value.text = null

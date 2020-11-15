@@ -2,8 +2,19 @@ package com.moriak.schednote.database.tables
 
 import android.database.sqlite.SQLiteDatabase
 import com.moriak.schednote.database.Trigger
+import com.moriak.schednote.database.tables.Colors.A
+import com.moriak.schednote.database.tables.Colors.H
+import com.moriak.schednote.database.tables.Colors.L
+import com.moriak.schednote.database.tables.Colors.S
 import com.moriak.schednote.database.tables.LessonTypes.TYPE
 
+/**
+ * Tabuľka farieb k jednotlivým typom hodín
+ * @property H Odtieň
+ * @property S Sýtosť
+ * @property L Svetlosť
+ * @property A Priehľadnosť
+ */
 object Colors : Table() {
     const val H = "h"
     const val S = "s"
@@ -25,9 +36,10 @@ object Colors : Table() {
     override fun setupTriggers(db: SQLiteDatabase) {
         super.setupTriggers(db)
         Trigger.BIU.create(
-            db, this, "NEW.$TYPE NOT IN (SELECT $TYPE FROM $LessonTypes)", abort(
-                FK_ERR
-            )
+            db,
+            this,
+            "NEW.$TYPE NOT IN (SELECT $TYPE FROM $LessonTypes)",
+            abort(FK_ERR)
         )
     }
 }

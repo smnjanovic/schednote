@@ -10,17 +10,29 @@ import com.moriak.schednote.settings.*
 import com.moriak.schednote.settings.Prefs.settings
 import kotlinx.android.synthetic.main.activity_settings.*
 
+/**
+ * V tejto aktivite si žiak alebo študent prispôsobuje nastavenia podľa potrieb
+ */
 class Settings : ShakeCompatActivity() {
     private companion object {
         private const val DATE_TIME_FORMAT = "DATE_TIME_FORMAT"
     }
 
+    /**
+     * Tajná trieda bude využitá pri striedaní možných spôsobov zobrazenia dátumu a času
+     * @param order Poradie dňa, mesiaca a roku
+     * @param sep Oddeľovač dňa, mesiaca a roku
+     * @param timeFormat 12 alebo 24 hodinový časový formát
+     */
     private data class Trio(
         val order: DateOrder,
         val sep: DateSeparator,
         val timeFormat: TimeFormat
     ) {
         companion object {
+            /**
+             * Získam všetky možné kombinácie formátu dátumu: poradie, oddeľovať, časový formát
+             */
             fun getAll() = ArrayList<Trio>().apply {
                 val formats = TimeFormat.values()
                 val separators = DateSeparator.values()
@@ -43,14 +55,10 @@ class Settings : ShakeCompatActivity() {
         }
     }
 
-    private class Snooze(val snooze: Int) {
-        override fun toString(): String = "$snooze m"
-    }
-
     private val workWeeks = WorkWeek.values()
     private val lessonLabeling = LessonTimeFormat.values()
     private val dateTimeFormat = Trio.getAll()
-    private val snooze = Array(6, fun(index) = Snooze((index + 1) * 5))
+    private val snooze = Array(6, fun(index) = (index + 1) * 5)
 
     private var lessonLabelingIndex = 0
     private var workWeeksIndex = 0
@@ -92,8 +100,8 @@ class Settings : ShakeCompatActivity() {
     private val switchSnooze = View.OnClickListener {
         snoozeIndex = arraySwitch(snoozeIndex, snooze.size, it.tag as Int)
         val s = snooze[snoozeIndex]
-        settings.snooze = s.snooze
-        snooze_minutes.text = "$s"
+        settings.snooze = s
+        snooze_minutes.text = ("$s m")
     }
 
     private val dualWeekSetter = CompoundButton.OnCheckedChangeListener { _, enabled ->
@@ -104,6 +112,10 @@ class Settings : ShakeCompatActivity() {
         settings.shakeEventEnabled = ch
     }
 
+    /**
+     * Posunutie sa o [step] indexov v poli obsahujucom [size] prvkov zacinajuc od indexu [from]
+     * vo funkcii dôjde k zabráneniu prekročenia hranice indexov
+     */
     private fun arraySwitch(from: Int, size: Int, step: Int): Int {
         var next = from + step
         if (next !in 0 until size) next %= size
@@ -116,6 +128,9 @@ class Settings : ShakeCompatActivity() {
         return true
     }
 
+    /**
+     * Nastavia sa všetky udalosti, ktoré sa majú vykonať pri zmene niektorého z nastavení
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -149,12 +164,7 @@ class Settings : ShakeCompatActivity() {
             dialog.show(supportFragmentManager, DATE_TIME_FORMAT)
         }
         alarm_tone.setOnClickListener {
-            startActivity(
-                Intent(
-                    this@Settings,
-                    AlarmTuneActivity::class.java
-                )
-            )
+            startActivity(Intent(this@Settings, AlarmTuneActivity::class.java))
         }
 
         (supportFragmentManager.findFragmentByTag(DATE_TIME_FORMAT) as DateTimeFormatDialog?)?.setOnConfirm(
@@ -162,6 +172,9 @@ class Settings : ShakeCompatActivity() {
         )
     }
 
+    /**
+     * podľa súčasných nastavení sa zobrazia predvolené hodnoty, ktoré môže uživateľ meniť
+     */
     override fun onResume() {
         super.onResume()
 
@@ -174,7 +187,7 @@ class Settings : ShakeCompatActivity() {
                 settings.timeFormat
             )
         )
-        snoozeIndex = snooze.find { it.snooze == settings.snooze }?.let { snooze.indexOf(it) } ?: 1
+        snoozeIndex = snooze.find { it == settings.snooze }?.let { snooze.indexOf(it) } ?: 1
 
         dualWeekEnabled.isChecked = settings.dualWeekSchedule
         voice_cmd_enabled.isChecked = settings.shakeEventEnabled

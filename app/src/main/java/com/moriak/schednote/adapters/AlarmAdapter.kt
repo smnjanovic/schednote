@@ -12,6 +12,10 @@ import com.moriak.schednote.settings.Regularity
 import com.moriak.schednote.settings.WorkWeek
 import kotlinx.android.synthetic.main.day_alarm.view.*
 
+/**
+ * Adapter zobrazuje budíky pre daný pracovný týždeň či už v párnom, nepárnom alebo v každom týždni
+ * Na každý pracovný deň možno nastaviť iba 1 budík.
+ */
 class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val workWeek: WorkWeek = Prefs.settings.workWeek
     private var regularity: Regularity = Regularity.currentWeek
@@ -28,14 +32,28 @@ class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         onChangeAttempt(holder.day, Prefs.notifications.getAlarm(holder.day, regularity))
     }
 
+    /**
+     * Nastavenie, čo sa má stať, keď sa pokúsim zmeniť budík
+     * @param fn Metóda, ktorá sa má spustiť má 2 vstupné parametre:
+     * deň [Day] a čas v minútach od najneskoršej polnoci [Int]
+     */
     fun setOnChangeAttempt(fn: (Day, Int) -> Unit) {
         onChangeAttempt = fn
     }
 
+    /**
+     * Nastavenie, čo sa udeje keď všetky budíky zapnem alebo vypnem
+     * @param fn Metóda má 1 vstupný parameter [Boolean], ktorý je true, ak som všetky budíky zapol, a false naopak.
+     */
     fun setOnAllAlarmsDisabled(fn: (Boolean) -> Unit) {
         onAllAlarmsEnableChange = fn
     }
 
+    /**
+     * Načíta budíky pre párny, nepárny alebo každý týždeň
+     * @param reg Udáva či je týždeň párny alebo nepárny. Pokiaľ nie je nastavený 2-týždenný rozvrh,
+     * treťou možnou hodnotou je každý týždeň.
+     */
     fun loadRegularity(reg: Regularity) {
         if (regularity != reg) {
             regularity = reg
@@ -43,6 +61,10 @@ class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    /**
+     * Došlo k zmene budíka, treba aj viditeľne prepísať zmeny
+     * @param day Deň v ktorom sa zmena vyskytla
+     */
     fun updateDay(day: Day) {
         val pos = workWeek.days.indexOf(day)
         if (pos > -1) notifyItemChanged(pos)
@@ -56,7 +78,14 @@ class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         (holder as AlarmHolder).bind()
 
     private inner class AlarmHolder(view: View) : RecyclerView.ViewHolder(view) {
+        /**
+         * deň, pre ktorý viewHolder platí
+         */
         lateinit var day: Day
+
+        /**
+         * Vyskladanie viewHoldera
+         */
         fun bind() {
             day = workWeek.days[adapterPosition]
             itemView.on_off.tag = this

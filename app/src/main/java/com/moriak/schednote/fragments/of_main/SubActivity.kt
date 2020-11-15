@@ -1,18 +1,17 @@
 package com.moriak.schednote.fragments.of_main
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import com.moriak.schednote.App
 import com.moriak.schednote.activities.MainActivity
 
 abstract class SubActivity : Fragment() {
     protected fun showDialog(tag: String?, dialog: DialogFragment?) {
-        if (dialog != null && findFragment(tag) != dialog) fragmentManager?.let {
-            dialog.show(
-                it,
-                tag
-            )
-        }
+        if (dialog != null && findFragment(tag) != dialog)
+            fragmentManager?.let { dialog.show(it, tag) }
     }
 
     protected fun attachFragment(resId: Int, fragment: Fragment?, tag: String?) {
@@ -21,8 +20,8 @@ abstract class SubActivity : Fragment() {
     }
 
     protected fun forceAttachFragment(resId: Int, fragment: Fragment?, tag: String?) {
-        if (fragment != null) fragmentManager?.beginTransaction()?.replace(resId, fragment, tag)
-            ?.commit()
+        if (fragment != null)
+            fragmentManager?.beginTransaction()?.replace(resId, fragment, tag)?.commit()
     }
 
     protected fun removeFragment(tag: String?, metaClass: Class<out Fragment>) {
@@ -48,8 +47,14 @@ abstract class SubActivity : Fragment() {
         retainInstance = true
     }
 
+    open fun removeAllSubFragments() = Unit
+
     override fun onResume() {
         super.onResume()
         if (activity is MainActivity) (activity as MainActivity).introduce()
+        Handler(Looper.myLooper()!!).postDelayed(
+            { App.log(activity?.supportFragmentManager?.fragments) },
+            1000
+        )
     }
 }

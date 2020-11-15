@@ -5,6 +5,10 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Trieda rozširuje RecyclerView, ktorý narozdiel od ListView nedokáže nastaviť layout, ktorý
+ * by mohol byť zobrazený namiesto prázdneho zoznamu. Tu je tento problém vyriešený
+ */
 class RecyclerViewEmptySupport : RecyclerView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -41,6 +45,10 @@ class RecyclerViewEmptySupport : RecyclerView {
         checkIfEmpty()
     }
 
+    /**
+     * Nastavenie zástupného layoutu, v prípade, že je zoznam prázdny
+     * @param view grafický prvok
+     */
     fun setEmptyView(view: View?) {
         emptyView = view
         checkIfEmpty()

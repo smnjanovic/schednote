@@ -3,6 +3,8 @@ package com.moriak.schednote.design
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +19,6 @@ import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.activities.MainActivity
 import com.moriak.schednote.database.data.*
-import com.moriak.schednote.database.data.Lesson.RoomWatcher
 import com.moriak.schednote.menu.ScheduleDisplay
 import com.moriak.schednote.menu.SubContent
 import com.moriak.schednote.other.Day
@@ -25,21 +26,34 @@ import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.Regularity
 import kotlinx.android.synthetic.main.lesson_tools.view.*
 
+/**
+ * Trieda ponúka vykresľuje výber vlastností pre novo vznikajúce alebo upravované triedy.
+ * Pokiaľ s rozvrhom ešte nie je možné pracovať z dôvodu chýbajúcich údajov, vykreslí sa
+ * okno, v ktorom je užívateľ upozornený na to, čo mu chýba
+ */
 class LessonTools private constructor() {
     companion object {
         private val handler = Handler(Looper.myLooper()!!)
+
+        /**
+         * vytvorenie novej inštancie alebo aplikovanie už existujúcej inštancie
+         * @param tools Stará inštancia vlastností. Môže byť null.
+         */
         fun makeTools(tools: LessonTools?) = tools ?: LessonTools()
     }
 
-    private abstract class LessonTime(protected val lesson: LessonData) {
+    // uchováva informáciu o hodine ako časovej jednotke rozvrhu
+    private abstract class LessonData(protected val lesson: LessonTime) {
         val order get() = lesson.order
     }
 
-    private class LessonStart(lesson: LessonData) : LessonTime(lesson) {
+    // slúži na výpis o začiatku hodiny
+    private class LessonStart(lesson: LessonTime) : LessonData(lesson) {
         override fun toString() = lesson.startFormat
     }
 
-    private class LessonEnd(lesson: LessonData) : LessonTime(lesson) {
+    // slúži na výpis o konci hodiny
+    private class LessonEnd(lesson: LessonTime) : LessonData(lesson) {
         override fun toString() = lesson.endFormat
     }
 
@@ -131,7 +145,7 @@ class LessonTools private constructor() {
     private var clearBtn: View? = null
 
     private var days = ArrayList<Day>()
-    private var scheduleTimes = ArrayList<LessonData>()
+    private var scheduleTimes = ArrayList<LessonTime>()
     private var lesStarts = ArrayList<LessonStart>()
     private var lesEnds = ArrayList<LessonEnd>()
     private var regularities = ArrayList<Regularity>()
@@ -139,13 +153,12 @@ class LessonTools private constructor() {
     private var subjects = ArrayList<Subject>()
 
     private val isModifiable get() = scheduleTimes.size * types.size * subjects.size > 0
-    private var onInput: (ScheduleEvent) -> Boolean = fun(_) = true
-    private var onClear: () -> Unit = fun() = Unit
+    private var onInput: (ScheduleEvent?) -> Boolean = fun(_) = true
     private var onUpdateEnd: () -> Unit = fun() = Unit
 
     init {
         days.addAll(Prefs.settings.workWeek.days)
-        scheduleTimes.addAll(App.data.timetable())
+        scheduleTimes.addAll(App.data.lessonTimes())
         for (lesson in scheduleTimes) lesStarts.add(LessonStart(lesson))
         val range = (mainView.start_setter?.selectedItemPosition?.coerceAtLeast(0)
             ?: 0) until scheduleTimes.size
@@ -174,7 +187,23 @@ class LessonTools private constructor() {
 
         mainView.duration_setter.adapter = ArrayAdapter(ctx, lay, lesEnds)
         mainView.type_setter.adapter = ArrayAdapter(ctx, lay, types)
-        mainView.room.addTextChangedListener(RoomWatcher)
+        mainView.room.addTextChangedListener(object : TextWatcher {
+            private val invalid = "(\\s\\s+)|(^\\s+)".toRegex()
+            private var st = 0
+            private var en = 0
+            override fun afterTextChanged(s: Editable?) {
+                if (s == null) return
+                if (s.length > 20 || s.contains(invalid)) s.delete(st, en)
+                if (s.length > 20 || s.contains(invalid))
+                    s.replace(0, s.length, s.trimStart().replace("\\s+".toRegex(), " "))
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                st = start
+                en = start + count
+            }
+        })
 
         customizeViewVisibility()
     }
@@ -191,6 +220,11 @@ class LessonTools private constructor() {
         (mainView.duration_setter.adapter as ArrayAdapter<*>).notifyDataSetChanged()
     }
 
+    /**
+     * Nastavenie správania sa tlačidiel, ktoré slúžia na presmerovanie sa na fragmenty,
+     * v ktorých je možné doplniť údaje chýbajúce k tomu, aby sa mohlo manipulovať s rozvrhom
+     * @param activity Aktivita na v ktorej je funkcia na presmerovanie, teda prepnutie fragmentu
+     */
     fun setEvents(activity: MainActivity) {
         mainView.subjects_restriction.setOnClickListener {
             activity.menuChoice(SubContent.SUBJECTS)
@@ -205,6 +239,9 @@ class LessonTools private constructor() {
         }
     }
 
+    /**
+     * Zrušenie všetkých nadchádzajúcich akcií v handleri.
+     */
     fun abortMessages() = handler.removeMessages(0)
     private fun parseLesson(id: Long) = Lesson(id, regularity, day, time, type, subject, location)
     private fun parseFree() = Free(regularity, day, time)
@@ -214,11 +251,24 @@ class LessonTools private constructor() {
         handler.postDelayed({ handler.removeMessages(0) }, 2500)
     }
 
+    /**
+     * Nastaviť rodičovské okno, do ktorého bude okno vytvorené v tejto triede vložené
+     * @param newParent rodič
+     * @return Vráti tú istú inštancia Nástrojov na manipuláciu s rozvrhom
+     */
     fun attachTo(newParent: ViewGroup?) = also {
         parent?.removeView(mainView)
         newParent?.addView(mainView)
     }
 
+    /**
+     * Uviesť, ktoré tlačidlá budú zastávať dané funkcie. Tlačidlá nie sú súčasťou layoutu načítaného
+     * v tejto triede
+     * @param confirmButton Tlačidlo, ktoré vloží nový alebo upraví označený predmet
+     * @param abortButton Tlačidlo, ktoré odznačí upravovaný predmet
+     * @param clearButton Tlačidlo, ktoré vymaže označený predmet alebo vyprázdni celý rozvrh
+     * @return Vráti tú istú inštanciu nástrojov na manipuláciu s rozvrhom
+     */
     fun involveButtons(confirmButton: View?, abortButton: View?, clearButton: View?) = also {
         confirmBtn = confirmButton
         abortBtn = abortButton
@@ -234,16 +284,20 @@ class LessonTools private constructor() {
         }
     }
 
+    /**
+     * Nastavuje, čo sa má udiať, keď bol nejaký predmet už aktualizovaný
+     * @param fn Metóda, ktorá sa má udiať, keď bol predmet aktualizovaný
+     */
     fun setOnUpdateEnd(fn: () -> Unit) {
         onUpdateEnd = fn
     }
 
-    fun setOnInput(fn: (ScheduleEvent) -> Boolean) {
+    /**
+     * Nastavuje, čo sa má stať, keď sa vykonajú zmeny v rozvrhu
+     * @fn Metóda, ktorá sa má vykonať po vykonaní zmeny rozvrhu
+     */
+    fun setOnInput(fn: (ScheduleEvent?) -> Boolean) {
         onInput = fn
-    }
-
-    fun setOnClear(fn: () -> Unit) {
-        onClear = fn
     }
 
     private fun customizeViewVisibility() {
@@ -264,6 +318,12 @@ class LessonTools private constructor() {
         }
     }
 
+    /**
+     * Označenie hodiny na ktorej budú vykonané zmeny. Toto označenie je po vykonaní zmien
+     * vhodné zrušiť pomocou metódy [unsetLesson].
+     * @param lesson Hodina, ktorú upravujem
+     * @see unsetLesson
+     */
     fun setLesson(lesson: Lesson) {
         editingLesson = lesson
         updateButtons()
@@ -275,6 +335,10 @@ class LessonTools private constructor() {
         location = lesson.room
     }
 
+    /**
+     * Zrušenie označenia hodiny, na ktorej mali byť vykonané úpravy.
+     * @see setLesson
+     */
     private fun unsetLesson() {
         if (editingLesson != null) {
             editingLesson = null
@@ -283,6 +347,10 @@ class LessonTools private constructor() {
         }
     }
 
+    /**
+     * Zhromaždiť informácie o vyučovacej hodine, ktorá je práve upravovaná.
+     * @return Textový výpis informácii o danej hodine. Vráti null, ak nie je žiadna hodina upravovaná
+     */
     fun getLessonInfo(): String? = editingLesson?.toString()
 
     private fun updateButtons() {
@@ -325,7 +393,7 @@ class LessonTools private constructor() {
         when {
             editingLesson == null -> {
                 App.data.clearSchedule()
-                onClear()
+                onInput(null)
                 App.toast(R.string.schedule_emptied, Gravity.CENTER)
             }
             editingLesson!!.id < 1 -> {

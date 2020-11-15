@@ -11,6 +11,9 @@ import com.moriak.schednote.database.data.Subject.CREATOR.validAbb
 import com.moriak.schednote.database.data.Subject.CREATOR.validName
 import kotlinx.android.synthetic.main.subject.view.*
 
+/**
+ * Adapter zobrazuje zoznam všetkých predmetov
+ */
 class SubjectAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = App.data.subjects()
 
@@ -19,7 +22,7 @@ class SubjectAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /**
      * Pred úpravou alebo vložením
-     * @param fn funkcia nastavuje skrytú funkciu, ktorá má byť zodpovedná za vytvorenie dialógu
+     * @param fn funkcia nastavuje skrytú funkciu, ktorá má byť zodpovedná za zobrazenie nového dialógu
      */
     fun setShowDialog(fn: (sub: Subject) -> Unit) {
         showDialog = fn
@@ -29,6 +32,12 @@ class SubjectAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private fun isValid(abb: String, name: String): Boolean = (validAbb(abb) ?: validName(name))
         ?.also { App.toast(it) }?.let { false } ?: true
 
+    /**
+     * Vložiť predmet
+     * @param abb Skratka
+     * @param name Celý názov
+     * @return true, ak vloženie prebehlo úspešne
+     */
     fun insertItem(abb: String, name: String): Boolean {
         if (!isValid(abb, name)) return false
         if (App.data.subject(abb) != null) {
@@ -50,6 +59,13 @@ class SubjectAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return true
     }
 
+    /**
+     * Premenovanie predmetu
+     * @param id id cieľového predmetu
+     * @param abb nová skratka
+     * @param name nový názov
+     * @return true ak, bol predmet premenovaný úspešne
+     */
     fun updateItem(id: Long, abb: String, name: String): Boolean {
         if (!isValid(abb, name)) return false
 
@@ -94,8 +110,18 @@ class SubjectAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         (holder as SubjectHolder).bind()
 
+    /**
+     * Zobrazenie skratky a celého názvu predmetu
+     */
     inner class SubjectHolder(view: View) : RecyclerView.ViewHolder(view) {
+        /**
+         * Prístup k položke zoznamu ku ktorej je tento viewHolder naviazaný
+         */
         val item get() = if (adapterPosition in items.indices) items[adapterPosition] else null
+
+        /**
+         * Vyskladanie viewHoldera
+         */
         fun bind() {
             itemView.abb_field.text = item?.abb
             itemView.name_field.text = item?.name

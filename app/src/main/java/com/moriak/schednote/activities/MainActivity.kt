@@ -12,6 +12,7 @@ import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.dialogs.InfoFragment
 import com.moriak.schednote.fragments.of_main.NotesFragment
+import com.moriak.schednote.fragments.of_main.SubActivity
 import com.moriak.schednote.fragments.of_main.SubjectsFragment
 import com.moriak.schednote.menu.AlarmCategory
 import com.moriak.schednote.menu.ScheduleDisplay
@@ -76,7 +77,9 @@ class MainActivity : ShakeCompatActivity() {
 
         bottomMenu.setOnNavigationItemSelectedListener { m ->
             val choice = SubContent.giveEnum(m.itemId)
-            if (supportFragmentManager.findFragmentByTag(SUB_ACTIVITY) == null || choice != Prefs.states.lastMenuChoice) {
+            val currFr = supportFragmentManager.findFragmentByTag(SUB_ACTIVITY) as SubActivity?
+            if (currFr == null || choice != Prefs.states.lastMenuChoice) {
+                currFr?.removeAllSubFragments()
                 Prefs.states.lastMenuChoice = choice
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.content, choice.fragment, SUB_ACTIVITY).commit()
@@ -149,8 +152,13 @@ class MainActivity : ShakeCompatActivity() {
     fun forceMenuChoice(subContent: SubContent) {
         if (bottomMenu.selectedItemId != subContent.resId) bottomMenu.selectedItemId =
             subContent.resId
-        else supportFragmentManager.beginTransaction()
-            .replace(R.id.content, subContent.fragment, SUB_ACTIVITY).commit()
+        else {
+            val currFr = supportFragmentManager.findFragmentByTag(SUB_ACTIVITY) as SubActivity?
+            currFr?.removeAllSubFragments()
+            Prefs.states.lastMenuChoice = subContent
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content, subContent.fragment, SUB_ACTIVITY).commit()
+        }
     }
 
     /**

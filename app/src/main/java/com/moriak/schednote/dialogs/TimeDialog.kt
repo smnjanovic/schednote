@@ -21,10 +21,15 @@ class TimeDialog : DialogFragment(), TimePickerDialog.OnTimeSetListener {
     private var minutes = 360
     private val bundle = Bundle()
 
+    /**
+     * Prístup k doplnkovým dátam
+     * @return [Bundle]
+     */
     fun accessBundle() = bundle
 
     /**
      * Nastavenie dátumu v milisekundách
+     * @param min nastavenie času v minútach meraných od polnoci
      */
     fun setMinutes(min: Int) {
         minutes = min

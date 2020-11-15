@@ -16,6 +16,9 @@ import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.TimeFormat
 import kotlinx.android.synthetic.main.date_time_format.view.*
 
+/**
+ * Dialóg nastavenia formátu dátumu a času
+ */
 class DateTimeFormatDialog : DialogFragment() {
     private lateinit var root: View
     private var confirm = fun(_: DateOrder, _: DateSeparator, _: TimeFormat) = Unit
@@ -49,6 +52,13 @@ class DateTimeFormatDialog : DialogFragment() {
         return root
     }
 
+    /**
+     * Nastaví, čo sa má stať, keď potvrdím zmeny
+     * @param fn metóda, ktorá sa po potvrdení dialógu vykoná. Jej argumenty sú:
+     *  [DateOrder] Nastavenie poradia dňa, mesiaca a roka v dátume
+     *  [DateSeparator] Nastavenie oddeľovača v dátume
+     *  [TimeFormat] Nastavenie formátu času
+     */
     fun setOnConfirm(fn: (DateOrder, DateSeparator, TimeFormat) -> Unit) {
         confirm = fn
     }
