@@ -13,7 +13,7 @@ import com.moriak.schednote.settings.Prefs
 class BootReceiver : BroadcastReceiver() {
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
-        if (Prefs.notifications.alarmsEnabled) Prefs.notifications.resetAlarms()
+        if (Prefs.notifications.alarmsEnabled) Prefs.notifications.reEnableAlarm()
         App.data.enableNoteNotifications(Prefs.notifications.reminderEnabled)
     }
 }

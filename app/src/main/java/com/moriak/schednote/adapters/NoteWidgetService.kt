@@ -8,7 +8,6 @@ import android.widget.RemoteViewsService
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.database.data.Note
-import com.moriak.schednote.other.TimeCategory
 import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.widgets.NoteWidget
 
@@ -54,7 +53,7 @@ class NoteWidgetService : RemoteViewsService() {
         override fun getItemId(position: Int) = items[position].id
         override fun onDataSetChanged() {
             items.clear()
-            items.addAll(App.data.notes(category ?: TimeCategory.ALL))
+            items.addAll(App.data.notes(category))
         }
 
         override fun hasStableIds() = true

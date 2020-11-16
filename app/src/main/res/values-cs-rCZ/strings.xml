@@ -233,7 +233,7 @@
     <string name="note_invalid_format">Špatný formát popisu úlohy</string>
     <string name="before_set_as_wallpaper">Právě sa chystáte obsah v obdélníku nastavit jako pozadí. Chcete pokračovat?</string>
     <string name="save_notes_to_calendar">Uložit úkoly do kalendáře</string>
-    <string name="notes_sent_to_calendar">Úlohy sa úspešne vložili do kalendára</string>
+    <string name="notes_sent_to_calendar">Úkoly se úspěšně vložili do kalendáře.</string>
     <string name="load_notes_from_calendar">Načíst úkoly z kalendáře</string>
     <string name="notes_received_from_calendar">Úkoly z kalendáře byly nahrány</string>
     <string name="no_editable_calendar_available">Žádný upravitelný kalendář není k dispozici!</string>

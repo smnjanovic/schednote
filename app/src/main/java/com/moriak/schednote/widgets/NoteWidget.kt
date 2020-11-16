@@ -78,7 +78,6 @@ class NoteWidget : AppWidgetProvider() {
          */
         fun updateAppWidget(context: Context, manager: AppWidgetManager, id: Int) {
             val cat = Prefs.widgets.getNoteWidgetCategory(id)
-                ?: TimeCategory.ALL.also { Prefs.widgets.setNoteWidgetCategory(id, it) }
             val catId = if (cat is Subject) cat.id else -(cat as TimeCategory).ordinal.toLong()
 
             val adapterIntent = Intent(context, NoteWidgetService::class.java)

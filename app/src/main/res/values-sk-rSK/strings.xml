@@ -232,7 +232,7 @@
     <string name="before_set_as_wallpaper">Práve sa chystáte obsah v obdlžníku nastaviť ako tapetu. Chcete pokračovať?</string>
     <string name="load_notes_from_calendar">Načítať úlohy z kalendára</string>
     <string name="notes_received_from_calendar">Úlohy z kalendára boli nahraté</string>
-    <string name="notes_sent_to_calendar">Úkoly se úspěšně vložili do kalendáře</string>
+    <string name="notes_sent_to_calendar">Úlohy sa úspešne vložili do kalendára.</string>
     <string name="no_editable_calendar_available">Žiadny upraviteľný kalendár nie je k dispozícii!</string>
     <string name="save_notes_to_calendar">Uložiť úlohy do kalendára</string>
 </resources>

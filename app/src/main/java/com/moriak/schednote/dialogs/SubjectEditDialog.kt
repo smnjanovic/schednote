@@ -78,7 +78,7 @@ class SubjectEditDialog : DialogFragment() {
         v!!.sub_abb.addTextChangedListener(object : TextWatcher {
             private var st = 0
             private var en = 0
-            private val bad = "[^${Subject.l}]".toRegex()
+            private val bad = "[^${Subject.l}${Subject.d}]".toRegex()
 
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
@@ -98,16 +98,17 @@ class SubjectEditDialog : DialogFragment() {
         v!!.sub_name.addTextChangedListener(object : TextWatcher {
             private var st = 0
             private var en = 0
-            private val illegal = "(^[^a-zA-ZÀ-ž])|([^a-zA-ZÀ-ž0-9 ])|([ ][ ]+)|(^[ ]+)".toRegex()
+            private val illegal =
+                "(^[^a-zA-ZÀ-ž0-9])|([^a-zA-ZÀ-ž0-9 ])|([ ][ ]+)|(^[ ]+)".toRegex()
+
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
                     if (s.length > Subject.name_limit) s.delete(st, en)
                     if (s.contains(illegal)) s.delete(st, en)
-                    if (s.contains(illegal))
-                        s.replace(
-                            0, s.length, s.replace("[^a-zA-ZÀ-ž0-9 ]+".toRegex(), "")
-                                .trimStart().replace("^[0-9]+".toRegex(), "")
-                        )
+                    if (s.contains(illegal)) {
+                        val fix = s.replace("[^a-zA-ZÀ-ž0-9 ]+".toRegex(), "")
+                        s.replace(0, s.length, fix.trimStart())
+                    }
                 }
             }
 

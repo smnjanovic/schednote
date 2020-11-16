@@ -14,45 +14,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/week_count_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/week_count"
+        android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/week_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/semester_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:drawableStart="@drawable/ic_date_range_black_24dp"
+        android:drawableTint="@color/juicy"
+        android:gravity="center|start"
+        android:text="@string/choose_date"
+        app:layout_constraintBottom_toTopOf="@+id/week_count"
+        app:layout_constraintEnd_toEndOf="@+id/week_count"
+        app:layout_constraintStart_toStartOf="@+id/week_count" />
+
+    <NumberPicker
+        android:id="@+id/week_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/week_count_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/week_count_label"
+        app:layout_constraintVertical_bias="0.503" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/semester_enabled">
-
-        <TextView
-            android:id="@+id/semester_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:drawableStart="@drawable/ic_date_range_black_24dp"
-            android:drawableTint="@color/juicy"
-            android:gravity="center|start"
-            android:text="@string/choose_date" />
-
-        <TextView
-            android:id="@+id/week_count_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/week_count" />
-
-        <NumberPicker
-            android:id="@+id/week_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textAlignment="center" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/week_count" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
