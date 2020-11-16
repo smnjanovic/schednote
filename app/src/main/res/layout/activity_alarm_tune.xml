@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="end"
     android:orientation="vertical"
-    tools:context=".activities.AlarmTuneActivity">
+    tools:context=".activities.AlarmToneActivity">
 
     <Switch
         android:id="@+id/music_on_off"

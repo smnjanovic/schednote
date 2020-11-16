@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.database.data.LessonTime
-import com.moriak.schednote.settings.LessonTimeFormat
+import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.lesson_data.view.*
 
 /**
@@ -87,9 +87,8 @@ class LessonTimeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val item = items[adapterPosition]
             itemView.order.text = item.order.toString()
 
-            val range = App.data.scheduleRangeToMinuteRange(item.order..item.order)!!
-            itemView.start.text = LessonTimeFormat.timeFormat(range.first)
-            itemView.end.text = LessonTimeFormat.timeFormat(range.last)
+            itemView.start.text = Prefs.settings.lessonTimeFormat.startFormat(item.order)
+            itemView.end.text = Prefs.settings.lessonTimeFormat.endFormat(item.order)
 
             itemView.les_time_edit.tag = this
             itemView.les_time_delete.tag = this

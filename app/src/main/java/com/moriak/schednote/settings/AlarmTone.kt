@@ -11,6 +11,14 @@ import com.moriak.schednote.App
 import com.moriak.schednote.R
 import android.provider.MediaStore.Audio.Media as Tune
 
+/**
+ * Trieda uchováva a poskytuje informácie o skladbe uloženej v zariadení.
+ * Existencia tohoto súboru sa overuje pri vzniku inštancie ale už nie počas jej existencie
+ *
+ * @property id ID skladby uloženej v externej pamäti
+ * @property label názov skladby
+ * @property uri Prístupové URI k skladbe
+ */
 class AlarmTone : Parcelable {
     companion object CREATOR : Parcelable.Creator<AlarmTone> {
         override fun createFromParcel(parcel: Parcel): AlarmTone = AlarmTone(parcel)
@@ -32,12 +40,29 @@ class AlarmTone : Parcelable {
     val label: String
     val uri: Uri
 
+    /**
+     * Tvorba inštancie na uchovanie informácii o skladbe. Vkladané hodnoty nemusia byť použité,
+     * ak skladba nie je dostupná. Dostupnosť je kontrolovaná vtedy, keď nie je vyplnená hodnota valid
+     *
+     * @param audioId ID hľadanej skladby
+     * @param title Názov skladby
+     * @param valid Pri 100% istote, že je súbor dostupný nastavte hodnotu na true, inak
+     * nenastavujte nič. V takom prípade prebehne kontrola dostupnosti sľúbeného súboru
+     */
     constructor(audioId: Long, title: String, uri: Uri, valid: Boolean = checkValidId(audioId)) {
         id = if (valid) audioId else -1L
-        label = if (valid) title else App.str(R.string.default_)
+        label =
+            if (valid) title.replace("^(.*)\\..*$".toRegex(), "$1") else App.str(R.string.default_)
         this.uri = if (valid) uri else defaultUri
     }
 
+    /**
+     * Tvorba inštancie na uchovanie  o skladbe. Ak sa skladba s uvedeným ID [audioId] nájde
+     * informácie o nej sa zapíšu do novej inštancie. Inak sa vytvorí inštancia s predvolenými
+     * hodnotami.
+     *
+     * @param audioId ID skladby
+     */
     constructor(audioId: Long) {
         var vId = -1L
         var vLabel = App.str(R.string.default_)
@@ -60,7 +85,11 @@ class AlarmTone : Parcelable {
         uri = vUri
     }
 
+    /**
+     * Tvorba inštancie na uchovanie ktorá uchováva informácie o predvolenej skladbe budenia.
+     */
     constructor() : this(-1L)
+
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString()!!,

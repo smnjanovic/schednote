@@ -16,6 +16,10 @@ import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.Regularity
 import kotlinx.android.synthetic.main.alarm_setter.view.*
 
+/**
+ * V tomto fragmente sa nastavujú budíky. V adaptéri sa zobrazia budíky pre nastavený pracovný deň
+ * a ak je povolený 2-týždenný rozvrh dá sa prepínať medzi budíkmi párneho a nepárneho týždňa
+ */
 class AlarmClockSetter : SubActivity(), AlarmDisplay {
     private companion object {
         const val ADVANCE = "ADVANCE"

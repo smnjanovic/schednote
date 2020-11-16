@@ -16,8 +16,11 @@ import com.moriak.schednote.other.TimeCategory
 import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.reminder_setter.view.*
 
+/**
+ * V tomto fragmente uživateľ nastavuje predstih upozornenia na úlohy, môže upozornenia vypnúť aj zapnúť
+ */
 class ReminderSetter : SubActivity(), AlarmDisplay {
-    companion object {
+    private companion object {
         private const val TO_CONFIRM = "TO_CONFIRM"
         private const val MINUTE_ADVANCE = "MINUTE_ADVANCE"
     }

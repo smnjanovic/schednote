@@ -164,12 +164,11 @@ class Settings : ShakeCompatActivity() {
             dialog.show(supportFragmentManager, DATE_TIME_FORMAT)
         }
         alarm_tone.setOnClickListener {
-            startActivity(Intent(this@Settings, AlarmTuneActivity::class.java))
+            startActivity(Intent(this@Settings, AlarmToneActivity::class.java))
         }
 
-        (supportFragmentManager.findFragmentByTag(DATE_TIME_FORMAT) as DateTimeFormatDialog?)?.setOnConfirm(
-            confirmDateTimeFormat
-        )
+        (supportFragmentManager.findFragmentByTag(DATE_TIME_FORMAT) as DateTimeFormatDialog?)
+            ?.setOnConfirm(confirmDateTimeFormat)
     }
 
     /**
@@ -195,6 +194,6 @@ class Settings : ShakeCompatActivity() {
         work_week_value.text = workWeeks[workWeeksIndex].toString()
         datetime_format_value.text = dateTimeFormat[dateTimeFormatIndex].toString()
         snooze_minutes.text = snooze[snoozeIndex].toString()
-        alarm_tune_name.text = settings.alarmTone.label
+        alarm_tune_name.text = settings.alarmTone.label.replace("^(.*)\\..*$".toRegex(), "$1")
     }
 }

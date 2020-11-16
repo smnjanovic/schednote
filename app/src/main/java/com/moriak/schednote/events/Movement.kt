@@ -6,6 +6,12 @@ import android.view.View
 /**
  * Trieda umoznuje presuvanie 2D objektov po obrazovke, kontroluje dodržanie hraníc
  * posunu po vertikálnej a horizontálnej osi
+ *
+ * @constructor Vytvorenie dotykovej udalosti, ktorá obmedzí pohyb po ploche
+ * @param horizontalBounds vodorovná hranica pohybu
+ * @param verticalBounds zvislá hranica pohybu
+ * @param scaleX Citlivosť na horizontálny posun (čím menšia, tým citlivšia)
+ * @param scaleY Citlivosť na vertikálny posun (čím menšia, tým citlivšia)
  */
 class Movement(
     horizontalBounds: ClosedFloatingPointRange<Float> = 0F..0F,
@@ -34,10 +40,18 @@ class Movement(
     private var onMoveStart: () -> Unit = fun() {}
     private var onMoveEnd: () -> Unit = fun() {}
 
+    /**
+     * Čo sa má stať, predtým, ako pohyb začne
+     * @param fn Čo?
+     */
     fun setOnMoveStart(fn: () -> Unit) {
         onMoveStart = fn
     }
 
+    /**
+     * Čo sa má stať, po tom, ako pohyb skončí
+     * @param fn Čo?
+     */
     fun setOnMoveEnd(fn: () -> Unit) {
         onMoveEnd = fn
     }

@@ -2,12 +2,30 @@ package com.moriak.schednote.other
 
 import com.moriak.schednote.App
 import com.moriak.schednote.R
+import com.moriak.schednote.other.Day.*
 import java.util.Calendar.*
 
+/**
+ * rad dní v týždni
+ *
+ * @property MON Pondelok
+ * @property TUE Utorok
+ * @property WED Streda
+ * @property THU Štvrtok
+ * @property FRI Piatok
+ * @property SAT Sobota
+ * @property SUN Nedeľa
+ */
 enum class Day(val value: Int) {
     MON(MONDAY), TUE(TUESDAY), WED(WEDNESDAY), THU(THURSDAY), FRI(FRIDAY), SAT(SATURDAY), SUN(SUNDAY);
 
     companion object {
+        /**
+         * Z čísla dňa získať enum reprezentujúci daný deň
+         * @param n číslo dňa v týždni
+         * @return [Day] Výsledný deň.
+         * @throws IndexOutOfBoundsException [n] nesmie byť mimo rozsahu 1..7.
+         */
         operator fun get(n: Int) = when (n) {
             MONDAY -> MON
             TUESDAY -> TUE

@@ -7,6 +7,9 @@ import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.other.Command
 
+/**
+ * Poslúchač hlasu reaguje na hlas a vykonáva rozpoznané pokyny
+ */
 class Voice : RecognitionListener {
     private var result = ""
     private var handle: (String) -> Unit = fun(_) {}
@@ -44,10 +47,20 @@ class Voice : RecognitionListener {
         commit(cmd, result)
     }
 
+    /**
+     * Nastaviť reakciu na príkazy
+     * @param com reakcia: Metóda prijíma 2 argumenty:
+     *  [Command] Rozpoznaný príkaz, ktorý sa má vykonať. Je null pokiaľ nebol rozpoznaný
+     *  [String] Reťazec, ktorý mikrofón počul
+     */
     fun setUpCommand(com: (Command?, String) -> Unit) {
         commit = com
     }
 
+    /**
+     * Nastaviť reakciu na vzniknué chyby
+     * @param fn reakcia
+     */
     fun handleError(fn: (String) -> Unit) {
         handle = fn
     }

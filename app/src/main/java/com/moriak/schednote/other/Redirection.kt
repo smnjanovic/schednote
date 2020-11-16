@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.moriak.schednote.App
-import com.moriak.schednote.activities.AlarmTuneActivity
+import com.moriak.schednote.activities.AlarmToneActivity
 import com.moriak.schednote.activities.MainActivity
 import com.moriak.schednote.activities.Settings
 import com.moriak.schednote.fragments.of_alarm.AlarmClockSetter
@@ -17,7 +17,25 @@ import com.moriak.schednote.fragments.of_schedule.DesignEditor
 import com.moriak.schednote.fragments.of_schedule.LessonTimesList
 import com.moriak.schednote.fragments.of_schedule.LessonTypesList
 import com.moriak.schednote.fragments.of_schedule.ScheduleEditor
+import com.moriak.schednote.other.Redirection.*
 
+/**
+ * [Redirection] vytvára intent použiteľný na presmerovávanie sa medzi aktivitami alebo prepínanie sa medzi fragmentmi.
+ *
+ * @property LESSON_SCHEDULE Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [ScheduleEditor]
+ * @property LESSON_TYPES Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [LessonTypesList]
+ * @property TIME_SCHEDULE Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [LessonTimesList]
+ * @property DESIGN Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [DesignEditor]
+ * @property SUBJECTS Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [SubjectsFragment]
+ * @property NOTES Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [NotesFragment]
+ * @property REMINDERS Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [ReminderSetter]
+ * @property ALARM_CLOCKS Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [AlarmClockSetter]
+ * @property SEMESTER Presmerovanie sa do aktivity [MainActivity] a prepnutie sa do fragmentu [SemesterFragment]
+ * @property SETTINGS Presmerovanie sa do aktivity [Settings]
+ * @property ALARM_TONE Presmerovanie sa do aktivity [AlarmToneActivity]
+ *
+ * @property action Každý enum prvok vykonáva inú akciu
+ */
 enum class Redirection(
     val activity: Class<out Activity>,
     val fragment: Class<out Fragment>? = null
@@ -32,7 +50,7 @@ enum class Redirection(
     ALARM_CLOCKS(MainActivity::class.java, AlarmClockSetter::class.java),
     SEMESTER(MainActivity::class.java, SemesterFragment::class.java),
     SETTINGS(Settings::class.java),
-    ALARM_TUNE(AlarmTuneActivity::class.java);
+    ALARM_TONE(AlarmToneActivity::class.java);
 
     companion object {
         private val prefix = Redirection::class.java.canonicalName!!
@@ -40,6 +58,11 @@ enum class Redirection(
         val EXTRA_NOTE_ID = "$prefix.EXTRA_NOTE_ID"
         val EXTRA_NOTE_CATEGORY = "$prefix.EXTRA_NOTE_CATEGORY"
 
+        /**
+         * Zistiť, čije  úmyslom intentu [i] presmerovať sa na inú aktivitu / fragment.
+         * @param i kontrolovaný intent
+         * @return [Redirection], ak tento intent zodpovedá požiadavkám niektorej inštancie [Redirection], inak null.
+         */
         fun detectRedirection(i: Intent?): Redirection? {
             if (i?.action == null) return null
             for (r in values())
@@ -49,8 +72,14 @@ enum class Redirection(
         }
     }
 
-    val action get() = javaClass.canonicalName!! + ".$name"
+    val action = javaClass.canonicalName!! + ".$name"
 
+    /**
+     * Tvorba intentu na presmerovanie
+     * @param context Context
+     * @param launch false, ak nejaká aktivita už beží, inak true
+     * @return Vráti [Intent], ktorý je určný na presmerovanie sa do inej aktivity alebo prepnutie fragmentov
+     */
     fun makeIntent(context: Context = App.ctx, launch: Boolean = true) =
         Intent(context, activity).setAction(action)
             .addFlags(

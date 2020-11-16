@@ -6,6 +6,10 @@ import android.content.Context
 import android.content.Intent
 import com.moriak.schednote.settings.Prefs
 
+/**
+ * Po reštarte zariadenia sú všetky upozornenia, ktoré táto aplikácia mala nastavené, zrušené.
+ * Táto trieda je ich po reštarte obnoví, pokiaľ majú byť zapnuté
+ */
 class BootReceiver : BroadcastReceiver() {
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {

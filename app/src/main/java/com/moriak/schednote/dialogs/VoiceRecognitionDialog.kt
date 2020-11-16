@@ -112,7 +112,7 @@ class VoiceRecognitionDialog : DialogFragment() {
             when (cmd) {
                 TIME_SCHEDULE, LESSON_TYPES, LESSON_SCHEDULE, DESIGN,
                 SUBJECTS, NOTES, REMINDERS, ALARM_CLOCKS, SEMESTER,
-                SETTINGS, ALARM_TUNE -> {
+                SETTINGS, ALARM_TONE -> {
                     startActivity(cmd.redirection!!.makeIntent(activity!!, false))
                     notifyResult(result)
                     dismiss()

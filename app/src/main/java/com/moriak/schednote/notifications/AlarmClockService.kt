@@ -20,12 +20,22 @@ import com.moriak.schednote.other.Day
 import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.Regularity
 
+/**
+ * Služba funguje ako budík, ktorý možno nastaviť len cez tlačidlá notifikácie. Trvá maximálne
+ * minútu, potom bude automaticky odložený o určitý čas na neskôr.
+ */
 class AlarmClockService : Service() {
     companion object {
         private const val WAKE_UP = "WAKE_UP"
         private const val ALARM_CLOCK = "ALARM_CLOCK"
         private const val ALARM_CLOCK_DESC = "Alarm Clock Channel"
 
+        /**
+         * Získanie intentu určeného na zapnutie služby na popredí
+         * @param context
+         * @param alarmId
+         * @return Vráti intent použitý na spustenie služby na popredí
+         */
         fun getIntent(context: Context?, alarmId: Int): Intent =
             Intent(context, AlarmClockService::class.java).apply {
                 action = ALARM_CLOCK
@@ -89,6 +99,11 @@ class AlarmClockService : Service() {
         stopSelf()
     }
 
+    /**
+     * Zobrazenie notifikácie a spustenie hudby, ktorá bude hrať najdlhšie minútu, potom sa
+     * budík sám odloží na neskôr. Notifikáciu možno zavreť buď odkladom alebo zastavením budíka.
+     * Tým sa zastaví aj hudba
+     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         ring = MediaPlayer.create(this, Prefs.settings.alarmTone.uri)
         ring.setScreenOnWhilePlaying(true)
@@ -120,6 +135,9 @@ class AlarmClockService : Service() {
 
     override fun onBind(p0: Intent?): IBinder? = null
 
+    /**
+     * Zastavenie hudby a zrušenie notifkácie, ukončenie služby
+     */
     override fun onDestroy() {
         stop()
         super.onDestroy()

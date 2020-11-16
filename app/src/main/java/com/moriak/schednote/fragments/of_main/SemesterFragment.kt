@@ -14,9 +14,13 @@ import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.semester.view.*
 import java.util.Calendar.*
 
+/**
+ * Vo fragmente možno nastaviť dátum začiatku semestra a jeho trvanie. Ak semester práve beží
+ * program bude počítať koľký je semestrálny týžden a úloham bude možné nastaviť úlohy na n-tý týždeň
+ * bez znalosti presného dátumu
+ */
 class SemesterFragment : SubActivity() {
-
-    companion object {
+    private companion object {
         private const val START = "START"
     }
 

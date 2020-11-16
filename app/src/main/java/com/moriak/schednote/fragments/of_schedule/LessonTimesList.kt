@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.adapters.LessonTimeAdapter
+import com.moriak.schednote.database.data.LessonTime
 import com.moriak.schednote.database.data.LessonTime.Companion.MAX_LESSON_COUNT
 import com.moriak.schednote.design.ItemTopSpacing
 import com.moriak.schednote.dialogs.LessonDurationSetter
@@ -18,10 +19,15 @@ import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.lesson_time_scheduler.*
 import kotlinx.android.synthetic.main.lesson_time_scheduler.view.*
 
+/**
+ * V tomto fragmente sa nastavujú otváracie hodiny.
+ * Nastaví sa tu, od kedy rozvrh začína a pridávajú sa hodiny ako časové jednotky rozvrhu [LessonTime].
+ * Upravovanej hodina sa nastaví koľko trvá, a aká dlhá prestávka má byť po nej
+ */
 class LessonTimesList : SubActivity(), SchedulePart {
-    companion object {
-        const val START_SCHEDULE = "START_SCHEDULE"
-        const val LESSON_SETTER = "LESSON_SETTER"
+    private companion object {
+        private const val START_SCHEDULE = "START_SCHEDULE"
+        private const val LESSON_SETTER = "LESSON_SETTER"
     }
 
     private lateinit var startChanger: ScheduleStartSetter

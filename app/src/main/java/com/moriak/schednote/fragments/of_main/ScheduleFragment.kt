@@ -11,8 +11,11 @@ import com.moriak.schednote.menu.ScheduleDisplay
 import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.schedule.view.*
 
+/**
+ * Fragment má vnorené ďalšie fragmenty ktoré súvisia s rozvrhom. Vždy je zobrazený iba 1 z nich
+ */
 class ScheduleFragment : SubActivity() {
-    companion object {
+    private companion object {
         private val transparent = Color.parseColor("#00000000")
         private val inactiveText = App.ctx.resources.getColor(R.color.textColor, null)
         private val activeButton = App.ctx.resources.getColor(R.color.colorPrimary, null)
@@ -56,9 +59,10 @@ class ScheduleFragment : SubActivity() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) =
-        inflater.inflate(R.layout.schedule, container, false)!!
+        saved: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.schedule, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         hasSavedState = false

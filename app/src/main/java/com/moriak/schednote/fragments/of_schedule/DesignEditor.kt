@@ -26,7 +26,7 @@ import com.moriak.schednote.design.ScheduleIllustrator
 import com.moriak.schednote.events.Movement
 import com.moriak.schednote.fragments.of_main.SubActivity
 import com.moriak.schednote.fragments.of_schedule.DesignEditor.ImgFit.*
-import com.moriak.schednote.fragments.of_schedule.DesignEditor.OverFlow.*
+import com.moriak.schednote.fragments.of_schedule.DesignEditor.OverSize.*
 import com.moriak.schednote.other.Redirection
 import com.moriak.schednote.settings.ColorGroup.BACKGROUND
 import com.moriak.schednote.settings.Prefs
@@ -35,17 +35,33 @@ import kotlinx.android.synthetic.main.style_layout.view.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+/**
+ * V tomto fragmente sa upravuje dizajn tabuľky rozvrhu a v ponuke je aj možnosť nastavenia rozvrhu
+ * s obrázkom ako pozadie. Ak pomery strán obrázku a zariadenia nie sú rovnaké, tak sú 3 spôsoby
+ * zobrazenia obrázku na pozadí rozvrhu. Obrázok aj tabuľku možno posúvať a výsledný obrázok sa dá nastaviť
+ * ako pozadie
+ */
 class DesignEditor : SubActivity(), SchedulePart {
-    companion object {
-        const val IMG_REQUEST = 1000
-        const val NEW_IMG_PERMISSION = 1001
+    private companion object {
+        private const val IMG_REQUEST = 1000
+        private const val NEW_IMG_PERMISSION = 1001
     }
 
     private enum class HSLPartition { HUE, SATURATION, LUMINANCE, ALPHA }
+
+    /**
+     * @property COVER obrázok obsadí celú predlohu a bude orezaný (bez straty, iba nebude vidno kraje)
+     * @property CONTAIN obrázok sa budé zmestiť celý, na predlohe budú pásiky s farbou pozadia
+     * @property FILL obrázok bude roztiahnutý na celú plochu
+     */
     enum class ImgFit {
         COVER, CONTAIN, FILL;
 
         companion object {
+            /**
+             * Získanie hodnoty o zobrazení z reťazca
+             * @param str reťazec ktorý by sa mal zhodovať s niektorým z názvov tohoto enumu.
+             */
             operator fun get(str: String?) = when (str) {
                 COVER.name -> COVER
                 CONTAIN.name -> CONTAIN
@@ -55,19 +71,29 @@ class DesignEditor : SubActivity(), SchedulePart {
         }
     }
 
-    enum class OverFlow {
+    /**
+     * @property WIDTH obrázok sa môže posúvať vľavo a vpravo, keď je pri rovnakej šírke predlohy
+     * nižší ako predloha alebo pri rovnakej výške predlohy širší ako predloha
+     * @property HEIGHT obrázok sa môže posúvať nahor a nadol, keď je pri rovnakej šírke predlohy
+     * vyšší ako predloha alebo pri rovnakej výške predlohy užší ako predloha
+     * @property NONE Pomery strán predlohy a obrázka sa rovnajú alebo nie je k dispozícii  obrázok
+     */
+    enum class OverSize {
         WIDTH, HEIGHT, NONE;
 
         companion object {
-            fun getOverFlow(drawable: Drawable?): OverFlow {
+            /**
+             * Na základe pomeru strán obrázka sa určí či sú pomery strán rovnaké alebo ktorým smerom
+             * je obrázok dlhší ako predloha (x alebo y)
+             * @param drawable Grafický prvok
+             */
+            fun getOverFlow(drawable: Drawable?): OverSize {
                 if (drawable?.let { it.intrinsicWidth * it.intrinsicHeight > 0 } != true) return NONE
 
                 val screenRatio = App.w.coerceAtMost(App.h).toFloat() / App.w.coerceAtLeast(App.h)
                 val drawableRatio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight
                 return when {
                     abs(screenRatio - drawableRatio) < 0.001F -> NONE
-                    //obrazok s mensim pomerom "sirka / vyska" ako je pomer stran obrazovky
-                    // je pri rovnakej sirke vyssi a pri rovnakej vyske sirsi
                     drawableRatio < screenRatio -> HEIGHT
                     else -> WIDTH
                 }
@@ -75,6 +101,9 @@ class DesignEditor : SubActivity(), SchedulePart {
         }
     }
 
+    /**
+     * Trieda pracuje s obrázkom na pozadí
+     */
     inner class IMGCoordinates {
         private var drawable: Drawable? = null
         private var imgFit: ImgFit? = null
@@ -89,8 +118,16 @@ class DesignEditor : SubActivity(), SchedulePart {
         private var imgW = 0
         private var imgH = 0
 
+        /**
+         * Získanie informácie, o tom, či je obrázok, roztiahnutý, orezaný alebo natlačený
+         */
         fun getFit() = imgFit
 
+        /**
+         * Zmena obrázka
+         * @param iv objekt ktorý má obrázok zobraziť
+         * @param uri odkaz na obrázok, ktorý má byť zobrazený
+         */
         fun setUri(iv: ImageView?, uri: Uri?) {
             iv ?: return
             if (PackageManager.PERMISSION_GRANTED == activity?.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -111,6 +148,10 @@ class DesignEditor : SubActivity(), SchedulePart {
             computeCoordinates(imgFit ?: Prefs.states.bgImageFit ?: FILL)
         }
 
+        /**
+         * Uložiť pozíciu obrázku
+         * @param img objekt ktorého pozíciu si treba zapamätať
+         */
         fun rememberCoordinates(img: ImageView?) {
             x = img?.x ?: x
             y = img?.y ?: y
@@ -151,6 +192,9 @@ class DesignEditor : SubActivity(), SchedulePart {
             boundsY = 0F..0F
         }
 
+        /**
+         * Vypočitanie nových súradníc obrázka po akejsi zmene
+         */
         fun computeCoordinates(fit: ImgFit? = imgFit) {
             imgFit = if (fit == null || drawable == null || origW * origH == 0) null else fit
             if (imgFit == null) {
@@ -159,7 +203,7 @@ class DesignEditor : SubActivity(), SchedulePart {
             }
             Prefs.states.bgImageFit = imgFit
 
-            val overFlow = OverFlow.getOverFlow(drawable)
+            val overFlow = OverSize.getOverFlow(drawable)
             when (imgFit) {
                 COVER -> when (overFlow) {
                     WIDTH -> scaleByHeight()
@@ -185,11 +229,19 @@ class DesignEditor : SubActivity(), SchedulePart {
             else ((boundsY.start + boundsY.endInclusive) / 2)
         }
 
+        /**
+         * Aplikovať spočítané súradnice na obrázok [imageView]
+         * @param imageView
+         */
         fun applyCoordinates(imageView: ImageView?) {
             imageView?.x = x
             imageView?.y = y
         }
 
+        /**
+         * Aplikovať spočítané rozmery na obrázok [imageView]
+         * @param imageView
+         */
         fun applySize(imageView: ImageView?) {
             imageView ?: return
             val param = FrameLayout.LayoutParams(imgW, imgH)
@@ -290,12 +342,12 @@ class DesignEditor : SubActivity(), SchedulePart {
             imageCoordinates.rememberCoordinates(view?.bg_image)
             Prefs.states.bgImagePos = view?.bg_image?.let {
                 when (imageCoordinates.getFit()) {
-                    COVER -> when (OverFlow.getOverFlow(it.drawable)) {
+                    COVER -> when (OverSize.getOverFlow(it.drawable)) {
                         WIDTH -> it.x
                         HEIGHT -> it.y
                         NONE -> 0F
                     }
-                    CONTAIN -> when (OverFlow.getOverFlow(it.drawable)) {
+                    CONTAIN -> when (OverSize.getOverFlow(it.drawable)) {
                         WIDTH -> it.y
                         HEIGHT -> it.x
                         NONE -> 0F

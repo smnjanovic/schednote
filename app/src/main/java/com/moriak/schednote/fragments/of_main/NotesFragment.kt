@@ -39,8 +39,12 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * Fragment načítava zoznam úloh podľa vybranej kategórie. Úlohy
+ * je tu možné uložiť do kalendára a spätne ich z neho aj načítať
+ */
 class NotesFragment : SubActivity() {
-    companion object {
+    private companion object {
         private const val DATE_TIME = "DATE_TIME"
         private const val SCROLL = "SCROLL"
 

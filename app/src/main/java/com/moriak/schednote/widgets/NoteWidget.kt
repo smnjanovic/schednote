@@ -19,7 +19,13 @@ import com.moriak.schednote.other.Redirection
 import com.moriak.schednote.other.TimeCategory
 import com.moriak.schednote.settings.Prefs
 
+/**
+ * Trieda spravuje widget so zoznamom úloh
+ */
 class NoteWidget : AppWidgetProvider() {
+    /**
+     * @property REMOVE_NOTE Akcia pre intent, ktorý vymaže úlohu cez widget
+     */
     companion object {
         const val REMOVE_NOTE = "NOTE_REMOVAL"
         private const val ACTION_REMOVAL = "ACTION_REMOVAL"
@@ -29,6 +35,11 @@ class NoteWidget : AppWidgetProvider() {
         private fun all(context: Context = App.ctx) = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, NoteWidget::class.java)) ?: intArrayOf()
 
+        /**
+         * Aktualizovať všetky widgety, ktoré sú k dispozícii
+         *
+         * @param context nepovinný údaj
+         */
         fun update(context: Context = App.ctx) = context.sendBroadcast(
             Intent(App.ctx, NoteWidget::class.java)
                 .setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
@@ -42,6 +53,12 @@ class NoteWidget : AppWidgetProvider() {
             return PendingIntent.getBroadcast(context, widgetUpdateRequest, intent, 0)
         }
 
+        /**
+         * Nastavenie času nasledujúcej aktualizácie widgetov. Buď je to nasledujúca polnoc
+         * alebo počiatočný termín úlohy ktorej čas práve vypršal
+         *
+         * @param context nepovinný údaj
+         */
         fun setNextUpdateTime(context: Context = App.ctx) {
             val pendingIntent = scheduledUpdate(context)
             val alarm = App.ctx.getSystemService(ALARM_SERVICE) as AlarmManager
@@ -52,6 +69,13 @@ class NoteWidget : AppWidgetProvider() {
         private fun disableNextUpdateTime(context: Context = App.ctx) =
             (context.getSystemService(ALARM_SERVICE) as AlarmManager).cancel(scheduledUpdate(context))
 
+        /**
+         * Aktualizuje sa konkrétny widget
+         *
+         * @param context Context pre potreby práce s layoutom widgetu
+         * @param manager Manážer, spravuje widget
+         * @param id ID widgetu, ktorý sa práve upravuje
+         */
         fun updateAppWidget(context: Context, manager: AppWidgetManager, id: Int) {
             val cat = Prefs.widgets.getNoteWidgetCategory(id)
                 ?: TimeCategory.ALL.also { Prefs.widgets.setNoteWidgetCategory(id, it) }
@@ -94,11 +118,20 @@ class NoteWidget : AppWidgetProvider() {
         setNextUpdateTime(context)
     }
 
+    /**
+     * Odstránením widgetu treba aj z pamäte odstrániť nastavenú konfiguráciu o widgete
+     * @param context
+     * @param appWidgetIds
+     */
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds)
             Prefs.widgets.setNoteWidgetCategory(appWidgetId, null)
     }
 
+    /**
+     * Odstránením posledného widgetu odvolám naplánovanú aktualizáciu widgetov
+     * @param context
+     */
     override fun onDisabled(context: Context?) {
         super.onDisabled(context)
         disableNextUpdateTime(context ?: App.ctx)

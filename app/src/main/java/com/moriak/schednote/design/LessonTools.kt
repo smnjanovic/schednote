@@ -43,18 +43,18 @@ class LessonTools private constructor() {
     }
 
     // uchováva informáciu o hodine ako časovej jednotke rozvrhu
-    private abstract class LessonData(protected val lesson: LessonTime) {
-        val order get() = lesson.order
+    private abstract class LessonData(lesson: LessonTime) {
+        val order = lesson.order
     }
 
     // slúži na výpis o začiatku hodiny
     private class LessonStart(lesson: LessonTime) : LessonData(lesson) {
-        override fun toString() = lesson.startFormat
+        override fun toString() = Prefs.settings.lessonTimeFormat.startFormat(order)
     }
 
     // slúži na výpis o konci hodiny
     private class LessonEnd(lesson: LessonTime) : LessonData(lesson) {
-        override fun toString() = lesson.endFormat
+        override fun toString() = Prefs.settings.lessonTimeFormat.endFormat(order)
     }
 
     private var editingLesson: Lesson? = null

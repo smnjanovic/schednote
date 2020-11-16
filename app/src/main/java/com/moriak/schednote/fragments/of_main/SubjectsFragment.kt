@@ -13,8 +13,12 @@ import com.moriak.schednote.design.ItemTopSpacing
 import com.moriak.schednote.dialogs.SubjectEditDialog
 import kotlinx.android.synthetic.main.list_layout.*
 
+/**
+ * V tomto fragmente je načítaný abecedný zoznam všetkých predmetov ktoré v ňom
+ * možno upravovať, odstrániť alebo pridať.
+ */
 class SubjectsFragment : SubActivity() {
-    companion object {
+    private companion object {
         private const val EDIT_DIALOG = "EDIT_DIALOG"
     }
 

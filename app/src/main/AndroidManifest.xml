@@ -59,7 +59,7 @@
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <activity
-            android:name=".activities.AlarmTuneActivity"
+            android:name=".activities.AlarmToneActivity"
             android:label="@string/alarm_tone" />
         <activity
             android:name=".activities.NoteWidgetConfigActivity"

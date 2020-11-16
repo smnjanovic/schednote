@@ -12,6 +12,9 @@ import com.moriak.schednote.design.ItemTopSpacing
 import com.moriak.schednote.fragments.of_main.SubActivity
 import kotlinx.android.synthetic.main.lesson_types.view.*
 
+/**
+ * Fragment zobrazuje upraviteľný zoznam typov hodín, ktoré sú potrebné pre prácu s rozvrhom
+ */
 class LessonTypesList : SubActivity(), SchedulePart {
     private val adapter: LessonTypesAdapter = LessonTypesAdapter()
 

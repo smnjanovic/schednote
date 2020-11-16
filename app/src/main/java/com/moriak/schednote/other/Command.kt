@@ -8,9 +8,34 @@ import android.text.style.StyleSpan
 import androidx.annotation.StringRes
 import com.moriak.schednote.App
 import com.moriak.schednote.R
+import com.moriak.schednote.other.Command.*
 import com.moriak.schednote.settings.ColorGroup
 import java.util.*
 
+/**
+ * [Command] predstavuje množinu príkazov, ktoré možno vysloviť
+ *
+ * @property CLEAN_UP Odstránia sa nadbytočné dáta z aplikácie (Oneskorené úlohy, hodiny mimo pracovných dní, nepoužité predmety, ...)
+ * @property TIME_SCHEDULE Presmerovanie sa pomocou [Redirection.TIME_SCHEDULE]
+ * @property LESSON_TYPES Presmerovanie sa pomocou [Redirection.LESSON_TYPES]
+ * @property LESSON_TYPE Presmerovanie sa pomocou [Redirection.DESIGN] a prejsť do režimu úprav vybranej množiny kontajnerov
+ * @property LESSON_SCHEDULE Presmerovanie sa pomocou [Redirection.LESSON_SCHEDULE]
+ * @property DESIGN Presmerovanie sa pomocou [Redirection.DESIGN]
+ * @property SUBJECTS Presmerovanie sa pomocou [Redirection.SUBJECTS]
+ * @property NOTE_CATEGORY Presmerovanie sa pomocou [Redirection.NOTES] a nastavenie špecifickej kategórie
+ * @property NOTES Presmerovanie sa pomocou [Redirection.NOTES]
+ * @property REMINDERS Presmerovanie sa pomocou [Redirection.REMINDERS]
+ * @property ADAPT_ALARMS_TO_SCHEDULE Nastavenie budíkov na každý pracovný deň v naposledy nastavenom predstihu pred začiatkom hodiny
+ * @property ALARM_CLOCKS Presmerovanie sa pomocou [Redirection.ALARM_CLOCKS]
+ * @property SEMESTER Presmerovanie sa pomocou [Redirection.SEMESTER]
+ * @property SETTINGS Presmerovanie sa pomocou [Redirection.SETTINGS]
+ * @property ALARM_TONE Presmerovanie sa pomocou [Redirection.ALARM_TONE]
+ *
+ * @property spanned Formátovaný popis príkazu
+ * @property tag Ľubovoľný doplnkový objekt, využiteľný pre niektorý inštancie [Command]
+ * @property prev Predošlý príkaz
+ * @property next Nasledujúci príkaz
+ */
 enum class Command(
     val redirection: Redirection?,
     @StringRes private val cmdRes: Int,
@@ -35,8 +60,6 @@ enum class Command(
     ),
     DESIGN(Redirection.DESIGN, R.string.cmd_unique_design, R.string.cmd_desc_design),
     SUBJECTS(Redirection.SUBJECTS, R.string.cmd_unique_subjects, R.string.cmd_desc_subjects),
-
-    // nejednoznacny prikaz
     NOTE_CATEGORY(
         Redirection.NOTES,
         R.string.cmd_unique_note_category,
@@ -56,8 +79,8 @@ enum class Command(
     ),
     SEMESTER(Redirection.SEMESTER, R.string.cmd_unique_semester, R.string.cmd_desc_semester),
     SETTINGS(Redirection.SETTINGS, R.string.cmd_unique_settings, R.string.cmd_desc_settings),
-    ALARM_TUNE(
-        Redirection.ALARM_TUNE,
+    ALARM_TONE(
+        Redirection.ALARM_TONE,
         R.string.cmd_unique_alarm_tone,
         R.string.cmd_desc_alarm_tone
     );
@@ -67,7 +90,9 @@ enum class Command(
 
     companion object {
         /**
-         * Identifikuje príkaz
+         * Identifikuje príkaz na základe počutého výrazu
+         * @param str Počutý výraz
+         * @return rozpoznaný príkaz alebo null
          */
         fun identifyCommand(str: String): Command? {
             fun said(value: String) = value.trim().toLowerCase(Locale.ROOT)
@@ -96,6 +121,11 @@ enum class Command(
             return null
         }
 
+        /**
+         * Prístup k hodnote [Command] na určitej pozícii
+         * @param n ordinal
+         * @return [Command] alebo null
+         */
         operator fun get(n: Int): Command? =
             values().let { v -> if (n in v.indices) v[n] else null }
     }

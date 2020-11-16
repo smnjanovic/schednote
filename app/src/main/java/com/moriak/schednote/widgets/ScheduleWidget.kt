@@ -16,11 +16,13 @@ import com.moriak.schednote.design.ScheduleIllustrator
 import com.moriak.schednote.other.Redirection
 import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.Regularity
-import com.moriak.schednote.settings.WorkWeek
 import java.util.*
 
 /**
- * Implementation of App Widget functionality.
+ * Trieda spravuje widgety, ktoré majú tú najjednoduchšiu úlohu. Zobraziť rozvrh.
+ *
+ * Ak je zapnutý 2-týždenný pohľad na rozvrh, tak na konci každého pracovného týždňa sa widget
+ * aktualizuje.
  */
 class ScheduleWidget : AppWidgetProvider() {
     companion object {
@@ -45,23 +47,18 @@ class ScheduleWidget : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
         val workWeek = Prefs.settings.workWeek
-        val nextUpdate = followingWeekend(workWeek, Regularity.currentWeek)
+        val nextUpdate = followingWeekend()
         val reg = Regularity[Regularity.isWeekOdd(nextUpdate)]
+
+        val openIntent = Redirection.TIME_SCHEDULE.makeIntent(context)
+        val openPendingIntent =
+            PendingIntent.getActivity(context, redirection, openIntent, FLAG_UPDATE_CURRENT)
+        val bitmap = ScheduleIllustrator.drawSchedule(workWeek, reg)
 
         for (id in ids) {
             val views = RemoteViews(context.packageName, R.layout.schedule_widget)
-            views.setImageViewBitmap(
-                R.id.table_image,
-                ScheduleIllustrator.drawSchedule(workWeek, reg)
-            )
-            views.setOnClickPendingIntent(
-                R.id.table_image, PendingIntent.getActivity(
-                    context,
-                    redirection - id,
-                    Redirection.TIME_SCHEDULE.makeIntent(context),
-                    FLAG_UPDATE_CURRENT
-                )
-            )
+            views.setImageViewBitmap(R.id.table_image, bitmap)
+            views.setOnClickPendingIntent(R.id.table_image, openPendingIntent)
             manager.updateAppWidget(id, views)
         }
 
@@ -74,24 +71,36 @@ class ScheduleWidget : AppWidgetProvider() {
         ) else alarm.cancel(pi)
     }
 
+    /**
+     * Po odstránení posledného widgetu odvolať naplánovanú aktualizáciu widgetov
+     * @param context
+     */
     override fun onDisabled(context: Context) =
         (context.getSystemService(ALARM_SERVICE) as AlarmManager).cancel(updatePI(context))
 
-    private fun followingWeekend(ww: WorkWeek, reg: Regularity): Long {
-        val lessonRange = App.data.scheduleRange(ww, reg)
-        val duration = App.data.scheduleRangeToMinuteRange(lessonRange)?.last
-        val lastMinute = duration?.let { it + Prefs.settings.earliestMinute } ?: 24 * 60 - 1
-        cal.timeInMillis = System.currentTimeMillis()
+    private fun followingWeekend(): Long {
+        val lessonRange = App.data.scheduleRange(Prefs.settings.workWeek, Regularity.currentWeek)
+        //kedy skončí posledná hodina v poslednom pracovnom dni?
+        val lastMinute = App.data.scheduleRangeToMinuteRange(lessonRange)
+            ?.last?.let { it + Prefs.settings.earliestMinute } ?: 24 * 60 - 1
+
+        val lastDay = Prefs.settings.workWeek.days.last().value
+        val today = cal.get(Calendar.DAY_OF_WEEK)
+        // kolko dni chyba do dalsieho posledneho pracovneho dna?
+        val dayDif = when {
+            lastDay < today -> today - lastDay
+            lastDay > today -> lastDay - today
+            else -> 7
+        }
+        val now = System.currentTimeMillis()
+
+        cal.timeInMillis = now
         cal.set(Calendar.HOUR_OF_DAY, lastMinute / 60)
         cal.set(Calendar.MINUTE, lastMinute % 60)
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
-        val dayDif =
-            (ww.days.last().value - cal.get(Calendar.DAY_OF_WEEK)).let { if (it < 1) it + 7 else it }
-        if (dayDif < 7 || cal.timeInMillis <= System.currentTimeMillis()) cal.add(
-            Calendar.DAY_OF_YEAR,
-            dayDif
-        )
+        // vypocitam, kedy bude najblizsi zaciatok vikendu. Ak uz vikend je, idem na začiatok ďalšieho víkendu
+        if (dayDif < 7 || cal.timeInMillis <= now) cal.add(Calendar.DAY_OF_YEAR, dayDif)
         return cal.timeInMillis
     }
 }

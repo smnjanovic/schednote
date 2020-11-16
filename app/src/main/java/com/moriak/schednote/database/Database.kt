@@ -192,17 +192,9 @@ class Database : DBControl() {
      * @return Zoznam hodín ako najmenších jednotiek rozvrhu
      */
     fun lessonTimes() = all(
-        """
-        SELECT a.$ORDER, a.$LESSON_DUR, a.$BREAK_DUR,
-        COALESCE(SUM(b.$LESSON_DUR + b.$BREAK_DUR), 0) AS st,
-        COALESCE(SUM(b.$LESSON_DUR + b.$BREAK_DUR), 0) + a.$LESSON_DUR AS en
-        FROM $Schedule a LEFT JOIN $Schedule b ON b.$ORDER < a.$ORDER
-        GROUP BY a.$ORDER
-        ORDER BY a.$ORDER
-        
-    """
+        "SELECT $ORDER, $LESSON_DUR, $BREAK_DUR FROM $Schedule ORDER BY $ORDER"
     ) {
-        LessonTime(getInt(0), getInt(1), getInt(2), getInt(3), getInt(4))
+        LessonTime(getInt(0), getInt(1), getInt(2))
     }
 
     /**

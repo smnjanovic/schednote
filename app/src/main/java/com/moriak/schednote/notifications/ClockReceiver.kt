@@ -9,11 +9,17 @@ import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Build
 import com.moriak.schednote.App
+import com.moriak.schednote.notifications.ClockReceiver.Companion.ALARM_ID
 import com.moriak.schednote.other.Day
 import com.moriak.schednote.settings.Prefs
 import com.moriak.schednote.settings.Regularity
 import java.util.*
 
+/**
+ * Trieda slúži na nastavovanie budíkov a správanie sa notifikácie na popredí
+ *
+ * @property ALARM_ID označenie o aký budík sa jedná
+ */
 class ClockReceiver : BroadcastReceiver() {
     companion object {
         private const val ALARM_CLOCK = "ALARM_CLOCK"
@@ -25,11 +31,19 @@ class ClockReceiver : BroadcastReceiver() {
         private fun getAlarmId(day: Day, reg: Regularity): Int =
             (reg.odd?.let { if (it) 1 else 0 } ?: 2) * 10 + day.value
 
+        /**
+         * Vydedukovať deň z [id]
+         * @return [Day] Deň
+         */
         fun detectDay(id: Int): Day = when (id % 10) {
             in 1..7 -> Day[id % 10]
             else -> throw Exception("The day doesn't exist!")
         }
 
+        /**
+         * Vydedukovať o aký týždeň sa jedná, na základe [id].
+         * @return [Regularity] interval opakovania budenia
+         */
         fun detectRegularity(id: Int): Regularity = when (id / 10) {
             0 -> Regularity.EVEN
             1 -> Regularity.ODD
@@ -86,17 +100,38 @@ class ClockReceiver : BroadcastReceiver() {
                 reg
             ))
 
-        fun snooze(day: Day, reg: Regularity) = setBroadcast(
-            day,
-            reg,
-            System.currentTimeMillis().let { it - it % 60000 } + Prefs.settings.snooze * 60000)
+        /**
+         * Odložiť budík o určitý čas neskôr
+         * @param day Deň budenia
+         * @param reg Pravidelnosť budenia
+         */
+        fun snooze(day: Day, reg: Regularity) {
+            val zzz =
+                System.currentTimeMillis().let { it - it % 60000 } + Prefs.settings.snooze * 60000
+            setBroadcast(day, reg, zzz)
+        }
 
+        /**
+         * Odloženie alarmu na inokedy
+         * @param day Deň, pre ktorý alarm platí
+         * @param reg Interval opakovania budenia
+         * @return PendingIntent
+         */
         fun getSnoozePIntent(day: Day, reg: Regularity) =
             getAlarmPIntent(getAlarmId(day, reg), SNOOZE)
 
+        /**
+         * zastavenie budenia a nastaviť o o 1 alebo 2 týždne neskôr
+         * @param day Deň, pre ktorý alarm platí
+         * @param reg Interval opakovania budenia
+         * @return PendingIntent
+         */
         fun getStopPIntent(day: Day, reg: Regularity) = getAlarmPIntent(getAlarmId(day, reg), STOP)
     }
 
+    /**
+     * Tu sa bude budík nastavovať, zastavovať a následne nastavovať na ďalší týždeň alebo odkladať na neskôr
+     */
     override fun onReceive(context: Context?, intent: Intent?) {
         val id = intent?.getIntExtra(ALARM_ID, 0) ?: 0
         when (intent?.action) {
@@ -114,52 +149,5 @@ class ClockReceiver : BroadcastReceiver() {
                 enableAlarmClock(detectDay(id), detectRegularity(id))
             }
         }
-
-
-        /*context!!.setTheme(R.style.AppTheme)
-        val id = intent.getIntExtra(ALARM_ID, -1)
-        val day = detectDay(id)
-        val reg = detectRegularity(id)
-        val dayMinutes = intent.getIntExtra(MINUTES_OF_DAY, 360)
-
-        // zobrazenie notifikacie
-
-        val nextTime = getNextTime(day, reg, dayMinutes)
-
-        //val activityIntent = AlarmClockActivity.getStartIntent(context, day, reg, dayMinutes)
-        //val pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, FLAG_UPDATE_CURRENT)
-
-        val alarmClock = NotificationCompat.Builder(context, ALARM_CLOCK)
-            .setSmallIcon(R.drawable.ic_schednote)
-            .setContentTitle(App.str(R.string.alarm_clock))
-            .setContentText("${detectDay(id)} ${Prefs.settings.getTimeString(nextTime)}")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
-            //.setFullScreenIntent(pendingIntent, true)
-            .build()
-
-        // nastavenie zvonenia
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            NotificationManagerCompat.from(context).getNotificationChannel(ALARM_CLOCK)?.setSound (
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
-                AudioAttributes
-                    .Builder()
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
-
-
-
-        // upozornenie
-
-        NotificationManagerCompat.from(context).notify(id, alarmClock)
-
-
-        // nastavenie rovnakeho upozornenia o tyzden alebo 2
-        //editAlarmClock(day, reg, minutesOfDay)
-
-        */
     }
 }

@@ -12,6 +12,10 @@ import com.moriak.schednote.design.ScheduleIllustrator
 import com.moriak.schednote.fragments.of_main.SubActivity
 import kotlinx.android.synthetic.main.schedule_editor.view.*
 
+/**
+ * V tomto fragmente pridávam hodiny do rozvrhu, ktoré môže aj zmazať alebo upraviť.
+ * Po každej zmene sa tabuľka s rozvrhom prekreslí
+ */
 class ScheduleEditor : SubActivity(), SchedulePart {
     private var illustrator: ScheduleIllustrator? = null
     private var editor: LessonTools? = null

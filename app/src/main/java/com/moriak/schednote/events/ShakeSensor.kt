@@ -10,14 +10,14 @@ import kotlin.math.abs
 
 /**
  * Trieda na zjednodušenie implementácie senzora na trasenie displeja
- * @property threshold citlivosť trasenia
+ * @property threshold nastavenie citlivosti trasenia. Hodnotu možno voľne meniť
  */
 
-class ShakeSensor(ctx: Context = App.ctx) : SensorEventListener {
-    private val sensorManager = ctx.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+class ShakeSensor : SensorEventListener {
+    private val sensorManager = App.ctx.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-    var threshold = 5 //nastavenie citlivosti trasenia. Hodnotu možno voľne meniť
+    var threshold = 5
 
     private var lastX = 0F
     private var lastY = 0F

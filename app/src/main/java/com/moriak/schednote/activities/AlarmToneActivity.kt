@@ -23,7 +23,7 @@ import android.provider.MediaStore.Audio.Media as Tune
  * Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
  * Bez tohoto povolenia bude obmedzený výber tónov budenia.
  */
-class AlarmTuneActivity : ShakeCompatActivity() {
+class AlarmToneActivity : ShakeCompatActivity() {
     private companion object {
         private const val INFO = "INFO"
         private const val ACCESS_MUSIC = 1

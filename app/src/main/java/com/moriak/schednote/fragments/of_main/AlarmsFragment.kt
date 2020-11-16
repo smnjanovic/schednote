@@ -11,8 +11,11 @@ import com.moriak.schednote.menu.AlarmCategory
 import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.alarms.view.*
 
+/**
+ * V tento fragment má vnorené ďalšie fragmenty súvisiace s upozorneniami (Budíky a notifikácie)
+ */
 class AlarmsFragment : SubActivity() {
-    companion object {
+    private companion object {
         private val transparent = Color.parseColor("#00000000")
         private val inactiveText = App.ctx.resources.getColor(R.color.textColor, null)
         private val activeButton = App.ctx.resources.getColor(R.color.colorPrimary, null)
