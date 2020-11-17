@@ -1,0 +1,151 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Regularity - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
+        href="../index.html">com.moriak.schednote.settings</a>&nbsp;/&nbsp;<a href="./index.html">Regularity</a><br/>
+<br/>
+<h1>Regularity</h1>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Regularity</span></code>
+<p>Táto trieda reprezentuje interval opakovania sa rozvrhu, ktorý môže byť týždenný alebo
+    2-týždenný.
+    Pri 2-týždennom rozvrhu sa určuje párnosť týždňa</p>
+<h3>Enum Values</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-e-v-e-r-y.html">EVERY</a></h4>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-e-v-e-n.html">EVEN</a></h4>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-o-d-d.html">ODD</a></h4>
+        </td>
+        <td>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h3>Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="odd.html">odd</a></h4>
+        </td>
+        <td>
+            <p>Zisťuje sa, čo sa jedná o nepárny týždeň
+                <a href="-e-v-e-n.html">EVEN</a> = false, pretože nevráti nepárny týždeň
+                <a href="-o-d-d.html">ODD</a> = true, pretože ukazuje na nepárny týždeň
+                <a href="-e-v-e-r-y.html">EVERY</a> = null, pretože sa jedná o ľubovoľný týždeň
+                ktorý môže a nemusí byť nepárny</p>
+            <code><span class="keyword">val </span><span class="identifier">odd</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="to-string.html">toString</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">toString</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="current-week.html">currentWeek</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">val </span><span class="identifier">currentWeek</span><span
+                    class="symbol">: </span><a href="./index.html"><span class="identifier">Regularity</span></a></code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="values.html">values</a></h4>
+        </td>
+        <td>
+            <p>Na základe súčasných nastavení vráti pole dostupných pohľadov na týždeň,
+                napr. keď v objekte <a href="../-prefs/index.html">Prefs</a> bol vypnutý pohľad na
+                2-týždenný rozvrh, pole nebude obsahovať prvky <a href="-e-v-e-n.html">EVEN</a> a <a
+                        href="-o-d-d.html">ODD</a>.</p>
+            <code><span class="keyword">val </span><span class="identifier">values</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
+                    class="identifier">Array</span></a><span class="symbol">&lt;</span><a
+                    href="./index.html"><span class="identifier">Regularity</span></a><span
+                    class="symbol">&gt;</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="get.html">get</a></h4>
+        </td>
+        <td>
+            <p>Porovná sa ktorá z inštancii <a href="./index.html">Regularity</a> má parameter <a
+                    href="odd.html">odd</a> zhodný z argumentom <a
+                    href="get.html#com.moriak.schednote.settings.Regularity.Companion$get(kotlin.Boolean)/value">value</a>
+                a takú inštanciu metóda vráti</p>
+            <code><span class="keyword">operator</span> <span class="keyword">fun </span><span
+                    class="identifier">get</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.settings.Regularity.Companion$get(kotlin.Boolean)/value">value</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="./index.html"><span class="identifier">Regularity</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="is-week-odd.html">isWeekOdd</a></h4>
+        </td>
+        <td>
+            <p>Výpočet párnosti alebo nepárnosti týždňa dátumu <a
+                    href="is-week-odd.html#com.moriak.schednote.settings.Regularity.Companion$isWeekOdd(kotlin.Long)/millis">millis</a>
+                uvedeného v milisekundách</p>
+            <code><span class="keyword">fun </span><span class="identifier">isWeekOdd</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.settings.Regularity.Companion$isWeekOdd(kotlin.Long)/millis">millis</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;System.currentTimeMillis()<span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

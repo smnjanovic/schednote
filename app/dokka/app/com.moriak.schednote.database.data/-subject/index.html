@@ -1,0 +1,298 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Subject - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.database.data</a>&nbsp;/&nbsp;<a
+        href="./index.html">Subject</a><br/>
+<br/>
+<h1>Subject</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Subject</span>&nbsp;<span
+        class="symbol">:</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/os/Parcelable.html"><span
+        class="identifier">Parcelable</span></a><span class="symbol">, </span><a
+        href="../-note-category.html"><span class="identifier">NoteCategory</span></a></code>
+<p>Trieda uchováva dáta o jednom predmete</p>
+<h3>Types</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-c-r-e-a-t-o-r/index.html">CREATOR</a></h4>
+        </td>
+        <td>
+            <p>Statický objekt poskytuje dáta a pravidlá spoločné pre všetky predmety</p>
+            <code><span class="keyword">companion</span> <span class="keyword">object </span><span
+                    class="identifier">CREATOR</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Parcelable/Creator.html"><span
+                    class="identifier">Creator</span></a><span class="symbol">&lt;</span><a
+                    href="./index.html"><span class="identifier">Subject</span></a><span
+                    class="symbol">&gt;</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
+        </td>
+        <td>
+            <code><span class="identifier">Subject</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject$<init>(android.os.Parcel)/parcel">parcel</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Parcel.html"><span
+                    class="identifier">Parcel</span></a><span class="symbol">)</span></code>
+            <p>Trieda uchováva dáta o jednom predmete</p>
+            <code><span class="identifier">Subject</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject$<init>(kotlin.Long, kotlin.String, kotlin.String)/id">id</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject$<init>(kotlin.Long, kotlin.String, kotlin.String)/abb">abb</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject$<init>(kotlin.Long, kotlin.String, kotlin.String)/name">name</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="abb.html">abb</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">var </span><span class="identifier">abb</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="id.html">id</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">val </span><span class="identifier">id</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="name.html">name</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">var </span><span class="identifier">name</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="describe-contents.html">describeContents</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">describeContents</span><span class="symbol">(</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="equals.html">equals</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">equals</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Subject$equals(kotlin.Any)/other">other</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span
+                    class="identifier">Any</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="hash-code.html">hashCode</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">hashCode</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="to-string.html">toString</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">toString</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="write-to-parcel.html">writeToParcel</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">writeToParcel</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject$writeToParcel(android.os.Parcel, kotlin.Int)/parcel">parcel</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Parcel.html"><span
+                    class="identifier">Parcel</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject$writeToParcel(android.os.Parcel, kotlin.Int)/flags">flags</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="abb_limit.html">abb_limit</a></h4>
+        </td>
+        <td>
+            <p>Maximálny počet znakov v skratke predmetu</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">abb_limit</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="d.html">d</a></h4>
+        </td>
+        <td>
+            <p>Výber číslic</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">d</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="l.html">l</a></h4>
+        </td>
+        <td>
+            <p>Výber písmen</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">l</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="name_limit.html">name_limit</a></h4>
+        </td>
+        <td>
+            <p>Maximálny počet znakov v celom názve predmetu</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">name_limit</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="create-from-parcel.html">createFromParcel</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">createFromParcel</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject.CREATOR$createFromParcel(android.os.Parcel)/parcel">parcel</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Parcel.html"><span
+                    class="identifier">Parcel</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a href="./index.html"><span
+                    class="identifier">Subject</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="new-array.html">newArray</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">newArray</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Subject.CREATOR$newArray(kotlin.Int)/size">size</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
+                    class="identifier">Array</span></a><span class="symbol">&lt;</span><a
+                    href="./index.html"><span class="identifier">Subject</span></a><span
+                    class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="valid-abb.html">validAbb</a></h4>
+        </td>
+        <td>
+            <p>Kontrola správnosti formátu skratky</p>
+            <code><span class="keyword">fun </span><span class="identifier">validAbb</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Subject.CREATOR$validAbb(kotlin.String)/abb">abb</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="valid-name.html">validName</a></h4>
+        </td>
+        <td>
+            <p>Kontrola správnosti formátu názvu</p>
+            <code><span class="keyword">fun </span><span class="identifier">validName</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Subject.CREATOR$validName(kotlin.String)/name">name</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

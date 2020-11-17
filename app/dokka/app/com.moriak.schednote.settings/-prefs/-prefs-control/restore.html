@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Prefs.PrefsControl.restore - app</title>
+    <link href="../../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../../index.html">app</a>&nbsp;/&nbsp;<a href="../../index.html">com.moriak.schednote.settings</a>&nbsp;/&nbsp;<a
+        href="../index.html">Prefs</a>&nbsp;/&nbsp;<a href="index.html">PrefsControl</a>&nbsp;/&nbsp;<a
+        href="./restore.html">restore</a><br/>
+<br/>
+<h1>restore</h1>
+<a name="com.moriak.schednote.settings.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.settings.Prefs.PrefsControl.restore.T)"></a>
+<code><span class="keyword">protected</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span
+        class="identifier">T</span><span class="symbol">&gt;</span> <span
+        class="identifier">restore</span><span class="symbol">(</span><span class="identifier"
+                                                                            id="com.moriak.schednote.settings.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.settings.Prefs.PrefsControl.restore.T)/key">key</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+        class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
+                                                                                id="com.moriak.schednote.settings.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.settings.Prefs.PrefsControl.restore.T)/default">default</span><span
+        class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">?</span>&nbsp;<span
+        class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><span
+        class="identifier">T</span><span class="symbol">?</span></code>
+<p>Zjednodušené ukladanie hodnôt typu <a href="restore.html#T">T</a>. Typ <a
+        href="restore.html#T">T</a> nesmie byť nič iné ako primitívny typ
+    Reťazec alebo rad reťazcov (Set).</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+    <code>key</code> - značka pod ktorou sa hodnota nájde</p>
+<p><a name="default"></a>
+    <code>default</code> - predvolená hodnota, ak pod značkou <a
+            href="restore.html#com.moriak.schednote.settings.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.settings.Prefs.PrefsControl.restore.T)/key">key</a>
+    žiadna hodnota neexistuje</p>
+<h3>Exceptions</h3>
+<p><a name="ClassCastException"></a>
+    <code>ClassCastException</code> - Príčiny:
+    Keď nenulová hodnota <a
+            href="restore.html#com.moriak.schednote.settings.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.settings.Prefs.PrefsControl.restore.T)/default">default</a>
+    je iných typov, ako: <a
+            href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>,
+    <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a>, <a
+            href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, <a
+            href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a>, <a
+            href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>,
+    <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a>
+    Keď je pod kľúčom <a
+            href="restore.html#com.moriak.schednote.settings.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.settings.Prefs.PrefsControl.restore.T)/key">key</a>
+    vložená hodnota iného typu ako <a href="restore.html#T">T</a></p>
+</BODY>
+</HTML>

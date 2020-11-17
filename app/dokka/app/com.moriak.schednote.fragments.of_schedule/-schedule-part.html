@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>SchedulePart - app</title>
+    <link href="../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../index.html">app</a>&nbsp;/&nbsp;<a href="index.html">com.moriak.schednote.fragments.of_schedule</a>&nbsp;/&nbsp;<a
+        href="./-schedule-part.html">SchedulePart</a><br/>
+<br/>
+<h1>SchedulePart</h1>
+<code><span class="keyword">interface </span><span class="identifier">SchedulePart</span></code>
+<p>Interface slúži len na odlíšenie sa od ostatných tried <a
+        href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html">SubActivity</a>,
+    ktoré nemajú so zobrazením
+    alebo nastavením rozvrhu nič spoločné</p>
+<h3>Inheritors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-design-editor/index.html">DesignEditor</a></h4>
+        </td>
+        <td>
+            <p>V tomto fragmente sa upravuje dizajn tabuľky rozvrhu a v ponuke je aj možnosť
+                nastavenia rozvrhu
+                s obrázkom ako pozadie. Ak pomery strán obrázku a zariadenia nie sú rovnaké, tak sú
+                3 spôsoby
+                zobrazenia obrázku na pozadí rozvrhu. Obrázok aj tabuľku možno posúvať a výsledný
+                obrázok sa dá nastaviť
+                ako pozadie</p>
+            <code><span class="keyword">class </span><span class="identifier">DesignEditor</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html"><span
+                    class="identifier">SubActivity</span></a><span class="symbol">, </span><a
+                    href="./-schedule-part.html"><span
+                    class="identifier">SchedulePart</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-lesson-times-list/index.html">LessonTimesList</a></h4>
+        </td>
+        <td>
+            <p>V tomto fragmente sa nastavujú otváracie hodiny.
+                Nastaví sa tu, od kedy rozvrh začína a pridávajú sa hodiny ako časové jednotky
+                rozvrhu <a href="../com.moriak.schednote.database.data/-lesson-time/index.html">LessonTime</a>.
+                Upravovanej hodina sa nastaví koľko trvá, a aká dlhá prestávka má byť po nej</p>
+            <code><span class="keyword">class </span><span class="identifier">LessonTimesList</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html"><span
+                    class="identifier">SubActivity</span></a><span class="symbol">, </span><a
+                    href="./-schedule-part.html"><span
+                    class="identifier">SchedulePart</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-lesson-types-list/index.html">LessonTypesList</a></h4>
+        </td>
+        <td>
+            <p>Fragment zobrazuje upraviteľný zoznam typov hodín, ktoré sú potrebné pre prácu s
+                rozvrhom</p>
+            <code><span class="keyword">class </span><span class="identifier">LessonTypesList</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html"><span
+                    class="identifier">SubActivity</span></a><span class="symbol">, </span><a
+                    href="./-schedule-part.html"><span
+                    class="identifier">SchedulePart</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-schedule-editor/index.html">ScheduleEditor</a></h4>
+        </td>
+        <td>
+            <p>V tomto fragmente pridávam hodiny do rozvrhu, ktoré môže aj zmazať alebo upraviť.
+                Po každej zmene sa tabuľka s rozvrhom prekreslí</p>
+            <code><span class="keyword">class </span><span class="identifier">ScheduleEditor</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html"><span
+                    class="identifier">SubActivity</span></a><span class="symbol">, </span><a
+                    href="./-schedule-part.html"><span
+                    class="identifier">SchedulePart</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Database.getBusyDays - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
+        href="../index.html">com.moriak.schednote.database</a>&nbsp;/&nbsp;<a href="index.html">Database</a>&nbsp;/&nbsp;<a
+        href="./get-busy-days.html">getBusyDays</a><br/>
+<br/>
+<h1>getBusyDays</h1>
+<a name="com.moriak.schednote.database.Database$getBusyDays(com.moriak.schednote.settings.Regularity, com.moriak.schednote.settings.WorkWeek)"></a>
+<code><span class="keyword">fun </span><span class="identifier">getBusyDays</span><span
+        class="symbol">(</span><span class="identifier"
+                                     id="com.moriak.schednote.database.Database$getBusyDays(com.moriak.schednote.settings.Regularity, com.moriak.schednote.settings.WorkWeek)/reg">reg</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="../../com.moriak.schednote.settings/-regularity/index.html"><span class="identifier">Regularity</span></a><span
+        class="symbol">, </span><span class="identifier"
+                                      id="com.moriak.schednote.database.Database$getBusyDays(com.moriak.schednote.settings.Regularity, com.moriak.schednote.settings.WorkWeek)/workWeek">workWeek</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="../../com.moriak.schednote.settings/-work-week/index.html"><span class="identifier">WorkWeek</span></a><span
+        class="symbol">)</span><span class="symbol">: </span><a
+        href="https://docs.oracle.com/javase/6/docs/api/java/util/TreeMap.html"><span
+        class="identifier">TreeMap</span></a><span class="symbol">&lt;</span><a
+        href="../../com.moriak.schednote.other/-day/index.html"><span class="identifier">Day</span></a><span
+        class="symbol">,</span>&nbsp;<a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+        class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code>
+<p>Vráti strom, ktorého kľúči sú dni <a
+        href="../../com.moriak.schednote.other/-day/index.html">Day</a> a ich hodnoty <a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>
+    hovoria o tom,
+    či v danom dni prebieha aspoň 1 vyučovacia hodina</p>
+<h3>Parameters</h3>
+<p><a name="reg"></a>
+    <code>reg</code> - pravidelnosť týždňa</p>
+<p><a name="workWeek"></a>
+    <code>workWeek</code> - pracovný deň</p>
+<p><strong>Return</strong><br/>
+    Strom hodnôt <a
+            href="https://docs.oracle.com/javase/6/docs/api/java/util/TreeMap.html">TreeMap</a>&lt;<a
+            href="../../com.moriak.schednote.other/-day/index.html">Day</a>, <a
+            href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>&gt;
+</p>
+</BODY>
+</HTML>

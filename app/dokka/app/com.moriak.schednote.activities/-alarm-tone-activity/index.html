@@ -1,0 +1,180 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>AlarmToneActivity - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.activities</a>&nbsp;/&nbsp;<a
+        href="./index.html">AlarmToneActivity</a><br/>
+<br/>
+<h1>AlarmToneActivity</h1>
+<code><span class="keyword">class </span><span
+        class="identifier">AlarmToneActivity</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+        href="../-shake-compat-activity/index.html"><span
+        class="identifier">ShakeCompatActivity</span></a></code>
+<p>Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
+    Bez tohoto povolenia bude obmedzený výber tónov budenia.</p>
+<h3>Constructors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
+        </td>
+        <td>
+            <p>Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
+                Bez tohoto povolenia bude obmedzený výber tónov budenia.</p>
+            <code><span class="identifier">AlarmToneActivity</span><span
+                    class="symbol">(</span><span class="symbol">)</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="on-create.html">onCreate</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie citlivosti otrasu a následné vykonanie udalosti</p>
+            <code><span class="keyword">fun </span><span class="identifier">onCreate</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.activities.AlarmToneActivity$onCreate(android.os.Bundle)/savedInstanceState">savedInstanceState</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Bundle.html"><span
+                    class="identifier">Bundle</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-create-options-menu.html">onCreateOptionsMenu</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onCreateOptionsMenu</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.activities.AlarmToneActivity$onCreateOptionsMenu(android.view.Menu)/menu">menu</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/Menu.html"><span
+                    class="identifier">Menu</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-destroy.html">onDestroy</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">onDestroy</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-options-item-selected.html">onOptionsItemSelected</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onOptionsItemSelected</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.activities.AlarmToneActivity$onOptionsItemSelected(android.view.MenuItem)/item">item</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/MenuItem.html"><span
+                    class="identifier">MenuItem</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-request-permissions-result.html">onRequestPermissionsResult</a></h4>
+        </td>
+        <td>
+            <p>Po zatrasení sa zobrazí rozhranie pre zadávanie hlasových pokynov. Aby to malo
+                význam, musí byť povolené nahrávanie hlasu</p>
+            <code><span class="keyword">fun </span><span class="identifier">onRequestPermissionsResult</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.activities.AlarmToneActivity$onRequestPermissionsResult(kotlin.Int, kotlin.Array((kotlin.String)), kotlin.IntArray)/request">request</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.activities.AlarmToneActivity$onRequestPermissionsResult(kotlin.Int, kotlin.Array((kotlin.String)), kotlin.IntArray)/permissions">permissions</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
+                    class="identifier">Array</span></a><span class="symbol">&lt;</span><span
+                    class="keyword">out</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">&gt;</span><span
+                    class="symbol">, </span><span class="identifier"
+                                                  id="com.moriak.schednote.activities.AlarmToneActivity$onRequestPermissionsResult(kotlin.Int, kotlin.Array((kotlin.String)), kotlin.IntArray)/granted">granted</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html"><span
+                    class="identifier">IntArray</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-resume.html">onResume</a></h4>
+        </td>
+        <td>
+            <p>Aktivácia senzoru trasenia</p>
+            <code><span class="keyword">fun </span><span class="identifier">onResume</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-save-instance-state.html">onSaveInstanceState</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onSaveInstanceState</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.activities.AlarmToneActivity$onSaveInstanceState(android.os.Bundle)/outState">outState</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Bundle.html"><span
+                    class="identifier">Bundle</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-shake.html">onShake</a></h4>
+        </td>
+        <td>
+            <p>Ak práve hra hudba, po zatrasení zariadenia bude zastavená,
+                inak sa vykoná rodičovská metóda</p>
+            <code><span class="keyword">fun </span><span class="identifier">onShake</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-support-navigate-up.html">onSupportNavigateUp</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onSupportNavigateUp</span><span class="symbol">(</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

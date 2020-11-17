@@ -1,0 +1,146 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Prefs.States - app</title>
+    <link href="../../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../../index.html">app</a>&nbsp;/&nbsp;<a href="../../index.html">com.moriak.schednote.settings</a>&nbsp;/&nbsp;<a
+        href="../index.html">Prefs</a>&nbsp;/&nbsp;<a href="./index.html">States</a><br/>
+<br/>
+<h1>States</h1>
+<code><span class="keyword">class </span><span class="identifier">States</span>&nbsp;<span
+        class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code>
+<p>Uchováva informáciu o poslednom zobrazenom obsahu, posledných zadávaných hodnotách a posledných
+    úprav grafických prvkov</p>
+<h3>Constructors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
+        </td>
+        <td>
+            <p>Uchováva informáciu o poslednom zobrazenom obsahu, posledných zadávaných hodnotách a
+                posledných úprav grafických prvkov</p>
+            <code><span class="identifier">States</span><span class="symbol">(</span><span
+                    class="symbol">)</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="bg-image.html">bgImage</a></h4>
+        </td>
+        <td>
+            <p>Obrázok na pozadí plátna</p>
+            <code><span class="keyword">var </span><span class="identifier">bgImage</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="bg-image-fit.html">bgImageFit</a></h4>
+        </td>
+        <td>
+            <p>Transformácia obrázku na plátne</p>
+            <code><span class="keyword">var </span><span class="identifier">bgImageFit</span><span
+                    class="symbol">: </span><span class="identifier">ImgFit</span><span
+                    class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="bg-image-pos.html">bgImagePos</a></h4>
+        </td>
+        <td>
+            <p>Pozícia obrázku</p>
+            <code><span class="keyword">var </span><span class="identifier">bgImagePos</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span
+                    class="identifier">Float</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="last-alarm-category.html">lastAlarmCategory</a></h4>
+        </td>
+        <td>
+            <p>Posledný zobrazený obsah v hlavnej aktivite (2. úroveň - Upozornenia)</p>
+            <code><span class="keyword">var </span><span class="identifier">lastAlarmCategory</span><span
+                    class="symbol">: </span><a
+                    href="../../../com.moriak.schednote.menu/-alarm-category/index.html"><span
+                    class="identifier">AlarmCategory</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="last-menu-choice.html">lastMenuChoice</a></h4>
+        </td>
+        <td>
+            <p>Posledný zobrazený obsah v hlavnej aktivite (1. úroveň)</p>
+            <code><span class="keyword">var </span><span
+                    class="identifier">lastMenuChoice</span><span class="symbol">: </span><a
+                    href="../../../com.moriak.schednote.menu/-sub-content/index.html"><span
+                    class="identifier">SubContent</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="last-schedule-display.html">lastScheduleDisplay</a></h4>
+        </td>
+        <td>
+            <p>Posledný zobrazený obsah v hlavnej aktivite (2. úroveň - Rozvrh)</p>
+            <code><span class="keyword">var </span><span
+                    class="identifier">lastScheduleDisplay</span><span class="symbol">: </span><a
+                    href="../../../com.moriak.schednote.menu/-schedule-display/index.html"><span
+                    class="identifier">ScheduleDisplay</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="last-schedule-start-advance.html">lastScheduleStartAdvance</a></h4>
+        </td>
+        <td>
+            <p>Naposledy nastavený predstih budenia pred začiatkom vyučovania</p>
+            <code><span class="keyword">var </span><span
+                    class="identifier">lastScheduleStartAdvance</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="last-set-break-duration.html">lastSetBreakDuration</a></h4>
+        </td>
+        <td>
+            <p>Naposledy nastavená dĺžka prestávky</p>
+            <code><span class="keyword">var </span><span
+                    class="identifier">lastSetBreakDuration</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="last-set-lesson-duration.html">lastSetLessonDuration</a></h4>
+        </td>
+        <td>
+            <p>Naposledy nastavená dĺžka hodiny</p>
+            <code><span class="keyword">var </span><span
+                    class="identifier">lastSetLessonDuration</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="table-y.html">tableY</a></h4>
+        </td>
+        <td>
+            <p>Pozícia tabuľky rozvrhu na plátne</p>
+            <code><span class="keyword">var </span><span class="identifier">tableY</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html"><span
+                    class="identifier">Float</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

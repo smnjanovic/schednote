@@ -1,0 +1,221 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Lesson - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.database.data</a>&nbsp;/&nbsp;<a
+        href="./index.html">Lesson</a><br/>
+<br/>
+<h1>Lesson</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Lesson</span>&nbsp;<span
+        class="symbol">:</span>&nbsp;<a href="../-schedule-event/index.html"><span
+        class="identifier">ScheduleEvent</span></a></code>
+<p>Hodina - udalosť rozvrhu <a href="../-schedule-event/index.html">ScheduleEvent</a>, pri ktorej sa
+    zíde skupina ľudí v určitej miestnosti <a href="room.html">room</a>,
+    jej priebeh má nejakú formu <a href="type.html">type</a> a je tematicky zameraná na jeden
+    predmet <a href="sub.html">sub</a>.</p>
+<h3>Constructors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
+        </td>
+        <td>
+            <p>Hodina - udalosť rozvrhu <a href="../-schedule-event/index.html">ScheduleEvent</a>,
+                pri ktorej sa zíde skupina ľudí v určitej miestnosti <a href="room.html">room</a>,
+                jej priebeh má nejakú formu <a href="type.html">type</a> a je tematicky zameraná na
+                jeden predmet <a href="sub.html">sub</a>.</p>
+            <code><span class="identifier">Lesson</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Lesson$<init>(kotlin.Long, com.moriak.schednote.settings.Regularity, com.moriak.schednote.other.Day, kotlin.ranges.IntRange, kotlin.Int, com.moriak.schednote.database.data.Subject, kotlin.String)/id">id</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Lesson$<init>(kotlin.Long, com.moriak.schednote.settings.Regularity, com.moriak.schednote.other.Day, kotlin.ranges.IntRange, kotlin.Int, com.moriak.schednote.database.data.Subject, kotlin.String)/regularity">regularity</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.settings/-regularity/index.html"><span
+                    class="identifier">Regularity</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Lesson$<init>(kotlin.Long, com.moriak.schednote.settings.Regularity, com.moriak.schednote.other.Day, kotlin.ranges.IntRange, kotlin.Int, com.moriak.schednote.database.data.Subject, kotlin.String)/day">day</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.other/-day/index.html"><span
+                    class="identifier">Day</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Lesson$<init>(kotlin.Long, com.moriak.schednote.settings.Regularity, com.moriak.schednote.other.Day, kotlin.ranges.IntRange, kotlin.Int, com.moriak.schednote.database.data.Subject, kotlin.String)/time">time</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/-int-range/index.html"><span
+                    class="identifier">IntRange</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Lesson$<init>(kotlin.Long, com.moriak.schednote.settings.Regularity, com.moriak.schednote.other.Day, kotlin.ranges.IntRange, kotlin.Int, com.moriak.schednote.database.data.Subject, kotlin.String)/type">type</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Lesson$<init>(kotlin.Long, com.moriak.schednote.settings.Regularity, com.moriak.schednote.other.Day, kotlin.ranges.IntRange, kotlin.Int, com.moriak.schednote.database.data.Subject, kotlin.String)/sub">sub</span><span
+                    class="symbol">:</span>&nbsp;<a href="../-subject/index.html"><span
+                    class="identifier">Subject</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Lesson$<init>(kotlin.Long, com.moriak.schednote.settings.Regularity, com.moriak.schednote.other.Day, kotlin.ranges.IntRange, kotlin.Int, com.moriak.schednote.database.data.Subject, kotlin.String)/room">room</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="day.html">day</a></h4>
+        </td>
+        <td>
+            <p>Deň udalosti</p>
+            <code><span class="keyword">val </span><span class="identifier">day</span><span
+                    class="symbol">: </span><a
+                    href="../../com.moriak.schednote.other/-day/index.html"><span
+                    class="identifier">Day</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="id.html">id</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">val </span><span class="identifier">id</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="regularity.html">regularity</a></h4>
+        </td>
+        <td>
+            <p>Údaj, či sa daná udalosť opakuje každý týždeň, alebo každý druhý párny alebo nepárny
+                týždeň</p>
+            <code><span class="keyword">val </span><span class="identifier">regularity</span><span
+                    class="symbol">: </span><a
+                    href="../../com.moriak.schednote.settings/-regularity/index.html"><span
+                    class="identifier">Regularity</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="room.html">room</a></h4>
+        </td>
+        <td>
+            <p>Miestnosť</p>
+            <code><span class="keyword">val </span><span class="identifier">room</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="sub.html">sub</a></h4>
+        </td>
+        <td>
+            <p>Predmet</p>
+            <code><span class="keyword">val </span><span class="identifier">sub</span><span
+                    class="symbol">: </span><a href="../-subject/index.html"><span
+                    class="identifier">Subject</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="time.html">time</a></h4>
+        </td>
+        <td>
+            <p>Rozsah poradí časových jednotiek rozvrhu <a href="../-lesson-time/index.html">LessonTime</a>
+            </p>
+            <code><span class="keyword">val </span><span class="identifier">time</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/-int-range/index.html"><span
+                    class="identifier">IntRange</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="type.html">type</a></h4>
+        </td>
+        <td>
+            <p>Typ hodiny</p>
+            <code><span class="keyword">val </span><span class="identifier">type</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="is-equal.html">isEqual</a></h4>
+        </td>
+        <td>
+            <p>Porovnanie, či sa jedná o rovnakú udalosť</p>
+            <code><span class="keyword">fun </span><span class="identifier">isEqual</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Lesson$isEqual(com.moriak.schednote.database.data.ScheduleEvent)/other">other</span><span
+                    class="symbol">:</span>&nbsp;<a href="../-schedule-event/index.html"><span
+                    class="identifier">ScheduleEvent</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="to-string.html">toString</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">toString</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="room_limit.html">room_limit</a></h4>
+        </td>
+        <td>
+            <p>maximálny počet znakov v popise miestnosti</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">room_limit</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="room-valid.html">roomValid</a></h4>
+        </td>
+        <td>
+            <p>Kontrola správnosti formátu popisu miestnosti - dodržanie maximálnej dĺžky</p>
+            <code><span class="keyword">fun </span><span class="identifier">roomValid</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Lesson.Companion$roomValid(android.text.Editable)/editable">editable</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/text/Editable.html"><span
+                    class="identifier">Editable</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

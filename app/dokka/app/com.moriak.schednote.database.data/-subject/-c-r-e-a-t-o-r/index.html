@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Subject.CREATOR - app</title>
+    <link href="../../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../../index.html">app</a>&nbsp;/&nbsp;<a href="../../index.html">com.moriak.schednote.database.data</a>&nbsp;/&nbsp;<a
+        href="../index.html">Subject</a>&nbsp;/&nbsp;<a href="./index.html">CREATOR</a><br/>
+<br/>
+<h1>CREATOR</h1>
+<code><span class="keyword">companion</span> <span class="keyword">object </span><span
+        class="identifier">CREATOR</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/os/Parcelable/Creator.html"><span
+        class="identifier">Creator</span></a><span class="symbol">&lt;</span><a
+        href="../index.html"><span class="identifier">Subject</span></a><span
+        class="symbol">&gt;</span></code>
+<p>Statický objekt poskytuje dáta a pravidlá spoločné pre všetky predmety</p>
+<h3>Companion Object Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="abb_limit.html">abb_limit</a></h4>
+        </td>
+        <td>
+            <p>Maximálny počet znakov v skratke predmetu</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">abb_limit</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="d.html">d</a></h4>
+        </td>
+        <td>
+            <p>Výber číslic</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">d</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="l.html">l</a></h4>
+        </td>
+        <td>
+            <p>Výber písmen</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">l</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="name_limit.html">name_limit</a></h4>
+        </td>
+        <td>
+            <p>Maximálny počet znakov v celom názve predmetu</p>
+            <code><span class="keyword">const</span> <span class="keyword">val </span><span
+                    class="identifier">name_limit</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="create-from-parcel.html">createFromParcel</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">createFromParcel</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.database.data.Subject.CREATOR$createFromParcel(android.os.Parcel)/parcel">parcel</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Parcel.html"><span
+                    class="identifier">Parcel</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a href="../index.html"><span
+                    class="identifier">Subject</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="new-array.html">newArray</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">newArray</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Subject.CREATOR$newArray(kotlin.Int)/size">size</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span
+                    class="identifier">Array</span></a><span class="symbol">&lt;</span><a
+                    href="../index.html"><span class="identifier">Subject</span></a><span
+                    class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="valid-abb.html">validAbb</a></h4>
+        </td>
+        <td>
+            <p>Kontrola správnosti formátu skratky</p>
+            <code><span class="keyword">fun </span><span class="identifier">validAbb</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Subject.CREATOR$validAbb(kotlin.String)/abb">abb</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="valid-name.html">validName</a></h4>
+        </td>
+        <td>
+            <p>Kontrola správnosti formátu názvu</p>
+            <code><span class="keyword">fun </span><span class="identifier">validName</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.database.data.Subject.CREATOR$validName(kotlin.String)/name">name</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>
