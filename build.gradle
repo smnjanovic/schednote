@@ -21,13 +21,16 @@ buildscript {
     }
 }
 
+repositories {
+    jcenter()
+}
+
 apply plugin: 'org.jetbrains.dokka'
 
 allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 
