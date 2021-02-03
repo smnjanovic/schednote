@@ -15,17 +15,18 @@ abstract class Table {
         const val FK_ERR = "Invalid foreign key!"
     }
 
-    // názov tabuľky je odvodený od názvu triedy
-    private val table = javaClass.simpleName.let { old ->
-        StringBuilder().apply {
-            var first = true
-            old.forEach {
-                if (it.isUpperCase()) {
-                    if (first) first = false else append('_')
-                    append(it.toLowerCase())
-                } else append(it)
-            }
-        }.toString()
+    private val table: String
+
+    init {
+        var first = true
+        val sb = StringBuilder()
+        javaClass.simpleName.forEach {
+            if (it.isUpperCase()) {
+                if (first) first = false else sb.append('_')
+                sb.append(it.toLowerCase())
+            } else sb.append(it)
+        }
+        table = sb.toString()
     }
 
     /**

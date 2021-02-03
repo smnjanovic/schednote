@@ -157,7 +157,7 @@ class LessonTools private constructor() {
     private var onUpdateEnd: () -> Unit = fun() = Unit
 
     init {
-        days.addAll(Prefs.settings.workWeek.days)
+        days.addAll(Prefs.settings.workWeek.workDay)
         scheduleTimes.addAll(App.data.lessonTimes())
         for (lesson in scheduleTimes) lesStarts.add(LessonStart(lesson))
         val range = (mainView.start_setter?.selectedItemPosition?.coerceAtLeast(0)

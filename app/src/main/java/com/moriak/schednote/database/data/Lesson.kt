@@ -47,10 +47,9 @@ data class Lesson(
     override fun isEqual(other: ScheduleEvent?): Boolean =
         other is Lesson && sub == other.sub && type == other.type && room == other.room
 
-    override fun toString(): String = String.format("%s  — %s%s %s",
-        sub.abb,
-        day.toString(),
-        regularity
-            .odd?.let { if (it) " I." else " II." } ?: "",
-        Prefs.settings.lessonTimeFormat.rangeFormat(time))
+    override fun toString(): String {
+        val reg = regularity.odd?.let { if (it) " I." else " II." } ?: ""
+        val rangeFormat = Prefs.settings.lessonTimeFormat.rangeFormat(time)
+        return String.format("%s  — %s%s %s", sub.abb, day.toString(), reg, rangeFormat)
+    }
 }

@@ -24,17 +24,18 @@ enum class Day(val value: Int) {
          * Z čísla dňa získať enum reprezentujúci daný deň
          * @param n číslo dňa v týždni
          * @return [Day] Výsledný deň.
-         * @throws IndexOutOfBoundsException [n] nesmie byť mimo rozsahu 1..7.
          */
-        operator fun get(n: Int) = when (n) {
-            MONDAY -> MON
-            TUESDAY -> TUE
-            WEDNESDAY -> WED
-            THURSDAY -> THU
-            FRIDAY -> FRI
-            SATURDAY -> SAT
-            SUNDAY -> SUN
-            else -> throw IndexOutOfBoundsException("Out of week-range!")
+        operator fun get(n: Int): Day {
+            return when (n) {
+                MONDAY -> MON
+                TUESDAY -> TUE
+                WEDNESDAY -> WED
+                THURSDAY -> THU
+                FRIDAY -> FRI
+                SATURDAY -> SAT
+                SUNDAY -> SUN
+                else -> throw IndexOutOfBoundsException("Out of week-range!")
+            }
         }
     }
 

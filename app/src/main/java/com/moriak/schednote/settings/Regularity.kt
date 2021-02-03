@@ -56,7 +56,7 @@ enum class Regularity(val odd: Boolean?) {
             App.cal.set(DAY_OF_YEAR, 1)
             App.cal.add(
                 DAY_OF_YEAR,
-                (settings.workWeek.days.first().value - App.cal.get(DAY_OF_WEEK)).let { if (it < 1) it + 7 else it })
+                (settings.workWeek.workDay.first().value - App.cal.get(DAY_OF_WEEK)).let { if (it < 1) it + 7 else it })
             val firstDayOfWeek: Int = App.cal.get(DAY_OF_YEAR)
             return ((today - firstDayOfWeek) / 7 + 1) % 2 == 1
         }

@@ -1,12 +1,9 @@
 package com.moriak.schednote.fragments.of_main
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.moriak.schednote.App
 import com.moriak.schednote.activities.MainActivity
 
 /**
@@ -95,9 +92,5 @@ abstract class SubActivity : Fragment() {
     override fun onResume() {
         super.onResume()
         if (activity is MainActivity) (activity as MainActivity).introduce()
-        Handler(Looper.myLooper()!!).postDelayed(
-            { App.log(activity?.supportFragmentManager?.fragments) },
-            1000
-        )
     }
 }

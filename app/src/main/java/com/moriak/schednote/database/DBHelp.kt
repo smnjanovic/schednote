@@ -10,7 +10,7 @@ import com.moriak.schednote.database.tables.*
  */
 class DBHelp : SQLiteOpenHelper(App.ctx, "schednote.db", null, 1) {
     private val tables: Array<Table> =
-        arrayOf(Subjects, Schedule, LessonTypes, Notes, Colors, Lessons, LessonsToJoin)
+        arrayOf(Subjects, ScheduleRange, LessonTypes, Notes, Colors, Lessons, LessonsToJoin)
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("PRAGMA foreign_keys = ON;")

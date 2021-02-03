@@ -14,7 +14,7 @@ import com.moriak.schednote.database.tables.Lessons.WEEK_ODDITY
 import com.moriak.schednote.database.tables.LessonsToJoin.LEFT
 import com.moriak.schednote.database.tables.LessonsToJoin.MID
 import com.moriak.schednote.database.tables.LessonsToJoin.RIGHT
-import com.moriak.schednote.database.tables.Schedule.ORDER
+import com.moriak.schednote.database.tables.ScheduleRange.ORDER
 import com.moriak.schednote.database.tables.Subjects.SUB_ID
 
 /**
@@ -46,7 +46,7 @@ object Lessons : Table() {
             $TYPE INTEGER NOT NULL,
             $SUB_ID INTEGER NOT NULL,
             $ROOM VARCHAR($room_limit) CHECK(LENGTH($ROOM) <= $room_limit),
-            FOREIGN KEY ($START) REFERENCES $Schedule($START),
+            FOREIGN KEY ($START) REFERENCES $ScheduleRange($START),
             FOREIGN KEY ($TYPE) REFERENCES $LessonTypes($TYPE),
             FOREIGN KEY ($SUB_ID) REFERENCES $Subjects($SUB_ID)
         );
@@ -58,8 +58,8 @@ object Lessons : Table() {
 
         val invalidValues = abort(
             R.string.schedule_out_of_range, """
-            NOT EXISTS (SELECT 1 FROM $Schedule) OR EXISTS (
-                SELECT 1 FROM (SELECT MIN($ORDER) AS mi, MAX($ORDER) AS ma FROM $Schedule)
+            NOT EXISTS (SELECT 1 FROM $ScheduleRange) OR EXISTS (
+                SELECT 1 FROM (SELECT MIN($ORDER) AS mi, MAX($ORDER) AS ma FROM $ScheduleRange)
                 WHERE NEW.$START NOT BETWEEN mi AND ma OR NEW.$START + NEW.$DUR - 1 NOT BETWEEN mi AND ma
             )"""
         )

@@ -84,7 +84,7 @@ class ScheduleWidget : AppWidgetProvider() {
         val lastMinute = App.data.scheduleRangeToMinuteRange(lessonRange)
             ?.last?.let { it + Prefs.settings.earliestMinute } ?: 24 * 60 - 1
 
-        val lastDay = Prefs.settings.workWeek.days.last().value
+        val lastDay = Prefs.settings.workWeek.workDay.last().value
         val today = cal.get(Calendar.DAY_OF_WEEK)
         // kolko dni chyba do dalsieho posledneho pracovneho dna?
         val dayDif = when {

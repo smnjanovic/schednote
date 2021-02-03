@@ -20,9 +20,9 @@ import com.moriak.schednote.database.tables.Lessons.WEEK_ODDITY
 import com.moriak.schednote.database.tables.Notes.DEADLINE
 import com.moriak.schednote.database.tables.Notes.NOTE
 import com.moriak.schednote.database.tables.Notes.NOTE_ID
-import com.moriak.schednote.database.tables.Schedule.BREAK_DUR
-import com.moriak.schednote.database.tables.Schedule.LESSON_DUR
-import com.moriak.schednote.database.tables.Schedule.ORDER
+import com.moriak.schednote.database.tables.ScheduleRange.BREAK_DUR
+import com.moriak.schednote.database.tables.ScheduleRange.LESSON_DUR
+import com.moriak.schednote.database.tables.ScheduleRange.ORDER
 import com.moriak.schednote.database.tables.Subjects.ABB
 import com.moriak.schednote.database.tables.Subjects.SUB_ID
 import com.moriak.schednote.design.Palette
@@ -53,9 +53,9 @@ class Database : DBControl() {
 
     private val WorkWeek.sql: String
         get() {
-            val first = days.first().value
-            val last = days.last().value
-            return when (days.size) {
+            val first = workDay.first().value
+            val last = workDay.last().value
+            return when (workDay.size) {
                 in 1..5 -> DAY + " " + if (first < last) "BETWEEN $first AND $last" else "NOT BETWEEN ${last + 1} AND ${first - 1}"
                 6 -> "$DAY != ${if (first > last) last + 1 else if (first == 1) 7 else 1}"
                 else -> "1 = 1"
@@ -183,7 +183,7 @@ class Database : DBControl() {
      * @return [Boolean] true, ak je do rozvrhu možné vkladať hodiny
      */
     fun isScheduleSet() =
-        one("""SELECT COUNT(*) FROM $Schedule;""") { moveToFirst() && getInt(0) > 0 } ?: false
+        one("""SELECT COUNT(*) FROM $ScheduleRange;""") { moveToFirst() && getInt(0) > 0 } ?: false
 
     /**
      * Získanie denného časového rozvrhu, teda zoznamu objektov, ktoré popisujú koľko daná hodina trvá,
@@ -192,7 +192,7 @@ class Database : DBControl() {
      * @return Zoznam hodín ako najmenších jednotiek rozvrhu
      */
     fun lessonTimes() = all(
-        "SELECT $ORDER, $LESSON_DUR, $BREAK_DUR FROM $Schedule ORDER BY $ORDER"
+        "SELECT $ORDER, $LESSON_DUR, $BREAK_DUR FROM $ScheduleRange ORDER BY $ORDER"
     ) {
         LessonTime(getInt(0), getInt(1), getInt(2))
     }
@@ -218,13 +218,11 @@ class Database : DBControl() {
      * Zistenie začiatku hodiny
      * @return vráti čas začiatku hodiny v minútach meraných od začiadku rozvrhu
      */
-    fun lessonStart(order: Int) = one(
-        """
-        SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR),0)
-        FROM $Schedule
-        WHERE $ORDER < $order
-    """
-    ) { getInt(0) } ?: 0
+    fun lessonStart(order: Int): Int {
+        val sql =
+            "SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR),0) FROM $ScheduleRange WHERE $ORDER < $order"
+        return one(sql) { getInt(0) } ?: 0
+    }
 
     /**
      * Zistenie začiatku hodiny
@@ -236,7 +234,8 @@ class Database : DBControl() {
     fun firstLessonStart(day: Day, regularity: Regularity): Int {
         val order =
             "SELECT MIN($START) FROM $Lessons WHERE $DAY = ${day.value} AND ${regularity.sql}"
-        val start = "SELECT SUM($LESSON_DUR + $BREAK_DUR) FROM $Schedule WHERE $ORDER < ($order);"
+        val start =
+            "SELECT SUM($LESSON_DUR + $BREAK_DUR) FROM $ScheduleRange WHERE $ORDER < ($order);"
         return Prefs.settings.earliestMinute + (one(start) { getInt(0) } ?: 0)
     }
 
@@ -263,16 +262,12 @@ class Database : DBControl() {
      * @param order poradie hodiny
      * @return vráti čas konca hodiny [LessonTime] v minútach meraných od počiatku rozvrhu alebo 0, ak hodina v tomto poradí neexistuje
      */
-    fun lessonEnd(order: Int) = one(
-        """
-        SELECT start + dur FROM (
-            (SELECT SUM($LESSON_DUR + $BREAK_DUR) AS start FROM $Schedule WHERE $ORDER < $order),
-            (SELECT $LESSON_DUR AS dur FROM $Schedule WHERE $ORDER = $order)
-        );
-    """
-    ) {
-        getInt(0)
-    } ?: 0
+    fun lessonEnd(order: Int): Int {
+        val st = "SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR),0) AS start " +
+                "FROM $ScheduleRange WHERE $ORDER < $order"
+        val dur = "SELECT $LESSON_DUR AS dur FROM $ScheduleRange WHERE $ORDER = $order"
+        return one("SELECT start + dur FROM (($st), ($dur))") { getInt(0) } ?: 0
+    }
 
     /**
      * Prevedie rozsah poradí hodín do rozsahu minút začiatku prvej a konca druhej hodiny [LessonTime] meraných od počiatku rozvrhu
@@ -282,9 +277,9 @@ class Database : DBControl() {
     fun scheduleRangeToMinuteRange(range: IntRange): IntRange? = one(
         """
         SELECT a, b + c FROM
-        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS a FROM $Schedule WHERE $ORDER < ${range.first}),
-        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS b FROM $Schedule WHERE $ORDER < ${range.last}),
-        (SELECT $LESSON_DUR AS c FROM $Schedule WHERE $ORDER = ${range.last});
+        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS a FROM $ScheduleRange WHERE $ORDER < ${range.first}),
+        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS b FROM $ScheduleRange WHERE $ORDER < ${range.last}),
+        (SELECT $LESSON_DUR AS c FROM $ScheduleRange WHERE $ORDER = ${range.last});
     """
     ) {
         getInt(0)..getInt(1)
@@ -298,7 +293,7 @@ class Database : DBControl() {
     fun scheduleDuration(except: Int = -1) = one(
         """
         SELECT SUM($LESSON_DUR + $BREAK_DUR)
-        FROM $Schedule
+        FROM $ScheduleRange
         WHERE $ORDER != $except
     """
     ) {
@@ -317,7 +312,7 @@ class Database : DBControl() {
         val result =
             if (scheduleDuration(id) + lessonDuration + breakDuration + Prefs.settings.earliestMinute >= 24 * 60) 0
             else update(
-                Schedule,
+                ScheduleRange,
                 values { put(LESSON_DUR, lessonDuration); put(BREAK_DUR, breakDuration) },
                 "$ORDER = $id"
             )
@@ -331,7 +326,7 @@ class Database : DBControl() {
      * @param order Poradie hodiny [LessonTime]
      */
     fun removeFromSchedule(order: Int): Int {
-        val count = delete(Schedule, "$ORDER = $order")
+        val count = delete(ScheduleRange, "$ORDER = $order")
         ScheduleWidget.update()
         return count
     }
@@ -346,7 +341,7 @@ class Database : DBControl() {
         val newId =
             if (scheduleDuration() + lessonDuration + breakDuration + Prefs.settings.earliestMinute >= 24 * 60) -1
             else insert(
-                Schedule,
+                ScheduleRange,
                 values { put(LESSON_DUR, lessonDuration); put(BREAK_DUR, breakDuration) }).toInt()
         ScheduleWidget.update()
         return newId
@@ -437,17 +432,17 @@ class Database : DBControl() {
      */
     fun fullSchedule(workWeek: WorkWeek, regularity: Regularity): ArrayList<ScheduleEvent> {
         val range = scheduleRange(workWeek, regularity)
+
         val list: ArrayList<ScheduleEvent> = all(
             """
-            SELECT a.$LES_ID, a.$WEEK_ODDITY, a.$DAY, a.$START, a.$START + a.$DUR, a.$TYPE, b.$SUB_ID, b.$ABB, b.$SUB_NAME, a.$ROOM
+            SELECT a.$LES_ID, a.$WEEK_ODDITY, a.$DAY, a.$START, a.$START + a.$DUR,
+                a.$TYPE, b.$SUB_ID, b.$ABB, b.$SUB_NAME, a.$ROOM
             FROM $Lessons a JOIN $Subjects b ON a.$SUB_ID = b.$SUB_ID
-            WHERE ${
-                regularity.sql.replace(
-                    WEEK_ODDITY,
-                    "a.$WEEK_ODDITY"
-                )
-            } AND ${workWeek.sql.replace(DAY, "a.$DAY")}
-            ORDER BY CASE WHEN a.$DAY BETWEEN ${workWeek.days.first().value} AND 7 THEN 0 ELSE 1 END, a.$DAY, a.$START;
+            WHERE ${regularity.sql.replace(WEEK_ODDITY, "a.$WEEK_ODDITY")}
+            AND ${workWeek.sql.replace(DAY, "a.$DAY")}
+            ORDER BY CASE
+            WHEN a.$DAY BETWEEN ${workWeek.workDay.first().value} AND 7
+            THEN 0 ELSE 1 END, a.$DAY, a.$START;
         """
         ) {
             val time = getInt(3) until getInt(4)
@@ -456,7 +451,10 @@ class Database : DBControl() {
             val room = if (isNull(9)) null else getString(9)
             Lesson(getLong(0), reg, Day[getInt(2)], time, getInt(5), sub, room)
         }
-        val days = workWeek.days
+        if (list.size == 0) {
+            for (d in workWeek.workDay) list.add(Free(regularity, d, 0..0))
+        }
+        val days = workWeek.workDay
         for (i in (0..list.size).reversed()) {
             val l1 = if (i > 0) list[i - 1] else null
             val l2 = if (i < list.size) list[i] else null

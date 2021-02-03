@@ -29,10 +29,6 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var editPos: Int? = null
     private var editId: Long? = null
     private var editSub: Subject? = null
-        set(value) {
-            App.log("editSub changed from $editSub to $value")
-            field = value
-        }
     private var editInfo: String? = null
     private var editDeadline: Long? = null
 
@@ -307,8 +303,6 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
          */
         fun bind() {
             editMode = (note?.id ?: -1L) == editId
-
-            App.log("bound holder at $adapterPosition")
 
             itemView.previous.tag = this
             itemView.next.tag = this

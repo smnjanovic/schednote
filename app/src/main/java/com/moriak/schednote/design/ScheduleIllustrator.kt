@@ -59,13 +59,14 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
             val colors = PaletteStorage()
             val range = App.data.scheduleRange(workWeek, reg)
             val events = App.data.fullSchedule(workWeek, reg)
+            App.log(events.joinToString("\n"))
 
             // rozmery
             val colW = (App.w.coerceAtMost(App.h) / range.count())
             val headH = App.dp(18)
             val rowH = App.dp(35)
             val width = colW * range.count()
-            val height = headH + workWeek.days.count() * rowH
+            val height = headH + workWeek.workDay.count() * rowH
 
             // kreslenie
             val cellFill = Paint()
@@ -92,7 +93,7 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
             }
 
             fun Canvas.drawScheduleEvent(e: ScheduleEvent) {
-                val d = workWeek.days.indexOf(e.day)
+                val d = workWeek.workDay.indexOf(e.day)
                 if (d == -1) throw Exception("Invalid day!")
                 if (e.time.first < range.first || e.time.last > range.last) throw Exception("Invalid range!")
                 val left = (e.time.first - range.first) * colW
@@ -122,7 +123,6 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
                     )
                 }
             }
-
 
             fun text(p: Paint, size: Int, bold: Boolean, align: Paint.Align = Paint.Align.CENTER) {
                 p.style = Paint.Style.FILL
@@ -185,7 +185,7 @@ class ScheduleIllustrator private constructor(private val clickAllowed: Boolean 
     private val cols: TableRow = row().also { table.addView(it) }
     private val head: TableRow = row().also { table.addView(it) }
     private val days = TreeMap<Day, TableRow>().apply {
-        for (day in workWeek.days)
+        for (day in workWeek.workDay)
             put(day, row().also { table.addView(it) })
     }
 
