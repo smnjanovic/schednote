@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>AlarmDisplay - app</title>
+    <link href="../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../index.html">app</a>&nbsp;/&nbsp;<a href="index.html">com.moriak.schednote.fragments.of_alarm</a>&nbsp;/&nbsp;<a
+        href="./-alarm-display.html">AlarmDisplay</a><br/>
+<br/>
+<h1>AlarmDisplay</h1>
+<code><span class="keyword">interface </span><span class="identifier">AlarmDisplay</span></code>
+<p>Interface slúži len na odlíšenie sa od ostatných tried <a
+        href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html">SubActivity</a>,
+    ktoré nemajú s upozorneniami nič spoločné</p>
+<h3>Inheritors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-alarm-clock-setter/index.html">AlarmClockSetter</a></h4>
+        </td>
+        <td>
+            <p>V tomto fragmente sa nastavujú budíky. V adaptéri sa zobrazia budíky pre nastavený
+                pracovný deň
+                a ak je povolený 2-týždenný rozvrh dá sa prepínať medzi budíkmi párneho a nepárneho
+                týždňa</p>
+            <code><span class="keyword">class </span><span
+                    class="identifier">AlarmClockSetter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+                    href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html"><span
+                    class="identifier">SubActivity</span></a><span class="symbol">, </span><a
+                    href="./-alarm-display.html"><span
+                    class="identifier">AlarmDisplay</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-reminder-setter/index.html">ReminderSetter</a></h4>
+        </td>
+        <td>
+            <p>V tomto fragmente uživateľ nastavuje predstih upozornenia na úlohy, môže upozornenia
+                vypnúť aj zapnúť</p>
+            <code><span class="keyword">class </span><span class="identifier">ReminderSetter</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html"><span
+                    class="identifier">SubActivity</span></a><span class="symbol">, </span><a
+                    href="./-alarm-display.html"><span
+                    class="identifier">AlarmDisplay</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,240 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>NoteAdapter - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
+        href="../index.html">com.moriak.schednote.adapters</a>&nbsp;/&nbsp;<a href="./index.html">NoteAdapter</a><br/>
+<br/>
+<h1>NoteAdapter</h1>
+<code><span class="keyword">class </span><span class="identifier">NoteAdapter</span>&nbsp;<span
+        class="symbol">:</span>&nbsp;<span class="identifier">Adapter</span><span class="symbol">&lt;</span><span
+        class="identifier">ViewHolder</span><span class="symbol">&gt;</span></code>
+<p>V adaptéri zobrazujem mením a pridávam poznámky</p>
+<h3>Types</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-note-holder/index.html">NoteHolder</a></h4>
+        </td>
+        <td>
+            <p>Holder, ktorý uchováva a zobrazuje dáta o danej úlohe</p>
+            <code><span class="keyword">inner</span> <span class="keyword">class </span><span
+                    class="identifier">NoteHolder</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span></code>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
+        </td>
+        <td>
+            <p>V adaptéri zobrazujem mením a pridávam poznámky</p>
+            <code><span class="identifier">NoteAdapter</span><span class="symbol">(</span><span
+                    class="symbol">)</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="active-position.html">activePosition</a></h4>
+        </td>
+        <td>
+            <p>Položka je aktívna, keď je upravovaná.
+                Keď je položka nová, musí mať rozrobené zmeny</p>
+            <code><span class="keyword">val </span><span
+                    class="identifier">activePosition</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="clear.html">clear</a></h4>
+        </td>
+        <td>
+            <p>Odstrániť všetky poznámky patriace pod súčasne vybranú kategóriu</p>
+            <code><span class="keyword">fun </span><span class="identifier">clear</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="get-item-count.html">getItemCount</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">getItemCount</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="get-item-id.html">getItemId</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">getItemId</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.adapters.NoteAdapter$getItemId(kotlin.Int)/position">position</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="index-of-note.html">indexOfNote</a></h4>
+        </td>
+        <td>
+            <p>Získanie pozície úlohy s danym id</p>
+            <code><span class="keyword">fun </span><span class="identifier">indexOfNote</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.adapters.NoteAdapter$indexOfNote(kotlin.Long)/id">id</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="load-category.html">loadCategory</a></h4>
+        </td>
+        <td>
+            <p>Načítanie úloh patriacich pod vybranú kategóriu</p>
+            <code><span class="keyword">fun </span><span class="identifier">loadCategory</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.adapters.NoteAdapter$loadCategory(com.moriak.schednote.database.data.NoteCategory)/cat">cat</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.database.data/-note-category.html"><span
+                    class="identifier">NoteCategory</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-bind-view-holder.html">onBindViewHolder</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onBindViewHolder</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$onBindViewHolder(androidx.recyclerview.widget.RecyclerView.ViewHolder, kotlin.Int)/holder">holder</span><span
+                    class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span><span
+                    class="symbol">, </span><span class="identifier"
+                                                  id="com.moriak.schednote.adapters.NoteAdapter$onBindViewHolder(androidx.recyclerview.widget.RecyclerView.ViewHolder, kotlin.Int)/position">position</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-create-view-holder.html">onCreateViewHolder</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onCreateViewHolder</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/parent">parent</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+                    class="identifier">ViewGroup</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/viewType">viewType</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><span class="identifier">ViewHolder</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="reload.html">reload</a></h4>
+        </td>
+        <td>
+            <p>Opätovné načítanie zoznamu úloh</p>
+            <code><span class="keyword">fun </span><span class="identifier">reload</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="reload-subjects.html">reloadSubjects</a></h4>
+        </td>
+        <td>
+            <p>Opätovné načítanie množiny predmetov</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">reloadSubjects</span><span class="symbol">(</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="remove-outcast.html">removeOutcast</a></h4>
+        </td>
+        <td>
+            <p>Odstránenie poznámky</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">removeOutcast</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$removeOutcast(kotlin.Int)/position">position</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-on-date-time-set-attempt.html">setOnDateTimeSetAttempt</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie správania, čo sa má stať pri pokuse o zmenu dátumu</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">setOnDateTimeSetAttempt</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.adapters.NoteAdapter$setOnDateTimeSetAttempt(kotlin.Function2((kotlin.Int, kotlin.Long, kotlin.Unit)))/fn">fn</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">,</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

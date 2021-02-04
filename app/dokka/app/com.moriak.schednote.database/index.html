@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>com.moriak.schednote.database - app</title>
+    <link href="../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../index.html">app</a>&nbsp;/&nbsp;<a href="./index.html">com.moriak.schednote.database</a><br/>
+<br/>
+<h2>Package com.moriak.schednote.database</h2>
+<h3>Types</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-database/index.html">Database</a></h4>
+        </td>
+        <td>
+            <p>Trieda manipuluje s databazou SQLite. (prijem, tvorba, aktualizacia a odstranenie
+                dat)</p>
+            <code><span class="keyword">class </span><span
+                    class="identifier">Database</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+                    href="-d-b-control/index.html"><span
+                    class="identifier">DBControl</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-d-b-control/index.html">DBControl</a></h4>
+        </td>
+        <td>
+            <p>Trieda slúži na čítanie a zápis dát. Ak abstraktná trieda poskytuje funkcie, ktoré
+                zjednodušia zápis
+                príkazov v potomkovi ktorý je určený len na výber a zápis konkrétnych dát z
+                konkrétnych tabuliek</p>
+            <code><span class="keyword">abstract</span> <span class="keyword">class </span><span
+                    class="identifier">DBControl</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-d-b-help/index.html">DBHelp</a></h4>
+        </td>
+        <td>
+            <p>Trieda slúži na tvorbu a pripojenie sa k offline databáze</p>
+            <code><span class="keyword">class </span><span
+                    class="identifier">DBHelp</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper.html"><span
+                    class="identifier">SQLiteOpenHelper</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-trigger/index.html">Trigger</a></h4>
+        </td>
+        <td>
+            <p>Trieda umožňuje vytvoriť trigger s unikátnym názvom pre udalosti reprezentované
+                hodnotami
+                <a href="-trigger/index.html">Trigger</a>.</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">Trigger</span></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

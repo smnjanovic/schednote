@@ -10,7 +10,7 @@ android {
 
     dokka {
         outputFormat = 'html'
-        outputDirectory = "$buildDir/dokka"
+        outputDirectory = "$projectDir/dokka"
 
         configuration {
             skipDeprecated = true
@@ -71,5 +71,5 @@ dependencies {
 // workaround: create DocsByDokka
 task DocsByDokka (type: org.jetbrains.dokka.gradle.DokkaTask) {
     outputFormat = "html"
-    outputDirectory = "$buildDir/dokka"
+    outputDirectory = "$projectDir/dokka"
 }

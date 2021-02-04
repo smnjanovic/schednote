@@ -1,0 +1,180 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>LessonTools - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
+        href="../index.html">com.moriak.schednote.design</a>&nbsp;/&nbsp;<a href="./index.html">LessonTools</a><br/>
+<br/>
+<h1>LessonTools</h1>
+<code><span class="keyword">class </span><span class="identifier">LessonTools</span></code>
+<p>Trieda ponúka vykresľuje výber vlastností pre novo vznikajúce alebo upravované triedy.
+    Pokiaľ s rozvrhom ešte nie je možné pracovať z dôvodu chýbajúcich údajov, vykreslí sa
+    okno, v ktorom je užívateľ upozornený na to, čo mu chýba</p>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="abort-messages.html">abortMessages</a></h4>
+        </td>
+        <td>
+            <p>Zrušenie všetkých nadchádzajúcich akcií v handleri.</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">abortMessages</span><span class="symbol">(</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="attach-to.html">attachTo</a></h4>
+        </td>
+        <td>
+            <p>Nastaviť rodičovské okno, do ktorého bude okno vytvorené v tejto triede vložené</p>
+            <code><span class="keyword">fun </span><span class="identifier">attachTo</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.LessonTools$attachTo(android.view.ViewGroup)/newParent">newParent</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+                    class="identifier">ViewGroup</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="./index.html"><span class="identifier">LessonTools</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="get-lesson-info.html">getLessonInfo</a></h4>
+        </td>
+        <td>
+            <p>Zhromaždiť informácie o vyučovacej hodine, ktorá je práve upravovaná.</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">getLessonInfo</span><span class="symbol">(</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
+                    class="identifier">String</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="involve-buttons.html">involveButtons</a></h4>
+        </td>
+        <td>
+            <p>Uviesť, ktoré tlačidlá budú zastávať dané funkcie. Tlačidlá nie sú súčasťou layoutu
+                načítaného
+                v tejto triede</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">involveButtons</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.design.LessonTools$involveButtons(android.view.View, android.view.View, android.view.View)/p_set">p_set</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/View.html"><span
+                    class="identifier">View</span></a><span class="symbol">?</span><span
+                    class="symbol">, </span><span class="identifier"
+                                                  id="com.moriak.schednote.design.LessonTools$involveButtons(android.view.View, android.view.View, android.view.View)/p_cancelOrEmpty">p_cancelOrEmpty</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/View.html"><span
+                    class="identifier">View</span></a><span class="symbol">?</span><span
+                    class="symbol">, </span><span class="identifier"
+                                                  id="com.moriak.schednote.design.LessonTools$involveButtons(android.view.View, android.view.View, android.view.View)/p_clear">p_clear</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/View.html"><span
+                    class="identifier">View</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="./index.html"><span class="identifier">LessonTools</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-events.html">setEvents</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie správania sa tlačidiel, ktoré slúžia na presmerovanie sa na fragmenty,
+                v ktorých je možné doplniť údaje chýbajúce k tomu, aby sa mohlo manipulovať s
+                rozvrhom</p>
+            <code><span class="keyword">fun </span><span class="identifier">setEvents</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.LessonTools$setEvents(com.moriak.schednote.activities.MainActivity)/activity">activity</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.activities/-main-activity/index.html"><span
+                    class="identifier">MainActivity</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-lesson.html">setLesson</a></h4>
+        </td>
+        <td>
+            <p>Označenie hodiny na ktorej budú vykonané zmeny. Toto označenie je po vykonaní zmien
+                vhodné zrušiť pomocou metódy <a href="#">unsetLesson</a>.</p>
+            <code><span class="keyword">fun </span><span class="identifier">setLesson</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.LessonTools$setLesson(com.moriak.schednote.database.data.Lesson)/lesson">lesson</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.database.data/-lesson/index.html"><span
+                    class="identifier">Lesson</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-on-input.html">setOnInput</a></h4>
+        </td>
+        <td>
+            <p>Nastavuje, čo sa má stať, keď sa vykonajú zmeny v rozvrhu</p>
+            <code><span class="keyword">fun </span><span class="identifier">setOnInput</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.LessonTools$setOnInput(kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, kotlin.Unit)))/fn">fn</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
+                    href="../../com.moriak.schednote.database.data/-schedule-event/index.html"><span
+                    class="identifier">ScheduleEvent</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-on-update-end.html">setOnUpdateEnd</a></h4>
+        </td>
+        <td>
+            <p>Nastavuje, čo sa má udiať, keď bol nejaký predmet už aktualizovaný</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">setOnUpdateEnd</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.design.LessonTools$setOnUpdateEnd(kotlin.Function0((kotlin.Unit)))/fn">fn</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span
+                    class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="make-tools.html">makeTools</a></h4>
+        </td>
+        <td>
+            <p>vytvorenie novej inštancie alebo aplikovanie už existujúcej inštancie</p>
+            <code><span class="keyword">fun </span><span class="identifier">makeTools</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.LessonTools.Companion$makeTools(com.moriak.schednote.design.LessonTools)/tools">tools</span><span
+                    class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">LessonTools</span></a><span
+                    class="symbol">?</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a href="./index.html"><span class="identifier">LessonTools</span></a></code>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

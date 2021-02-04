@@ -1,0 +1,146 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>Prefs - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
+        href="../index.html">com.moriak.schednote.settings</a>&nbsp;/&nbsp;<a href="./index.html">Prefs</a><br/>
+<br/>
+<h1>Prefs</h1>
+<code><span class="keyword">object </span><span class="identifier">Prefs</span></code>
+<p>Objekt slúži na zjednodušenie zápisu a čítania dát zo súborov zdielaných preferencií <a
+        href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>.
+    Je tu niekoľko vnorených tried, pričom každá z nich reprezentuje jeden samostatný súbor
+    preferencií
+    s nejakými hodnotami. Vďaka getterom a setterom atribútov inštancií týchto tried si nemusím
+    pamätať
+    kľúč pod akým ukladám hodnoty a už nie som ani obmedzený na hodnoty primitívnych typov alebo
+    typu
+    String a StringSet.</p>
+<p>Tento súbor je znovupoužiteľný pre budúce projekty vyvíjané v androide.</p>
+<h3>Types</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-first-visit/index.html">FirstVisit</a></h4>
+        </td>
+        <td>
+            <p>Trieda uchováva informáciu o tom, ktoré veci robí užívateľ prvý krát. Napr. koľký
+                krát
+                zobrazil layout nejakého fragmentu / aktivity</p>
+            <code><span class="keyword">class </span><span class="identifier">FirstVisit</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-notifications/index.html">Notifications</a></h4>
+        </td>
+        <td>
+            <p>Uchováva nastavenia upozornení</p>
+            <code><span class="keyword">class </span><span class="identifier">Notifications</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-prefs-control/index.html">PrefsControl</a></h4>
+        </td>
+        <td>
+            <p>Umožňuje ukladanie a získavanie preferencii cez gettery a settery cez jednoduchšie
+                metódy
+                dostupné z tejto abstraktnej triedy</p>
+            <code><span class="keyword">abstract</span> <span class="keyword">class </span><span
+                    class="identifier">PrefsControl</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-settings/index.html">Settings</a></h4>
+        </td>
+        <td>
+            <p>Táto trieda uchováva informácie o prispôsobení aplikácie</p>
+            <code><span class="keyword">class </span><span
+                    class="identifier">Settings</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
+                    class="identifier">PrefsControl</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-states/index.html">States</a></h4>
+        </td>
+        <td>
+            <p>Uchováva informáciu o poslednom zobrazenom obsahu, posledných zadávaných hodnotách a
+                posledných úprav grafických prvkov</p>
+            <code><span class="keyword">class </span><span
+                    class="identifier">States</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
+                    class="identifier">PrefsControl</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-widgets/index.html">Widgets</a></h4>
+        </td>
+        <td>
+            <p>Pristupuje ku konfiguráciam widgetov</p>
+            <code><span class="keyword">class </span><span
+                    class="identifier">Widgets</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
+                    class="identifier">PrefsControl</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Properties</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="first-visit.html">firstVisit</a></h4>
+        </td>
+        <td>
+            <p>Slúži na zistenie, či bola aktivita, fragment zobrazené prvý krát alebo či sa
+                konkétna vec vykonanáva prvý krát</p>
+            <code><span class="keyword">val </span><span class="identifier">firstVisit</span><span
+                    class="symbol">: </span><span class="identifier">FirstVisit</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="notifications.html">notifications</a></h4>
+        </td>
+        <td>
+            <p>Uchováva nastavenia upozornení</p>
+            <code><span class="keyword">val </span><span
+                    class="identifier">notifications</span><span class="symbol">: </span><span
+                    class="identifier">Notifications</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="settings.html">settings</a></h4>
+        </td>
+        <td>
+            <p>Táto trieda uchováva informácie o prispôsobení aplikácie</p>
+            <code><span class="keyword">val </span><span class="identifier">settings</span><span
+                    class="symbol">: </span><span class="identifier">Settings</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="states.html">states</a></h4>
+        </td>
+        <td>
+            <p>Uchováva informáciu o poslednom zobrazenom obsahu, posledných zadávaných hodnotách a
+                posledných úprav grafických prvkov</p>
+            <code><span class="keyword">val </span><span class="identifier">states</span><span
+                    class="symbol">: </span><span class="identifier">States</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="widgets.html">widgets</a></h4>
+        </td>
+        <td>
+            <p>Obsahuje konfigurácie widgetov</p>
+            <code><span class="keyword">val </span><span class="identifier">widgets</span><span
+                    class="symbol">: </span><span class="identifier">Widgets</span></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

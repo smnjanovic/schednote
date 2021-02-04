@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>TimeTable.buildSchedule - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.database.data</a>&nbsp;/&nbsp;<a
+        href="index.html">TimeTable</a>&nbsp;/&nbsp;<a
+        href="./build-schedule.html">buildSchedule</a><br/>
+<br/>
+<h1>buildSchedule</h1>
+<a name="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">buildSchedule</span><span
+        class="symbol">(</span><span class="identifier"
+                                     id="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))/frame">frame</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+        class="identifier">ViewGroup</span></a><span class="symbol">, </span><span
+        class="identifier"
+        id="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))/cols">cols</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+        class="identifier">ViewGroup</span></a><span class="symbol">, </span><span
+        class="identifier"
+        id="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))/headRow">headRow</span><span
+        class="symbol">:</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+        class="identifier">ViewGroup</span></a><span class="symbol">, </span><span
+        class="identifier"
+        id="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))/newRow">newRow</span><span
+        class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
+        class="symbol">-&gt;</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+        class="identifier">ViewGroup</span></a><span class="symbol">, </span><span
+        class="identifier"
+        id="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))/tplCol">tplCol</span><span
+        class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span
+        class="symbol">-&gt;</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/View.html"><span
+        class="identifier">View</span></a><span class="symbol">, </span><span class="identifier"
+                                                                              id="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))/headCol">headCol</span><span
+        class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
+        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/-int-range/index.html"><span
+        class="identifier">IntRange</span></a><span class="symbol">)</span>&nbsp;<span
+        class="symbol">-&gt;</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/View.html"><span
+        class="identifier">View</span></a><span class="symbol">, </span><span class="identifier"
+                                                                              id="com.moriak.schednote.database.data.TimeTable$buildSchedule(android.view.ViewGroup, android.view.ViewGroup, android.view.ViewGroup, kotlin.Function0((android.view.ViewGroup)), kotlin.Function0((android.view.View)), kotlin.Function1((kotlin.ranges.IntRange, android.view.View)), kotlin.Function1((com.moriak.schednote.database.data.ScheduleEvent, android.view.View)))/evtCol">evtCol</span><span
+        class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
+        href="../-schedule-event/index.html"><span class="identifier">ScheduleEvent</span></a><span
+        class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/View.html"><span
+        class="identifier">View</span></a><span class="symbol">)</span><span
+        class="symbol">: </span><a
+        href="https://docs.oracle.com/javase/6/docs/api/java/util/TreeMap.html"><span
+        class="identifier">TreeMap</span></a><span class="symbol">&lt;</span><a
+        href="../../com.moriak.schednote.other/-day/index.html"><span class="identifier">Day</span></a><span
+        class="symbol">,</span>&nbsp;<a
+        href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+        class="identifier">ViewGroup</span></a><span class="symbol">&gt;</span></code>
+</BODY>
+</HTML>

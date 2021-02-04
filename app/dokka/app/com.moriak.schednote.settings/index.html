@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>com.moriak.schednote.settings - app</title>
+    <link href="../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../index.html">app</a>&nbsp;/&nbsp;<a href="./index.html">com.moriak.schednote.settings</a><br/>
+<br/>
+<h2>Package com.moriak.schednote.settings</h2>
+<h3>Types</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-alarm-tone/index.html">AlarmTone</a></h4>
+        </td>
+        <td>
+            <p>Trieda uchováva a poskytuje informácie o skladbe uloženej v zariadení.
+                Existencia tohoto súboru sa overuje pri vzniku inštancie ale už nie počas jej
+                existencie</p>
+            <code><span class="keyword">class </span><span class="identifier">AlarmTone</span>&nbsp;<span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Parcelable.html"><span
+                    class="identifier">Parcelable</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-color-group/index.html">ColorGroup</a></h4>
+        </td>
+        <td>
+            <p>Pri nastavovaní dizajnu rozvrhu okrem buniek rôznych typov hodín možno upravovať
+                farby aj iných prvkov.
+                Inštancie tejto triedy budú využívané na prístup k zapamätaným farbám, ktoré
+                nesúvisia s typom hodín.</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">ColorGroup</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-date-order/index.html">DateOrder</a></h4>
+        </td>
+        <td>
+            <p>Poradie dňa mesiaca a roka v textovej reprezentácii dátumu</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">DateOrder</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-date-separator/index.html">DateSeparator</a></h4>
+        </td>
+        <td>
+            <p>Oddeľovač dňa, mesiaca a roka v dátume v textovom formáte</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">DateSeparator</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-lesson-time-format/index.html">LessonTimeFormat</a></h4>
+        </td>
+        <td>
+            <p>Trieda určuje ako sa budú jednotlivé hodiný prezentované.</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">LessonTimeFormat</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-prefs/index.html">Prefs</a></h4>
+        </td>
+        <td>
+            <p>Objekt slúži na zjednodušenie zápisu a čítania dát zo súborov zdielaných preferencií
+                <a href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>.
+                Je tu niekoľko vnorených tried, pričom každá z nich reprezentuje jeden samostatný
+                súbor preferencií
+                s nejakými hodnotami. Vďaka getterom a setterom atribútov inštancií týchto tried si
+                nemusím pamätať
+                kľúč pod akým ukladám hodnoty a už nie som ani obmedzený na hodnoty primitívnych
+                typov alebo typu
+                String a StringSet.</p>
+            <code><span class="keyword">object </span><span class="identifier">Prefs</span></code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-regularity/index.html">Regularity</a></h4>
+        </td>
+        <td>
+            <p>Táto trieda reprezentuje interval opakovania sa rozvrhu, ktorý môže byť týždenný
+                alebo 2-týždenný.
+                Pri 2-týždennom rozvrhu sa určuje párnosť týždňa</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">Regularity</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-time-format/index.html">TimeFormat</a></h4>
+        </td>
+        <td>
+            <p>Časové formáty nastavené v aplikácii</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">TimeFormat</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-work-week/index.html">WorkWeek</a></h4>
+        </td>
+        <td>
+            <p>Reprezentuje pracovný týždeň. Nie všade sa pracuje alebo uči od pondelka do piatku.
+                Všetky možné pracovné dni sveta ktoré existujú možno nájsť tu:
+                https://en.wikipedia.org/wiki/Workweek_and_weekend</p>
+            <code><span class="keyword">enum</span> <span class="keyword">class </span><span
+                    class="identifier">WorkWeek</span></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

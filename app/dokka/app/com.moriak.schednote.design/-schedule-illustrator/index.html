@@ -1,0 +1,212 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>ScheduleIllustrator - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
+        href="../index.html">com.moriak.schednote.design</a>&nbsp;/&nbsp;<a href="./index.html">ScheduleIllustrator</a><br/>
+<br/>
+<h1>ScheduleIllustrator</h1>
+<code><span class="keyword">class </span><span class="identifier">ScheduleIllustrator</span></code>
+<p>Trieda slúži na vykreslenie tabuľky s rozvrhom. Jej inštancia umožňuje meniť vzhľad tejto
+    triedy</p>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="attach-to.html">attachTo</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie rodiča tabuľky rozvrhu</p>
+            <code><span class="keyword">fun </span><span class="identifier">attachTo</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.ScheduleIllustrator$attachTo(android.view.ViewGroup)/v">v</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
+                    class="identifier">ViewGroup</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a href="./index.html"><span class="identifier">ScheduleIllustrator</span></a></code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="background.html">background</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie ktoré okno sa použije ako farba pozadia</p>
+            <code><span class="keyword">fun </span><span class="identifier">background</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.ScheduleIllustrator$background(android.view.View)/bg">bg</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/View.html"><span
+                    class="identifier">View</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="./index.html"><span
+                    class="identifier">ScheduleIllustrator</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="customize-column-width.html">customizeColumnWidth</a></h4>
+        </td>
+        <td>
+            <p>Zmeniť šírku tabuľky a jej stĺpcov tak, aby boli všetky stĺpce rovnako široké, až na
+                posledný.
+                Posledný stĺpec môže byť širší od ostatných o zvyšok po delení šírky tabuľky počtom
+                jej stĺpcov.</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">customizeColumnWidth</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.design.ScheduleIllustrator$customizeColumnWidth(kotlin.Int)/w">w</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;cols.width<span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="involve-buttons.html">involveButtons</a></h4>
+        </td>
+        <td>
+            <p>Zahrnutie tlačidiel, ktoré prevezmu určitu rolu. Tlačidlá budú skryté pokiaľ nie je
+                povolený dvojtýždenný rozvrh.</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">involveButtons</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.design.ScheduleIllustrator$involveButtons(android.view.View, android.view.View)/odd">odd</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/View.html"><span
+                    class="identifier">View</span></a><span class="symbol">?</span><span
+                    class="symbol">, </span><span class="identifier"
+                                                  id="com.moriak.schednote.design.ScheduleIllustrator$involveButtons(android.view.View, android.view.View)/even">even</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/view/View.html"><span
+                    class="identifier">View</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="./index.html"><span
+                    class="identifier">ScheduleIllustrator</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="recolor.html">recolor</a></h4>
+        </td>
+        <td>
+            <p>Vizuálne sa zmenia farby tématickych prvkov ako sú množiny buniek v tabuľke a
+                pozadie.</p>
+            <code><span class="keyword">fun </span><span class="identifier">recolor</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.ScheduleIllustrator$recolor(kotlin.Int, com.moriak.schednote.design.Palette)/type">type</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.design.ScheduleIllustrator$recolor(kotlin.Int, com.moriak.schednote.design.Palette)/palette">palette</span><span
+                    class="symbol">:</span>&nbsp;<a href="../-palette/index.html"><span
+                    class="identifier">Palette</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="redraw.html">redraw</a></h4>
+        </td>
+        <td>
+            <p>Tu dochádza k prekresleniu celého rozvrhu</p>
+            <code><span class="keyword">fun </span><span class="identifier">redraw</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-on-lesson-click.html">setOnLessonClick</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie metódy, ktorá sa vykoná po kliknutí na niektorú z vyučovacích hodín</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">setOnLessonClick</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.design.ScheduleIllustrator$setOnLessonClick(kotlin.Function1((com.moriak.schednote.database.data.Lesson, kotlin.Unit)))/fn">fn</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><span
+                    class="identifier">lesson</span><span class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.database.data/-lesson/index.html"><span
+                    class="identifier">Lesson</span></a><span class="symbol">)</span>&nbsp;<span
+                    class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="store-color.html">storeColor</a></h4>
+        </td>
+        <td>
+            <p>Natrvalo uložiť súčasné zafarbenie prvkov daného typu <a
+                    href="store-color.html#com.moriak.schednote.design.ScheduleIllustrator$storeColor(kotlin.Int)/type">type</a>
+            </p>
+            <code><span class="keyword">fun </span><span class="identifier">storeColor</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.ScheduleIllustrator$storeColor(kotlin.Int)/type">type</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="draw-schedule.html">drawSchedule</a></h4>
+        </td>
+        <td>
+            <p>Vykreslenie rozvrhu ako obrázok</p>
+            <code><span class="keyword">fun </span><span class="identifier">drawSchedule</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.ScheduleIllustrator.Companion$drawSchedule(com.moriak.schednote.settings.WorkWeek, com.moriak.schednote.settings.Regularity)/workWeek">workWeek</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.settings/-work-week/index.html"><span
+                    class="identifier">WorkWeek</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.design.ScheduleIllustrator.Companion$drawSchedule(com.moriak.schednote.settings.WorkWeek, com.moriak.schednote.settings.Regularity)/reg">reg</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.settings/-regularity/index.html"><span
+                    class="identifier">Regularity</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://developer.android.com/reference/android/graphics/Bitmap.html"><span
+                    class="identifier">Bitmap</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="schedule.html">schedule</a></h4>
+        </td>
+        <td>
+            <p>Funkcia vytvorí novú inštanciu, ktorá bude vykresľovať rozvrh a následne umožňovať
+                vykonávať v ňom zmeny.</p>
+            <code><span class="keyword">fun </span><span class="identifier">schedule</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.design.ScheduleIllustrator.Companion$schedule(com.moriak.schednote.design.ScheduleIllustrator, kotlin.Boolean)/illustrator">illustrator</span><span
+                    class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ScheduleIllustrator</span></a><span
+                    class="symbol">?</span><span class="symbol">, </span><span class="identifier"
+                                                                               id="com.moriak.schednote.design.ScheduleIllustrator.Companion$schedule(com.moriak.schednote.design.ScheduleIllustrator, kotlin.Boolean)/clickable">clickable</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span
+                    class="identifier">Boolean</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a href="./index.html"><span class="identifier">ScheduleIllustrator</span></a></code>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+    <meta charset="UTF-8">
+    <title>LessonDurationSetter - app</title>
+    <link href="../../../style.css" rel="stylesheet">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
+        href="../index.html">com.moriak.schednote.dialogs</a>&nbsp;/&nbsp;<a href="./index.html">LessonDurationSetter</a><br/>
+<br/>
+<h1>LessonDurationSetter</h1>
+<code><span class="keyword">class </span><span
+        class="identifier">LessonDurationSetter</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
+        class="identifier">DialogFragment</span></code>
+<p>Dialog nastavenia trvania hodiny a prestávky po nej.</p>
+<h3>Constructors</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
+        </td>
+        <td>
+            <p>Dialog nastavenia trvania hodiny a prestávky po nej.</p>
+            <code><span class="identifier">LessonDurationSetter</span><span
+                    class="symbol">(</span><span class="symbol">)</span></code></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Functions</h3>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <h4><a href="on-create-dialog.html">onCreateDialog</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onCreateDialog</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.dialogs.LessonDurationSetter$onCreateDialog(android.os.Bundle)/savedInstanceState">savedInstanceState</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Bundle.html"><span
+                    class="identifier">Bundle</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://developer.android.com/reference/android/app/AlertDialog.html"><span
+                    class="identifier">AlertDialog</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="on-save-instance-state.html">onSaveInstanceState</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">onSaveInstanceState</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.dialogs.LessonDurationSetter$onSaveInstanceState(android.os.Bundle)/outState">outState</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://developer.android.com/reference/android/os/Bundle.html"><span
+                    class="identifier">Bundle</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-default.html">setDefault</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie predvolených hodnôt. Dialóg vkladá ďaľšiu hodinu <a
+                    href="../../com.moriak.schednote.database.data/-lesson-time/index.html">LessonTime</a>
+                do rozvrhu</p>
+            <code><span class="keyword">fun </span><span class="identifier">setDefault</span><span
+                    class="symbol">(</span><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-on-confirm.html">setOnConfirm</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie čo sa má stať po potvrdení vybraných hodnôt</p>
+            <code><span class="keyword">fun </span><span class="identifier">setOnConfirm</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.dialogs.LessonDurationSetter$setOnConfirm(kotlin.Function3((kotlin.Int, , , kotlin.Unit)))/fn">fn</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">,</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">,</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span
+                    class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-values.html">setValues</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie vybraných hodnôt</p>
+            <code><span class="keyword">fun </span><span class="identifier">setValues</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.dialogs.LessonDurationSetter$setValues(kotlin.Int, kotlin.Int, kotlin.Int)/order">order</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.dialogs.LessonDurationSetter$setValues(kotlin.Int, kotlin.Int, kotlin.Int)/lDur">lDur</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.dialogs.LessonDurationSetter$setValues(kotlin.Int, kotlin.Int, kotlin.Int)/bDur">bDur</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    </tbody>
+</table>
+</BODY>
+</HTML>
