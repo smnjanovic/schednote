@@ -8,9 +8,17 @@ import com.moriak.schednote.database.tables.*
 /**
  * Trieda slúži na tvorbu a pripojenie sa k offline databáze
  */
-class DBHelp : SQLiteOpenHelper(App.ctx, "schednote.db", null, 1) {
+class DBHelp : SQLiteOpenHelper(App.ctx, "schednote.db", null, 10) {
     private val tables: Array<Table> =
-        arrayOf(Subjects, ScheduleRange, LessonTypes, Notes, Colors, Lessons, LessonsToJoin)
+        arrayOf(
+            Subjects,
+            ScheduleRange,
+            LessonTypes,
+            Notes,
+            Colors,
+            LessonData/*Lessons*/,
+            Schedule
+        )
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("PRAGMA foreign_keys = ON;")
@@ -19,7 +27,7 @@ class DBHelp : SQLiteOpenHelper(App.ctx, "schednote.db", null, 1) {
     }
 
     override fun onUpgrade(db: SQLiteDatabase, old: Int, new: Int) {
-        for (t in tables.indices.reversed()) {
+        /*for (t in tables.indices.reversed()) {
             tables[t].also {
                 it.createBackup(db)
                 it.drop(db)
@@ -28,7 +36,9 @@ class DBHelp : SQLiteOpenHelper(App.ctx, "schednote.db", null, 1) {
         for (t in tables) {
             t.recreate(db)
             t.setupTriggers(db)
-        }
+        }*/
+        for (t in tables.reversed()) t.drop(db)
+        onCreate(db)
     }
 
     override fun onDowngrade(db: SQLiteDatabase, old: Int, new: Int) = onUpgrade(db, new, old)

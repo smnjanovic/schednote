@@ -52,98 +52,90 @@ enum class Trigger {
      * Vytvorenie triggra s daným obsahom
      * @param db Databása ku ktorej mám prístup
      * @param table Tabuľka pre ktorú nastavujem trigger
-     * @param cond Podmienka, za akej sa trigger vykoná. Môže byť null, v takom prípade sa vykoná vždy
-     * @param body SQL algoritmus ktorý sa vykoná pri špecifickej udalosti
+     * @param p_cond Podmienka, za akej sa trigger vykoná. Môže byť null, v takom prípade sa vykoná vždy
+     * @param p_body SQL algoritmus ktorý sa vykoná pri špecifickej udalosti
      */
-    fun create(db: SQLiteDatabase, table: Table, cond: String?, body: String) {
+    fun create(db: SQLiteDatabase, table: Table, p_cond: String?, p_body: String) {
+        fun newestOldest(str: String): String {
+            return str.replace(
+                "NEWEST.",
+                if (this == BD || this == AD || this == ID) "OLD." else "NEW."
+            ).replace(
+                "OLDEST.",
+                if (this == BI || this == AI || this == II) "NEW." else "OLD."
+            )
+        }
+
+        val cond = p_cond?.let { newestOldest(p_cond) }
+        val body = newestOldest(p_body)
         when (this) {
             BI, AI, II, BU, AU, IU, BD, AD, ID -> {
-                fun newestOldest(str: String) = str
-                    .replace(
-                        "NEWEST.",
-                        if (this == BD || this == AD || this == ID) "OLD." else "NEW."
-                    )
-                    .replace(
-                        "OLDEST.",
-                        if (this == BI || this == AI || this == II) "NEW." else "OLD."
-                    )
-                // before or after or instead of
                 val bai = when (this) {
                     BI, BU, BD -> "BEFORE"
                     AI, AU, AD -> "AFTER"
                     else -> "INSTEAD OF"
                 }
-                // insert or update or delete
                 val iud = when (this) {
                     BI, AI, II -> "INSERT"
                     BU, AU, IU -> "UPDATE"
                     else -> "DELETE"
                 }
-
-                val triggerName = "${name.toLowerCase(Locale.ROOT)}_$table${++order}"
-                val condition = cond?.let { "WHEN ${newestOldest(it)}" } ?: ""
-
-                db.execSQL(
-                    "CREATE TRIGGER $triggerName $bai $iud ON $table\n$condition BEGIN ${
-                        newestOldest(
-                            body
-                        )
-                    } END;"
-                )
+                val trigger = "${name.toLowerCase(Locale.ROOT)}_$table${++order}"
+                db.execSQL("CREATE TRIGGER $trigger $bai $iud ON $table${cond?.let { " WHEN $it" } ?: ""} BEGIN $body END;")
             }
             BIU -> {
-                BI.create(db, table, cond, body)
-                BU.create(db, table, cond, body)
+                BI.create(db, table, p_cond, p_body)
+                BU.create(db, table, p_cond, p_body)
             }
             AIU -> {
-                AI.create(db, table, cond, body)
-                AU.create(db, table, cond, body)
+                AI.create(db, table, p_cond, p_body)
+                AU.create(db, table, p_cond, p_body)
             }
             IIU -> {
-                II.create(db, table, cond, body)
-                IU.create(db, table, cond, body)
+                II.create(db, table, p_cond, p_body)
+                IU.create(db, table, p_cond, p_body)
             }
 
             BID -> {
-                BI.create(db, table, cond, body)
-                BD.create(db, table, cond, body)
+                BI.create(db, table, p_cond, p_body)
+                BD.create(db, table, p_cond, p_body)
             }
             AID -> {
-                AI.create(db, table, cond, body)
-                AD.create(db, table, cond, body)
+                AI.create(db, table, p_cond, p_body)
+                AD.create(db, table, p_cond, p_body)
             }
             IID -> {
-                II.create(db, table, cond, body)
-                ID.create(db, table, cond, body)
+                II.create(db, table, p_cond, p_body)
+                ID.create(db, table, p_cond, p_body)
             }
 
             BUD -> {
-                BU.create(db, table, cond, body)
-                BD.create(db, table, cond, body)
+                BU.create(db, table, p_cond, p_body)
+                BD.create(db, table, p_cond, p_body)
             }
             AUD -> {
-                AU.create(db, table, cond, body)
-                AD.create(db, table, cond, body)
+                AU.create(db, table, p_cond, p_body)
+                AD.create(db, table, p_cond, p_body)
             }
             IUD -> {
-                IU.create(db, table, cond, body)
-                ID.create(db, table, cond, body)
+                IU.create(db, table, p_cond, p_body)
+                ID.create(db, table, p_cond, p_body)
             }
 
             BIUD -> {
-                BI.create(db, table, cond, body)
-                BU.create(db, table, cond, body)
-                BD.create(db, table, cond, body)
+                BI.create(db, table, p_cond, p_body)
+                BU.create(db, table, p_cond, p_body)
+                BD.create(db, table, p_cond, p_body)
             }
             AIUD -> {
-                AI.create(db, table, cond, body)
-                AU.create(db, table, cond, body)
-                AD.create(db, table, cond, body)
+                AI.create(db, table, p_cond, p_body)
+                AU.create(db, table, p_cond, p_body)
+                AD.create(db, table, p_cond, p_body)
             }
             IIUD -> {
-                II.create(db, table, cond, body)
-                IU.create(db, table, cond, body)
-                ID.create(db, table, cond, body)
+                II.create(db, table, p_cond, p_body)
+                IU.create(db, table, p_cond, p_body)
+                ID.create(db, table, p_cond, p_body)
             }
         }
     }

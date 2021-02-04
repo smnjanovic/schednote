@@ -401,15 +401,15 @@ class DesignEditor : SubActivity(), SchedulePart {
         }
 
         // pridanie tabulky rozvrhu
-        illustrator = ScheduleIllustrator
-            .schedule(
-                savedInstanceState?.let { if (this::illustrator.isInitialized) illustrator else null },
-                false
-            )
-            .attachTo(view.schedule_frame)
-            .involveButtons(view.odd_btn, view.even_btn)
-            .background(view.screen)
-
+        savedInstanceState?.let { if (this::illustrator.isInitialized) illustrator else null }
+            .also {
+                illustrator = ScheduleIllustrator
+                    .schedule(it, false)
+                    .involveButtons(view.odd_btn, view.even_btn)
+                    .background(view.screen)
+                    .attachTo(view.schedule_frame)
+                it ?: illustrator.redraw()
+            } ?: illustrator.customizeColumnWidth()
 
         //nastavenia tagov
         view.rangeH.tag = view.hnum

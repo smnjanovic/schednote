@@ -235,4 +235,5 @@
     <string name="notes_sent_to_calendar">Úlohy sa úspešne vložili do kalendára.</string>
     <string name="no_editable_calendar_available">Žiadny upraviteľný kalendár nie je k dispozícii!</string>
     <string name="save_notes_to_calendar">Uložiť úlohy do kalendára</string>
+    <string name="schedule_cleared">Uvoľnila sa hodina</string>
 </resources>

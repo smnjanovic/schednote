@@ -15,9 +15,9 @@ import com.moriak.schednote.settings.WorkWeek.*
  * @property MON_FRI pondelok - piatok
  * @property MON_SAT pondelok - sobota
  *
- * @property workDay Zoradené pole dní pracovného týždňa
+ * @property workDays Zoradené pole dní pracovného týždňa
  */
-enum class WorkWeek(val workDay: Array<Day>, val weekend: Array<Day>) {
+enum class WorkWeek(val workDays: Array<Day>, val weekend: Array<Day>) {
     SAT_WED(arrayOf(SAT, SUN, MON, TUE, WED), arrayOf(THU, FRI)),
     SAT_THU(arrayOf(SAT, SUN, MON, TUE, WED, THU), arrayOf(FRI)),
     SUN_WED(arrayOf(SUN, MON, TUE, WED), arrayOf(THU, FRI, SAT)),
@@ -42,5 +42,5 @@ enum class WorkWeek(val workDay: Array<Day>, val weekend: Array<Day>) {
         }
     }
 
-    override fun toString() = "${workDay.firstOrNull()} - ${workDay.lastOrNull()}"
+    override fun toString() = "${workDays.firstOrNull()} - ${workDays.lastOrNull()}"
 }

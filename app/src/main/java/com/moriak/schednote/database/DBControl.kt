@@ -211,11 +211,10 @@ abstract class DBControl {
      * @fn Metóda, čo sas bude diať počas danej transakcie
      */
     protected fun transaction(sql: String, fn: SQLiteStatement.() -> Unit) {
-        wrt.beginTransaction()
-        val statement = wrt.compileStatement(sql)
-        statement.fn()
-        wrt.setTransactionSuccessful()
-        wrt.endTransaction()
+        transaction {
+            val statement = wrt.compileStatement(sql)
+            statement.fn()
+        }
     }
 
     /**

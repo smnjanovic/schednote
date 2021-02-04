@@ -490,7 +490,7 @@ object Prefs {
                 bits = 0
                 if (value) {
                     var ww = 0
-                    for (day in settings.workWeek.workDay) ww = ww.or(1.shl(day.value - 1))
+                    for (day in settings.workWeek.workDays) ww = ww.or(1.shl(day.value - 1))
                     bits = if (settings.dualWeekSchedule) bits.or(
                         ww.shl(7).or(ww)
                     ) else bits.or(ww.shl(14))

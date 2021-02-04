@@ -15,17 +15,17 @@ import com.moriak.schednote.settings.Regularity
  * @property sub Predmet
  * @property room Miestnosť
  */
-data class Lesson(
+class Lesson(
     val id: Long,
-    override val regularity: Regularity,
-    override val day: Day,
-    override val time: IntRange,
+    pReg: Regularity,
+    pDay: Day,
+    pTime: IntRange,
     val type: Int,
     val sub: Subject,
     val room: String?
-) : ScheduleEvent {
+) : ScheduleEvent(pReg, pDay, pTime) {
     init {
-        ScheduleEvent.rangeCheck(time)
+        rangeCheck(time)
     }
 
     /**

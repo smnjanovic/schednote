@@ -140,6 +140,7 @@
     <string name="space">Mezera</string>
     <string name="time_format_12">12 hodin</string>
     <string name="time_format_24">24 hodin</string>
+    <string name="schedule_cleared">Uvolnila se hodina</string>
     <string name="schedule_emptied">Rozvrh byl vyprázdněn</string>
     <string name="time_cleared">Čas uvolněný</string>
     <string name="lesson_removed">Hodina odstraněna</string>

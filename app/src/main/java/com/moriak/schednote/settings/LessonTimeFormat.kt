@@ -3,7 +3,6 @@ package com.moriak.schednote.settings
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.database.data.LessonTime
-import com.moriak.schednote.database.data.ScheduleEvent
 import com.moriak.schednote.settings.LessonTimeFormat.*
 
 /**
@@ -66,24 +65,19 @@ enum class LessonTimeFormat {
         ORDER_FROM_0 -> "${range.first - 1}.  — ${range.last - 1}."
         ORDER_FROM_1 -> "${range.first}.  — ${range.last}."
         START_TIME -> {
-            val minuteRange = App.data.scheduleRangeToMinuteRange(range)
-                ?: throw ScheduleEvent.InvalidTimeRangeException(range)
-            val scheduleStart = Prefs.settings.earliestMinute
-            val start =
-                Prefs.settings.getTimeString(scheduleStart + App.data.lessonStart(minuteRange.first))
-            val end =
-                Prefs.settings.getTimeString(scheduleStart + App.data.lessonEnd(minuteRange.last))
-            "$start — $end"
+            val earliest = Prefs.settings.earliestMinute
+            val min = App.data.scheduleRangeToMinuteRange(range) ?: 0..0
+            val st = Prefs.settings.getTimeString(earliest + min.first)
+            val en = Prefs.settings.getTimeString(earliest + min.last)
+            "$st — $en"
         }
     }
 
-    override fun toString(): String {
-        return App.str(
-            when (this) {
-                ORDER_FROM_0 -> R.string.start_lessons_from_0
-                ORDER_FROM_1 -> R.string.start_lessons_from_1
-                START_TIME -> R.string.show_start_time_of_lessons
-            }
-        )
-    }
+    override fun toString(): String = App.str(
+        when (this) {
+            ORDER_FROM_0 -> R.string.start_lessons_from_0
+            ORDER_FROM_1 -> R.string.start_lessons_from_1
+            START_TIME -> R.string.show_start_time_of_lessons
+        }
+    )
 }

@@ -152,7 +152,7 @@
     <string name="default_">Default</string>
     <string name="set_default_alarm_tone">Set default alarm tone</string>
     <string name="alarm_snooze">Alarm Clock snooze</string>
-    <string name="lesson_edit_aborted">Lesson edit aborted</string>
+    <string name="lesson_edit_aborted">Lesson deselected</string>
     <string name="timetable">Timetable</string>
     <string name="invalid_widget">Invalid widget</string>
     <string name="play_ringtone">Play tone</string>
@@ -235,4 +235,5 @@
     <string name="load_notes_from_calendar">Load notes from calendar</string>
     <string name="notes_received_from_calendar">Notes have been loaded from your calendar.</string>
     <string name="no_editable_calendar_available">No editable calendar available!</string>
+    <string name="schedule_cleared">Lesson cleared</string>
 </resources>

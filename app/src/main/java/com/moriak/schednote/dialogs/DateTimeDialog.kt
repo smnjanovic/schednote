@@ -134,7 +134,7 @@ class DateTimeDialog : DialogFragment() {
     private fun setSemesterValues() {
         if (settings.semesterValid) {
             val currDay = calendar.get(DAY_OF_WEEK)
-            val days = settings.workWeek.workDay
+            val days = settings.workWeek.workDays
             root.week.setSelection(settings.semesterWeek(calendar.timeInMillis))
             root.day.setSelection(days.find { currDay == it.value }?.let { days.indexOf(it) } ?: 0)
         }
@@ -181,7 +181,7 @@ class DateTimeDialog : DialogFragment() {
     @SuppressLint("InflateParams")
     private fun buildView(): View {
         root = LayoutInflater.from(App.ctx).inflate(R.layout.datetime_picker, null, false)
-        days = settings.workWeek.workDay
+        days = settings.workWeek.workDays
         weeks = if (settings.semesterValid) (1..settings.semesterWeekCount).toList()
             .toTypedArray() else arrayOf()
         root.week.adapter =

@@ -140,9 +140,12 @@ class LessonTools private constructor() {
             mainView.room.text?.let { s -> s.replace(0, s.length, value) }
         }
 
-    private var confirmBtn: View? = null
-    private var abortBtn: View? = null
-    private var clearBtn: View? = null
+    private val lesson get() = Lesson(-1L, regularity, day, time, type, subject, location ?: "")
+    private val free get() = Free(regularity, day, time)
+
+    private var setBtn: View? = null
+    private var cancelOrEmptyBtn: View? = null
+    private var unsetBtn: View? = null
 
     private var days = ArrayList<Day>()
     private var scheduleTimes = ArrayList<LessonTime>()
@@ -153,11 +156,11 @@ class LessonTools private constructor() {
     private var subjects = ArrayList<Subject>()
 
     private val isModifiable get() = scheduleTimes.size * types.size * subjects.size > 0
-    private var onInput: (ScheduleEvent?) -> Boolean = fun(_) = true
+    private var onInput: (ScheduleEvent?) -> Unit = fun(_) = Unit
     private var onUpdateEnd: () -> Unit = fun() = Unit
 
     init {
-        days.addAll(Prefs.settings.workWeek.workDay)
+        days.addAll(Prefs.settings.workWeek.workDays)
         scheduleTimes.addAll(App.data.lessonTimes())
         for (lesson in scheduleTimes) lesStarts.add(LessonStart(lesson))
         val range = (mainView.start_setter?.selectedItemPosition?.coerceAtLeast(0)
@@ -243,13 +246,6 @@ class LessonTools private constructor() {
      * Zrušenie všetkých nadchádzajúcich akcií v handleri.
      */
     fun abortMessages() = handler.removeMessages(0)
-    private fun parseLesson(id: Long) = Lesson(id, regularity, day, time, type, subject, location)
-    private fun parseFree() = Free(regularity, day, time)
-    private fun input(scheduleEvent: ScheduleEvent) {
-        // ked pri podozreni ze nedoslo k zmene, skusat to znova a po 3 sekundach to vzdat.
-        if (!onInput(scheduleEvent)) handler.postDelayed({ input(scheduleEvent) }, 200)
-        handler.postDelayed({ handler.removeMessages(0) }, 2500)
-    }
 
     /**
      * Nastaviť rodičovské okno, do ktorého bude okno vytvorené v tejto triede vložené
@@ -264,23 +260,23 @@ class LessonTools private constructor() {
     /**
      * Uviesť, ktoré tlačidlá budú zastávať dané funkcie. Tlačidlá nie sú súčasťou layoutu načítaného
      * v tejto triede
-     * @param confirmButton Tlačidlo, ktoré vloží nový alebo upraví označený predmet
-     * @param abortButton Tlačidlo, ktoré odznačí upravovaný predmet
-     * @param clearButton Tlačidlo, ktoré vymaže označený predmet alebo vyprázdni celý rozvrh
+     * @param p_set Tlačidlo, ktoré vloží nový alebo upraví označený predmet
+     * @param p_cancelOrEmpty Tlačidlo, ktoré odznačí upravovaný predmet
+     * @param p_clear Tlačidlo, ktoré vymaže označený predmet alebo vyprázdni celý rozvrh
      * @return Vráti tú istú inštanciu nástrojov na manipuláciu s rozvrhom
      */
-    fun involveButtons(confirmButton: View?, abortButton: View?, clearButton: View?) = also {
-        confirmBtn = confirmButton
-        abortBtn = abortButton
-        clearBtn = clearButton
+    fun involveButtons(p_set: View?, p_cancelOrEmpty: View?, p_clear: View?) = also {
+        setBtn = p_set
+        cancelOrEmptyBtn = p_cancelOrEmpty
+        unsetBtn = p_clear
         updateButtons()
-        confirmBtn?.setOnClickListener { confirm() }
-        abortBtn?.setOnClickListener { abort() }
-        clearBtn?.setOnClickListener { removeOrEmpty() }
+        setBtn?.setOnClickListener { put() }
+        cancelOrEmptyBtn?.setOnClickListener { cancelOrEmpty() }
+        unsetBtn?.setOnClickListener { clear() }
         if (!isModifiable) {
-            confirmBtn?.visibility = GONE
-            abortBtn?.visibility = GONE
-            clearBtn?.visibility = GONE
+            setBtn?.visibility = GONE
+            cancelOrEmptyBtn?.visibility = GONE
+            unsetBtn?.visibility = GONE
         }
     }
 
@@ -296,7 +292,7 @@ class LessonTools private constructor() {
      * Nastavuje, čo sa má stať, keď sa vykonajú zmeny v rozvrhu
      * @fn Metóda, ktorá sa má vykonať po vykonaní zmeny rozvrhu
      */
-    fun setOnInput(fn: (ScheduleEvent?) -> Boolean) {
+    fun setOnInput(fn: (ScheduleEvent?) -> Unit) {
         onInput = fn
     }
 
@@ -305,9 +301,9 @@ class LessonTools private constructor() {
             val modifiable = isModifiable
             error_zone.visibility = if (modifiable) GONE else VISIBLE
             edit_zone.visibility = if (modifiable) VISIBLE else GONE
-            confirmBtn?.visibility = if (modifiable) VISIBLE else GONE
-            abortBtn?.visibility = if (modifiable) VISIBLE else GONE
-            clearBtn?.visibility = if (modifiable) VISIBLE else GONE
+            setBtn?.visibility = if (modifiable) VISIBLE else GONE
+            cancelOrEmptyBtn?.visibility = if (modifiable) VISIBLE else GONE
+            unsetBtn?.visibility = if (modifiable) VISIBLE else GONE
 
             if (!modifiable) {
                 lesson_type_restriction.visibility =
@@ -357,56 +353,43 @@ class LessonTools private constructor() {
         fun txt(view: View?, @StringRes res: Int) {
             view?.let { if (it is TextView) it.setText(res) }
         }
-        txt(confirmBtn, editingLesson?.let { R.string.edit } ?: R.string.insert)
-        txt(abortBtn, R.string.abort)
-        abortBtn?.visibility = editingLesson?.let { VISIBLE } ?: GONE
-        txt(clearBtn, editingLesson?.let { R.string.delete } ?: R.string.to_empty)
+        txt(setBtn, editingLesson?.let { R.string.edit } ?: R.string.insert)
+        txt(cancelOrEmptyBtn, editingLesson?.let { R.string.abort } ?: R.string.to_empty)
+        txt(unsetBtn, editingLesson?.let { R.string.delete } ?: R.string.clear)
     }
 
-    private fun confirm() {
+    private fun put() {
         if (!isModifiable) return
-        val id = App.data.setLesson(
-            editingLesson?.id ?: -1L,
-            regularity,
-            day,
-            time,
-            type,
-            subject.id,
-            location
-        )
-        if (id < 1) throw RuntimeException("Lesson could not be set! Check the inputs on \"LessonTools.kt\"!")
+        val les = lesson
         val resId = editingLesson?.let { R.string.lesson_updated } ?: R.string.lesson_inserted
+        editingLesson?.let { App.data.setScheduleEvent(Free(it.regularity, it.day, it.time)) }
+        App.data.setScheduleEvent(les)
         unsetLesson()
-        input(parseLesson(id))
         App.toast(resId, Gravity.CENTER)
+        onInput(les)
     }
 
-    private fun abort() {
+    private fun cancelOrEmpty() {
         if (isModifiable) {
-            unsetLesson()
+            editingLesson?.let {
+                App.toast(R.string.lesson_edit_aborted, Gravity.CENTER)
+                unsetLesson()
+            } ?: let {
+                App.data.clearSchedule()
+                App.toast(R.string.schedule_emptied, Gravity.CENTER)
+                onInput(null)
+            }
             App.toast(R.string.lesson_edit_aborted, Gravity.CENTER)
         }
     }
 
-    private fun removeOrEmpty() {
+    private fun clear() {
         if (!isModifiable) return
-        when {
-            editingLesson == null -> {
-                App.data.clearSchedule()
-                onInput(null)
-                App.toast(R.string.schedule_emptied, Gravity.CENTER)
-            }
-            editingLesson!!.id < 1 -> {
-                App.data.clearSchedule(day, time, regularity)
-                input(parseFree())
-                App.toast(R.string.time_cleared, Gravity.CENTER)
-            }
-            else -> {
-                App.data.deleteLesson(editingLesson!!.id)
-                input(parseFree())
-                App.toast(R.string.lesson_removed, Gravity.CENTER)
-            }
-        }
-        unsetLesson()
+        val evt = editingLesson?.let { Free(it.regularity, it.day, it.time) } ?: free
+        val res = editingLesson?.let { R.string.lesson_removed } ?: R.string.schedule_cleared
+        App.data.setScheduleEvent(evt)
+        App.toast(res, Gravity.CENTER)
+        if (editingLesson != null) unsetLesson()
+        onInput(evt)
     }
 }

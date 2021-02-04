@@ -9,20 +9,18 @@ import com.moriak.schednote.database.tables.Colors.A
 import com.moriak.schednote.database.tables.Colors.H
 import com.moriak.schednote.database.tables.Colors.L
 import com.moriak.schednote.database.tables.Colors.S
+import com.moriak.schednote.database.tables.LessonData.LES_ID
+import com.moriak.schednote.database.tables.LessonData.ROOM
 import com.moriak.schednote.database.tables.LessonTypes.TYPE
 import com.moriak.schednote.database.tables.LessonTypes.TYPE_NAME
-import com.moriak.schednote.database.tables.Lessons.DAY
-import com.moriak.schednote.database.tables.Lessons.DUR
-import com.moriak.schednote.database.tables.Lessons.LES_ID
-import com.moriak.schednote.database.tables.Lessons.ROOM
-import com.moriak.schednote.database.tables.Lessons.START
-import com.moriak.schednote.database.tables.Lessons.WEEK_ODDITY
 import com.moriak.schednote.database.tables.Notes.DEADLINE
 import com.moriak.schednote.database.tables.Notes.NOTE
 import com.moriak.schednote.database.tables.Notes.NOTE_ID
+import com.moriak.schednote.database.tables.Schedule.DAY
+import com.moriak.schednote.database.tables.Schedule.REG
 import com.moriak.schednote.database.tables.ScheduleRange.BREAK_DUR
 import com.moriak.schednote.database.tables.ScheduleRange.LESSON_DUR
-import com.moriak.schednote.database.tables.ScheduleRange.ORDER
+import com.moriak.schednote.database.tables.ScheduleRange.LES_NO
 import com.moriak.schednote.database.tables.Subjects.ABB
 import com.moriak.schednote.database.tables.Subjects.SUB_ID
 import com.moriak.schednote.design.Palette
@@ -47,20 +45,18 @@ class Database : DBControl() {
 
     private val now get() = System.currentTimeMillis()
 
-    private val Regularity.sql: String
-        get() = "($WEEK_ODDITY IS NULL" + (odd?.let { " OR $WEEK_ODDITY = ${if (it) 1 else 0})" }
-            ?: ")")
-
-    private val WorkWeek.sql: String
-        get() {
-            val first = workDay.first().value
-            val last = workDay.last().value
-            return when (workDay.size) {
-                in 1..5 -> DAY + " " + if (first < last) "BETWEEN $first AND $last" else "NOT BETWEEN ${last + 1} AND ${first - 1}"
-                6 -> "$DAY != ${if (first > last) last + 1 else if (first == 1) 7 else 1}"
-                else -> "1 = 1"
-            }
+    private val Regularity.sql: String get() = sql()
+    private fun Regularity.sql(col: String = REG): String {
+        return when (this) {
+            Regularity.EVEN -> "$col != 1"
+            Regularity.ODD -> "$col != 0"
+            Regularity.EVERY -> "$col = 2"
         }
+    }
+
+    private val WorkWeek.sql: String get() = sql()
+    private fun WorkWeek.sql(col: String = DAY) =
+        "$col NOT IN (${weekend.map { it.value }.joinToString()})"
 
     private val Calendar.now: Long get() = System.currentTimeMillis().also { timeInMillis = it }
     private val Calendar.nextMidnight: Long
@@ -75,11 +71,10 @@ class Database : DBControl() {
     private val Calendar.thisWeek: LongRange get() = now until nextWeek
     private val LongRange.sql get() = "BETWEEN $first AND $last"
 
-    private fun Cursor.getIntOrNull(column: Int) = if (isNull(column)) null else getInt(column)
     private fun Cursor.getLongOrNull(column: Int) = if (isNull(column)) null else getLong(column)
 
-    private fun trimAndCut(s: String, l: Int) =
-        s.trim().let { if (it.length > l) it.substring(0, l) else it }
+    private fun trimAndCut(s: String, l: Int) = s.trim()
+        .let { if (it.length > l) it.substring(0, l) else it }
 
     // predmety
 
@@ -88,21 +83,21 @@ class Database : DBControl() {
      * @param id ID predmetu
      * @return [Subject] Vráti null, ak predmet s takým ID neexistuje
      */
-    fun subject(id: Long) =
-        one("SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects WHERE $SUB_ID = $id;") {
-            Subject(getLong(0), getString(1), getString(2))
-        }
+    fun subject(id: Long): Subject? {
+        val sql = "SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects WHERE $SUB_ID = $id"
+        return one(sql) { Subject(getLong(0), getString(1), getString(2)) }
+    }
 
     /**
      * Načítanie predmetu z databázy
      * @param abb Skratka predmetu
      * @return [Subject] Vráti null, ak predmet s takou skratkou neexistuje
      */
-    fun subject(abb: String) = one(
-        "SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects WHERE $ABB LIKE ?;",
-        abb.trim().toUpperCase(Locale.ROOT)
-    ) {
-        Subject(getLong(0), getString(1), getString(2))
+    fun subject(abb: String): Subject? {
+        val sql = "SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects WHERE $ABB LIKE ?"
+        return one(sql, abb.trim().toUpperCase(Locale.ROOT)) {
+            Subject(getLong(0), getString(1), getString(2))
+        }
     }
 
     /**
@@ -173,8 +168,9 @@ class Database : DBControl() {
      * Kontrola, či sa v databáze nachádzajú nejaké predmety
      * @return [Boolean] true, ak nejaké predmety existujú
      */
-    fun hasSubjects() =
-        one("SELECT COUNT(*) FROM $Subjects") { moveToFirst() && getInt(0) > 0 } ?: false
+    fun hasSubjects() = one("SELECT COUNT(*) FROM $Subjects") {
+        moveToFirst() && getInt(0) > 0
+    } ?: false
 
     // casove bloky rozvrhu
 
@@ -182,8 +178,9 @@ class Database : DBControl() {
      * Kontrola, či je rozvrh zložený z nejakých hodín
      * @return [Boolean] true, ak je do rozvrhu možné vkladať hodiny
      */
-    fun isScheduleSet() =
-        one("""SELECT COUNT(*) FROM $ScheduleRange;""") { moveToFirst() && getInt(0) > 0 } ?: false
+    fun isScheduleSet() = one("""SELECT COUNT(*) FROM $ScheduleRange;""") {
+        moveToFirst() && getInt(0) > 0
+    } ?: false
 
     /**
      * Získanie denného časového rozvrhu, teda zoznamu objektov, ktoré popisujú koľko daná hodina trvá,
@@ -192,7 +189,7 @@ class Database : DBControl() {
      * @return Zoznam hodín ako najmenších jednotiek rozvrhu
      */
     fun lessonTimes() = all(
-        "SELECT $ORDER, $LESSON_DUR, $BREAK_DUR FROM $ScheduleRange ORDER BY $ORDER"
+        "SELECT $LES_NO, $LESSON_DUR, $BREAK_DUR FROM $ScheduleRange ORDER BY $LES_NO"
     ) {
         LessonTime(getInt(0), getInt(1), getInt(2))
     }
@@ -206,21 +203,20 @@ class Database : DBControl() {
      */
     fun scheduleRange(workWeek: WorkWeek, regularity: Regularity) = one(
         """
-        SELECT COALESCE(MIN($START), 0), COALESCE(MAX($START + $DUR), 1)
-        FROM $Lessons
+        SELECT COALESCE(MIN($LES_NO), 0), COALESCE(MAX($LES_NO), 0)
+        FROM $Schedule
         WHERE ${workWeek.sql} AND ${regularity.sql}
     """
-    ) {
-        getInt(0) until getInt(1)
-    }!!
+    ) { getInt(0)..getInt(1) }!!
+
 
     /**
      * Zistenie začiatku hodiny
      * @return vráti čas začiatku hodiny v minútach meraných od začiadku rozvrhu
      */
     fun lessonStart(order: Int): Int {
-        val sql =
-            "SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR),0) FROM $ScheduleRange WHERE $ORDER < $order"
+        val sql = "SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR),0)" +
+                " FROM $ScheduleRange WHERE $LES_NO < $order"
         return one(sql) { getInt(0) } ?: 0
     }
 
@@ -233,9 +229,9 @@ class Database : DBControl() {
      */
     fun firstLessonStart(day: Day, regularity: Regularity): Int {
         val order =
-            "SELECT MIN($START) FROM $Lessons WHERE $DAY = ${day.value} AND ${regularity.sql}"
+            "SELECT MIN($LES_NO) FROM $Schedule WHERE $DAY = ${day.value} AND ${regularity.sql}"
         val start =
-            "SELECT SUM($LESSON_DUR + $BREAK_DUR) FROM $ScheduleRange WHERE $ORDER < ($order);"
+            "SELECT SUM($LESSON_DUR + $BREAK_DUR) FROM $ScheduleRange WHERE $LES_NO < ($order)"
         return Prefs.settings.earliestMinute + (one(start) { getInt(0) } ?: 0)
     }
 
@@ -251,7 +247,7 @@ class Database : DBControl() {
             for (day in Day.values())
                 put(day, false)
         }
-        all("SELECT $DAY FROM $Lessons WHERE ${reg.sql} AND ${workWeek.sql} GROUP BY $DAY") {
+        all("SELECT $DAY FROM $Schedule WHERE ${reg.sql} AND ${workWeek.sql} GROUP BY $DAY") {
             busy[Day[getInt(0)]] = true
         }
         return busy
@@ -264,8 +260,9 @@ class Database : DBControl() {
      */
     fun lessonEnd(order: Int): Int {
         val st = "SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR),0) AS start " +
-                "FROM $ScheduleRange WHERE $ORDER < $order"
-        val dur = "SELECT $LESSON_DUR AS dur FROM $ScheduleRange WHERE $ORDER = $order"
+                "FROM $ScheduleRange WHERE $LES_NO < $order"
+        val dur =
+            "SELECT $LESSON_DUR AS dur FROM $ScheduleRange WHERE $LES_NO = $order UNION ALL SELECT 0"
         return one("SELECT start + dur FROM (($st), ($dur))") { getInt(0) } ?: 0
     }
 
@@ -275,15 +272,12 @@ class Database : DBControl() {
      * @return rozsah minút meraných od počiatku rozvrhu
      */
     fun scheduleRangeToMinuteRange(range: IntRange): IntRange? = one(
-        """
-        SELECT a, b + c FROM
-        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS a FROM $ScheduleRange WHERE $ORDER < ${range.first}),
-        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS b FROM $ScheduleRange WHERE $ORDER < ${range.last}),
-        (SELECT $LESSON_DUR AS c FROM $ScheduleRange WHERE $ORDER = ${range.last});
-    """
-    ) {
-        getInt(0)..getInt(1)
-    }
+        """SELECT a, b + c FROM
+        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS a FROM $ScheduleRange WHERE $LES_NO < ${range.first}),
+        (SELECT COALESCE(SUM($LESSON_DUR + $BREAK_DUR), 0) AS b FROM $ScheduleRange WHERE $LES_NO < ${range.last}),
+        (SELECT $LESSON_DUR AS c FROM $ScheduleRange WHERE $LES_NO = ${range.last})"""
+    )
+    { getInt(0)..getInt(1) }
 
     /**
      * celkový súčet minút trvania rozvrhu bez hodiny [LessonTime] ktorá je v poradí [except].
@@ -294,7 +288,7 @@ class Database : DBControl() {
         """
         SELECT SUM($LESSON_DUR + $BREAK_DUR)
         FROM $ScheduleRange
-        WHERE $ORDER != $except
+        WHERE $LES_NO != $except
     """
     ) {
         getInt(0)
@@ -314,7 +308,7 @@ class Database : DBControl() {
             else update(
                 ScheduleRange,
                 values { put(LESSON_DUR, lessonDuration); put(BREAK_DUR, breakDuration) },
-                "$ORDER = $id"
+                "$LES_NO = $id"
             )
         if (Prefs.settings.lessonTimeFormat == LessonTimeFormat.START_TIME) ScheduleWidget.update()
         return result
@@ -326,7 +320,7 @@ class Database : DBControl() {
      * @param order Poradie hodiny [LessonTime]
      */
     fun removeFromSchedule(order: Int): Int {
-        val count = delete(ScheduleRange, "$ORDER = $order")
+        val count = delete(ScheduleRange, "$LES_NO = $order")
         ScheduleWidget.update()
         return count
     }
@@ -352,8 +346,9 @@ class Database : DBControl() {
     /**
      * @return [Boolean] true, ak existujú nejaké typy hodín
      */
-    fun hasLessonTypes() =
-        one("SELECT COUNT(*) FROM $LessonTypes;") { moveToFirst() && getInt(0) > 0 } ?: false
+    fun hasLessonTypes() = one("SELECT COUNT(*) FROM $LessonTypes;") {
+        moveToFirst() && getInt(0) > 0
+    } ?: false
 
     /**
      * Načítanie abecedného zoznamu typov hodín
@@ -364,14 +359,14 @@ class Database : DBControl() {
     }
 
     /**
-     * Získanie dát o časovej jednotke v na tejto pozícii [order]
-     * @param order Pozícia hodiny
+     * Získanie dát o časovej jednotke v na tejto pozícii [lesNo]
+     * @param lesNo Pozícia hodiny
      * @return Časová jednotka rozvrhu [LessonTime]
      */
-    fun lessonType(order: Int) =
-        one("SELECT $TYPE, $TYPE_NAME FROM $LessonTypes WHERE $TYPE = $order;") {
-            LessonType(getInt(0), getString(1))
-        }
+    fun lessonType(lesNo: Int): LessonType? {
+        val sql = "SELECT $TYPE, $TYPE_NAME FROM $LessonTypes WHERE $TYPE = $lesNo"
+        return one(sql) { LessonType(getInt(0), getString(1)) }
+    }
 
     /**
      * Zlúčenie typov hodín
@@ -379,7 +374,7 @@ class Database : DBControl() {
      * @param lostType typ, ktorý zanikne
      */
     fun joinLessonTypes(keptType: Int, lostType: Int) {
-        update(Lessons, values { put(TYPE, keptType) }, "$TYPE = $lostType")
+        update(LessonData, values { put(TYPE, keptType) }, "$TYPE = $lostType")
         delete(Colors, "$TYPE = $lostType")
         deleteLessonType(lostType)
         ScheduleWidget.update()
@@ -425,152 +420,83 @@ class Database : DBControl() {
     }
 
     /**
-     * Načíta zoradený zoznam rozvrhových udalostí.
-     * @param workWeek Pracovný týždeň
-     * @param regularity pravidelnosť týždňa
-     * @return zoradený zoznam udalostí rozvrhu
+     * Načíta zoznam vyučovacích hodín rozdelených podľa dní
+     * @param workWeek Typ pracovného týždňa
+     * @param regularity pravidelnosť týždňa (každý/párny/nepárny)
+     * @return zoznamy vyučovacích hodín roztriedené na dni
      */
-    fun fullSchedule(workWeek: WorkWeek, regularity: Regularity): ArrayList<ScheduleEvent> {
-        val range = scheduleRange(workWeek, regularity)
-
-        val list: ArrayList<ScheduleEvent> = all(
-            """
-            SELECT a.$LES_ID, a.$WEEK_ODDITY, a.$DAY, a.$START, a.$START + a.$DUR,
-                a.$TYPE, b.$SUB_ID, b.$ABB, b.$SUB_NAME, a.$ROOM
-            FROM $Lessons a JOIN $Subjects b ON a.$SUB_ID = b.$SUB_ID
-            WHERE ${regularity.sql.replace(WEEK_ODDITY, "a.$WEEK_ODDITY")}
-            AND ${workWeek.sql.replace(DAY, "a.$DAY")}
-            ORDER BY CASE
-            WHEN a.$DAY BETWEEN ${workWeek.workDay.first().value} AND 7
-            THEN 0 ELSE 1 END, a.$DAY, a.$START;
+    fun getLessons(
+        workWeek: WorkWeek,
+        regularity: Regularity
+    ): TreeMap<Day, ArrayList<ScheduleEvent>> {
+        var previous: Lesson? = null
+        val se = TreeMap<Day, ArrayList<ScheduleEvent>>()
+            .apply { workWeek.workDays.forEach { put(it, ArrayList()) } }
+        val sql = """
+            SELECT sc.$DAY, sc.$LES_NO, le.$TYPE, le.$SUB_ID, su.$ABB, su.$SUB_NAME, le.$ROOM
+            FROM $Schedule sc JOIN $LessonData le ON sc.$LES_ID = le.$LES_ID
+            JOIN $Subjects su ON (le.$SUB_ID = su.$SUB_ID)
+            WHERE ${regularity.sql("sc.$REG")} AND ${workWeek.sql("sc.$DAY")}
+            ORDER BY sc.$DAY, sc.$LES_NO
         """
-        ) {
-            val time = getInt(3) until getInt(4)
-            val reg = Regularity[getIntOrNull(1)?.let { it == 1 }]
-            val sub = Subject(getLong(6), getString(7), getString(8))
-            val room = if (isNull(9)) null else getString(9)
-            Lesson(getLong(0), reg, Day[getInt(2)], time, getInt(5), sub, room)
+        all(sql) {
+            val day = Day[getInt(0)]
+            val n = getInt(1)
+            val type = getInt(2)
+            val sub = Subject(getLong(3), getString(4), getString(5))
+            val room = getString(6)
+            val les = Lesson(-1L, regularity, day, n..n, type, sub, room)
+            val same = les.isAfter(previous) && les.isEqual(previous)
+            if (same) previous?.inc() else se[day]!!.add(les)
+            if (!same) previous = les
+            null
         }
-        if (list.size == 0) {
-            for (d in workWeek.workDay) list.add(Free(regularity, d, 0..0))
+        // vypisat a pozret
+        App.log("schedule:")
+        for ((d, l) in se) {
+            App.log("$d: $l, ${l.map { it.time }}")
         }
-        val days = workWeek.workDay
-        for (i in (0..list.size).reversed()) {
-            val l1 = if (i > 0) list[i - 1] else null
-            val l2 = if (i < list.size) list[i] else null
+        return se
+    }
 
-            when {
-                // v rozvrhu neexistuje ziadna hodina, tento cyklus sa vykonal naposledy
-                l1 == null && l2 == null -> for (d in days) list.add(Free(regularity, d, 0..0))
-                // jedná sa o poslednú hodinu. Je nutné medzi ňou a koncom rozvrhu vyplniť medzeru
-                l1 != null && l2 == null -> {
-                    if (l1.time.last < range.last) list.add(
-                        Free(
-                            regularity,
-                            l1.day,
-                            l1.time.last + 1..range.last
-                        )
-                    )
-                    for (d in days.indexOf(l1.day) + 1 until days.size) list.add(
-                        Free(
-                            regularity,
-                            days[d],
-                            range
-                        )
-                    )
-                }
-                // jedná sa o prvu hodinu. Je nutné medzi zaciatkom rozvrhu a ňou vyplniť medzeru
-                l1 == null && l2 != null -> {
-                    if (l2.time.first > range.first) list.add(
-                        0,
-                        Free(regularity, l2.day, range.first until l2.time.first)
-                    )
-                    for (d in 0 until days.indexOf(l2.day)) list.add(
-                        d,
-                        Free(regularity, days[d], range)
-                    )
-                }
-                // Odtiaľto už vždy existuje dvojica hodín. Dve po sebe iduce hodiny su kazda iny den. Vyplnit medzeru
-                l1!!.day != l2!!.day -> {
-                    val d1 = days.indexOf(l1.day)
-                    val d2 = days.indexOf(l2.day)
-                    if (range.first < l2.time.first) list.add(
-                        i,
-                        Free(regularity, l2.day, range.first until l2.time.first)
-                    )
-                    for (d in d1 + 1 until d2) list.add(i, Free(regularity, Day[d], range))
-                    if (l1.time.last < range.last) list.add(
-                        i,
-                        Free(regularity, l1.day, l1.time.last + 1..range.last)
-                    )
-                }
-                // Odtiaľto už je dvojica hodín v rovnaký deň. Medzi 2 hodinami je medzera
-                l1.time.last + 1 < l2.time.first -> {
-                    list.add(i, Free(regularity, l1.day, l1.time.last + 1 until l2.time.first))
-                }
-                // Hodiny nasleduju tesne po sebe, ale sú rovnaké! Zlúčiť!
-                l1 is Lesson && l2 is Lesson && l1.sub == l2.sub && l1.room == l2.room && l1.type == l2.type -> {
-                    val event: ScheduleEvent = Lesson(
-                        -1L,
-                        regularity,
-                        l1.day,
-                        l1.time.first..l2.time.last,
-                        l1.type,
-                        l1.sub,
-                        l1.room
-                    )
-                    list.removeAt(i)
-                    list.removeAt(i - 1)
-                    list.add(i - 1, event)
+    private fun clearUnusedLessons() =
+        delete(LessonData, "$LES_ID NOT IN (SELECT $LES_ID FROM $Schedule)")
+
+    /**
+     * Pridanie alebo uvolnenie hodiny
+     * @param evt Rozvrhová udalosť (voľno alebo hodina)
+     */
+    fun setScheduleEvent(evt: ScheduleEvent) {
+        if (evt is Lesson) {
+            val selCond = "$TYPE = ${evt.type} AND $SUB_ID = ${evt.sub.id} AND $ROOM LIKE ?"
+            val sel = "SELECT $LES_ID FROM $LessonData WHERE $selCond"
+            val id = one(sel, evt.room ?: "") { getLong(0) } ?: insert(LessonData, values {
+                put(TYPE, evt.type)
+                put(SUB_ID, evt.sub.id)
+                put(ROOM, evt.room)
+            })
+            transaction("INSERT INTO $Schedule ($REG, $DAY, $LES_NO, $LES_ID) VALUES(?, ?, ?, ?)") {
+                bindLong(1, evt.regularity.int.toLong())
+                bindLong(2, evt.day.value.toLong())
+                bindLong(4, id)
+                for (t in evt.time) {
+                    bindLong(3, t.toLong())
+                    executeInsert()
                 }
             }
+        } else {
+            val cond =
+                "$DAY = ${evt.day.value} AND $LES_NO BETWEEN ${evt.time.first} AND ${evt.time.last}"
+            delete(
+                Schedule, when (evt.regularity) {
+                    Regularity.EVERY -> cond
+                    Regularity.EVEN -> "$cond AND $REG != 1"
+                    Regularity.ODD -> "$cond AND $REG != 0"
+                }
+            )
         }
-        return list
-    }
-
-    /**
-     * Nastavenie hodiny [Lesson] - udalosti rozvrhu.
-     * @param id ID hodiny, ktorá je upravovaná alebo -1, ak je vkladaná nová hodina
-     * @param regularity Pravidelnosť týždňa
-     * @param day Deň
-     * @param time Rozsah poradí časových jednotiek rozvrhu [LessonTime]
-     * @param type Typ vyučovacej hodiny
-     * @param subject Predmet
-     * @param room Miestnosť
-     */
-    fun setLesson(
-        id: Long,
-        regularity: Regularity,
-        day: Day,
-        time: IntRange,
-        type: Int,
-        subject: Long,
-        room: String?
-    ): Long {
-        val v = values {
-            put(DAY, day.value)
-            put(START, time.first)
-            put(DUR, time.count())
-            put(WEEK_ODDITY, regularity.odd)
-            put(TYPE, type)
-            put(SUB_ID, subject)
-            put(ROOM, room)
-        }
-        val resId =
-            if (id > 0 && update(Lessons, v, "$LES_ID = $id") > 0) id else insert(Lessons, v)
         ScheduleWidget.update()
-        return resId
-    }
-
-    /**
-     * Odstránenie vyučovacej hodiny [Lesson] z rozvrhu
-     * @param id ID hodiny
-     * @return počet odstránených záznamov
-     */
-    fun deleteLesson(id: Long): Int {
-        val result = delete(Lessons, "$LES_ID = $id")
-        ScheduleWidget.update()
-        return result
+        clearUnusedLessons()
     }
 
     /**
@@ -578,29 +504,8 @@ class Database : DBControl() {
      * @return počet odstránených záznamov
      */
     fun clearSchedule(): Int {
-        val result = delete(Lessons)
-        ScheduleWidget.update()
-        return result
-    }
-
-    /**
-     * Odstránenie hodín v danom časovom úseku rozvrhu
-     * @param day Deň
-     * @param clearTime Rozsah poradí časových jednotiek rozvrhu [LessonTime] - čas ktorý je nutné uvoľniť
-     * @param regularity Výber týždňa podľa párnosti, nepárnosti alebo všetky
-     * @return Vráti počet odstránených záznamov
-     */
-    fun clearSchedule(day: Day, clearTime: IntRange, regularity: Regularity): Int {
-        val result = delete(
-            Lessons, """
-            $DAY = ${day.value} AND ${regularity.sql} AND (
-                $START BETWEEN ${clearTime.first} AND ${clearTime.last}
-                OR $START + $DUR - 1 BETWEEN ${clearTime.first} AND ${clearTime.last}
-                OR ${clearTime.first} BETWEEN $START AND $START + $DUR - 1
-            )
-        """
-        )
-        ScheduleWidget.update()
+        val result = delete(LessonData)
+        if (result > 0) ScheduleWidget.update()
         return result
     }
 
@@ -881,8 +786,9 @@ class Database : DBControl() {
      * @param id ID úlohy
      * @return Kategória [NoteCategory]
      */
-    fun detectNoteCategory(id: Long): NoteCategory =
-        one("SELECT $DEADLINE, $SUB_ID FROM $Notes WHERE $NOTE_ID = $id") {
+    fun detectNoteCategory(id: Long): NoteCategory = one(
+        "SELECT $DEADLINE, $SUB_ID FROM $Notes WHERE $NOTE_ID = $id"
+    ) {
             val ms = getLongOrNull(0)
             when {
                 ms == null -> TIMELESS
@@ -902,19 +808,20 @@ class Database : DBControl() {
      * @return počet odstránených záznamov z tabuliek v databáze
      */
     fun clearGarbageData(): Int {
-        val lessons = delete(Lessons, "NOT(${Prefs.settings.workWeek.sql})")
-        val regularity =
-            if (Prefs.settings.dualWeekSchedule) 0 else delete(Lessons, "$WEEK_ODDITY IS NOT NULL")
+        val lessons = delete(Schedule, "NOT(${Prefs.settings.workWeek.sql})")
+        val reg = if (Prefs.settings.dualWeekSchedule) 0 else delete(Schedule, "$REG < 2")
+        clearUnusedLessons()
+
         // na oneskorene poznamky uz upozornenie necaka
         val notes = delete(Notes, "$DEADLINE IS NOT NULL AND $DEADLINE <= $now")
         val subjects = delete(
             Subjects, """$SUB_ID NOT IN (
-            SELECT $SUB_ID FROM $Lessons GROUP BY $SUB_ID
+            SELECT $SUB_ID FROM $LessonData GROUP BY $SUB_ID
             UNION ALL SELECT $SUB_ID FROM $Notes GROUP BY $SUB_ID
         )"""
         )
         if (notes + subjects > 0) NoteWidget.update()
-        return lessons + regularity + notes + subjects
+        return lessons + reg + notes + subjects
     }
 
     /**

@@ -17,14 +17,14 @@ import java.util.Calendar.DAY_OF_YEAR
  * @property EVEN Párný týždeň
  *
  * @property odd Zisťuje sa, čo sa jedná o nepárny týždeň
- *  [EVEN] = false, pretože nevráti nepárny týždeň
- *  [ODD] = true, pretože ukazuje na nepárny týždeň
- *  [EVERY] = null, pretože sa jedná o ľubovoľný týždeň ktorý môže a nemusí byť nepárny
+ *  [EVEN] = 0 reprezentuje týždeň
+ *  [ODD] = 1 reprezentuje nepárny týždeň
+ *  [EVERY] = 2 reprezentuje každý týždeň
  * @property currentWeek Keď nie je nastavený 2-týždenný rozvrh okamžite vráti hodnotu [EVERY], inak
  * sa vypočíta, či je tento týždeň párny [EVEN] alebo nepárny [ODD] na základe súčasného nastavenia pracovného týždňa
  */
-enum class Regularity(val odd: Boolean?) {
-    EVERY(null), EVEN(false), ODD(true);
+enum class Regularity(val odd: Boolean?, val int: Int) {
+    EVEN(false, 0), ODD(true, 1), EVERY(null, 2);
 
     /**
      * Statický objekt [Regularity.Companion]
@@ -45,6 +45,9 @@ enum class Regularity(val odd: Boolean?) {
          * @return inštancia [Regularity] vyhovujúca hodnote [value]
          */
         operator fun get(value: Boolean?) = value?.let { if (it) ODD else EVEN } ?: EVERY
+        operator fun get(n: Int) = when (n) {
+            0 -> EVEN; 1 -> ODD; else -> EVERY
+        }
 
         /**
          * Výpočet párnosti alebo nepárnosti týždňa dátumu [millis] uvedeného v milisekundách
@@ -56,7 +59,7 @@ enum class Regularity(val odd: Boolean?) {
             App.cal.set(DAY_OF_YEAR, 1)
             App.cal.add(
                 DAY_OF_YEAR,
-                (settings.workWeek.workDay.first().value - App.cal.get(DAY_OF_WEEK)).let { if (it < 1) it + 7 else it })
+                (settings.workWeek.workDays.first().value - App.cal.get(DAY_OF_WEEK)).let { if (it < 1) it + 7 else it })
             val firstDayOfWeek: Int = App.cal.get(DAY_OF_YEAR)
             return ((today - firstDayOfWeek) / 7 + 1) % 2 == 1
         }

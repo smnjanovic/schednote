@@ -35,7 +35,8 @@ class ScheduleEditor : SubActivity(), SchedulePart {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.post {
-            illustrator = ScheduleIllustrator.schedule(illustrator).attachTo(view.schedule_frame)
+            illustrator = ScheduleIllustrator.schedule(illustrator, true)
+                .attachTo(view.schedule_frame)
                 .involveButtons(view.odd, view.even)
         }
 
@@ -45,15 +46,9 @@ class ScheduleEditor : SubActivity(), SchedulePart {
         }
 
         view.post {
-            illustrator?.customizeColumnWidth(view.schedule_frame.measuredWidth)
             activity?.let { if (it is MainActivity) editor!!.setEvents(it) }
 
-            editor!!.setOnInput { added ->
-                added?.let { illustrator!!.put(it) } ?: let {
-                    illustrator!!.redraw()
-                    true
-                }
-            }
+            editor!!.setOnInput { illustrator?.redraw() }
             editor!!.setOnUpdateEnd {
                 view.default_subject.visibility = View.GONE
                 view.default_subject_value.text = null
@@ -69,6 +64,10 @@ class ScheduleEditor : SubActivity(), SchedulePart {
                 view.default_subject.visibility = View.VISIBLE
                 view.default_subject_value.text = it
             } ?: let { view.default_subject.visibility = View.GONE }
+
+            savedInstanceState?.let {
+                illustrator?.customizeColumnWidth(view.schedule_frame.measuredWidth)
+            } ?: illustrator?.redraw()
         }
     }
 

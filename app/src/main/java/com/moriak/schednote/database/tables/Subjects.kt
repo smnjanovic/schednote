@@ -65,11 +65,11 @@ object Subjects : Table() {
             """
         )
 
-        // vymazanim predmetu sa zmazu aj vsetky
+        // vymazanim predmetu sa zmazu aj vsetky suvisiace data z inych tabuliek
         Trigger.BD.create(
             db, this, """
             DELETE FROM $Notes WHERE $SUB_ID = OLD.$SUB_ID;
-            DELETE FROM $Lessons WHERE $SUB_ID = OLD.$SUB_ID;
+            DELETE FROM $LessonData WHERE $SUB_ID = OLD.$SUB_ID;
         """
         )
     }

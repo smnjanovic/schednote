@@ -46,7 +46,7 @@ object LessonTypes : Table() {
         Trigger.BU.create(db, this, "OLD.$TYPE != NEW.$TYPE", abort(R.string.read_only_id))
         Trigger.BD.create(
             db, this, """
-            DELETE FROM $Lessons WHERE $TYPE = OLD.$TYPE;
+            DELETE FROM $LessonData WHERE $TYPE = OLD.$TYPE;
             DELETE FROM $Colors WHERE $TYPE = OLD.$TYPE;
         """
         )

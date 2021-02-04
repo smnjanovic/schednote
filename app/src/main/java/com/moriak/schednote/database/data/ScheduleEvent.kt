@@ -9,7 +9,7 @@ import com.moriak.schednote.settings.Regularity
  * @property day Deň udalosti
  * @property time Rozsah poradí časových jednotiek rozvrhu [LessonTime]
  */
-interface ScheduleEvent {
+abstract class ScheduleEvent(pReg: Regularity, pDay: Day, pTime: IntRange) {
     class InvalidTimeRangeException(range: IntRange) : Exception("Invalid Time Range $range!")
     companion object {
         /**
@@ -21,13 +21,22 @@ interface ScheduleEvent {
         }
     }
 
-    val regularity: Regularity
-    val day: Day
-    val time: IntRange
+    val regularity: Regularity = pReg
+    val day: Day = pDay
+    private val st: Int = pTime.first
+    private var en: Int = pTime.last
+    val time: IntRange get() = st..en
 
     /**
      * Porovnanie, či sa jedná o rovnakú udalosť
      * @param other iná udalosť ktorej vybrané vlastnosti stavy sú porovnávané s týmto objektom
      */
-    fun isEqual(other: ScheduleEvent?): Boolean
+    abstract fun isEqual(other: ScheduleEvent?): Boolean
+    operator fun inc() = also { en++ }
+    operator fun dec(): ScheduleEvent = also { if (en > st) en-- }
+    fun isAfter(other: ScheduleEvent?) =
+        other?.let { other.day == day && other.time.last + 1 == st } ?: false
+
+    fun isBefore(other: ScheduleEvent?) =
+        other?.let { other.day == day && other.time.first - 1 == en } ?: false
 }

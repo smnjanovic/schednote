@@ -57,7 +57,7 @@ class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun loadRegularity(reg: Regularity) {
         if (regularity != reg) {
             regularity = reg
-            notifyItemRangeChanged(0, workWeek.workDay.size)
+            notifyItemRangeChanged(0, workWeek.workDays.size)
         }
     }
 
@@ -66,14 +66,14 @@ class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * @param day Deň v ktorom sa zmena vyskytla
      */
     fun updateDay(day: Day) {
-        val pos = workWeek.workDay.indexOf(day)
+        val pos = workWeek.workDays.indexOf(day)
         if (pos > -1) notifyItemChanged(pos)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         AlarmHolder(LayoutInflater.from(parent.context).inflate(R.layout.day_alarm, parent, false))
 
-    override fun getItemCount(): Int = workWeek.workDay.size
+    override fun getItemCount(): Int = workWeek.workDays.size
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         (holder as AlarmHolder).bind()
 
@@ -87,7 +87,7 @@ class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
          * Vyskladanie viewHoldera
          */
         fun bind() {
-            day = workWeek.workDay[adapterPosition]
+            day = workWeek.workDays[adapterPosition]
             itemView.on_off.tag = this
             itemView.change_time.tag = this
             itemView.alarm_time.tag = this

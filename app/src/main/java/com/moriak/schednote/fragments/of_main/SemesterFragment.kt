@@ -51,7 +51,7 @@ class SemesterFragment : SubActivity() {
     private val setDate = fun(millis: Long?) {
         millis?.let {
             App.cal.timeInMillis = millis
-            val days = Prefs.settings.workWeek.workDay
+            val days = Prefs.settings.workWeek.workDays
             val step = days.find { it.value == App.cal.get(DAY_OF_WEEK) }?.let { -1 } ?: 1
             while (days.first().value != App.cal.get(DAY_OF_WEEK)) App.cal.add(DAY_OF_YEAR, step)
             App.cal.set(HOUR_OF_DAY, 0)
