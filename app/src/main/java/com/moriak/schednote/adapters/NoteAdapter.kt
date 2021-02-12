@@ -341,6 +341,7 @@ class NoteAdapter(private var category: NoteCategory, private val subjects: Arra
         category = cat
         items.addAll(App.data.notes(cat))
         notifyDataSetChanged()
+        if (category is Subject) eSub = category as Subject
     }
 
     /**
