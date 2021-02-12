@@ -17,6 +17,10 @@ import com.moriak.schednote.other.TimeCategory.*
 enum class TimeCategory : NoteCategory {
     ALL, TIMELESS, LATE, TODAY, TOMORROW, IN_WEEK;
 
+    companion object {
+        operator fun get(n: Int): TimeCategory = values().find { it.ordinal == n } ?: ALL
+    }
+
     override fun toString(): String = App.str(
         when (this) {
             ALL -> R.string.all

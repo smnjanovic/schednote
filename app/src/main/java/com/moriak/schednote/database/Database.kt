@@ -599,6 +599,7 @@ class Database : DBControl() {
                         )
                 }
             }
+            NoteWidget.update()
         }
     }
 
@@ -649,7 +650,8 @@ class Database : DBControl() {
             SELECT n.$NOTE_ID, n.$SUB_ID, s.$ABB, s.$SUB_NAME, n.$NOTE, n.$DEADLINE
             FROM $Notes n JOIN $Subjects s ON n.$SUB_ID = s.$SUB_ID
             WHERE $where
-            ORDER BY CASE WHEN n.$DEADLINE IS NULL THEN 1 ELSE 0 END, n.$DEADLINE, n.$SUB_ID;
+            ORDER BY CASE WHEN n.$DEADLINE IS NULL THEN 1 ELSE 0 END, n.$DEADLINE, s.$ABB, n.$NOTE, n.$NOTE_ID
+            LIMIT 100;
         """
         ) {
             val sub = subjects[getLong(1)]
@@ -678,6 +680,28 @@ class Database : DBControl() {
         val count = delete(Notes, noteCategoryWhere(category))
         if (count > 0) NoteWidget.update()
         return count
+    }
+
+    /**
+     * * Vložiť alebo upraviť úlohu
+     * @param id ID úlohy (-1 pre vloženie, 1..Inf pre upravu)
+     * @param sub Predmet
+     * @param info Popis úlohy
+     * @param deadline Termín do uplynutia platnosti v milisekundách. Môže byť null
+     * @return počet zmených záznamov
+     */
+    fun setNote(id: Long, sub: Long, info: String, deadline: Long?): Long {
+        val input = values { put(SUB_ID, sub); put(NOTE, info); put(DEADLINE, deadline) }
+        val vId = when {
+            id > 0 && update(Notes, input, "$NOTE_ID = $id") == 1 -> id
+            id == -1L -> insert(Notes, input)
+            else -> -1L
+        }
+        if (vId > -1L) {
+            NoteReminder.editNotification(vId, subject(sub)!!.abb, info, deadline)
+            NoteWidget.update()
+        }
+        return vId
     }
 
     /**

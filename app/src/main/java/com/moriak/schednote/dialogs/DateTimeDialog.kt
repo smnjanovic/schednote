@@ -2,6 +2,7 @@ package com.moriak.schednote.dialogs
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,6 @@ import java.util.Calendar.*
  */
 class DateTimeDialog : DialogFragment() {
     private companion object {
-        private const val POS = "POS"
         private const val MILLIS = "MILLIS"
         private const val DISPLAY = "DISPLAY"
     }
@@ -64,19 +64,16 @@ class DateTimeDialog : DialogFragment() {
             val timeBtn = view.timeBtn.compoundDrawables.iterator()
             val dateBtn = view.dateBtn.compoundDrawables.iterator()
             val semBtn = view.semester_btn.compoundDrawables.iterator()
-            while (dateBtn.hasNext()) dateBtn.next()
-                ?.setTint(if (this == CALENDAR) highlightColor else regularColor)
-            while (timeBtn.hasNext()) timeBtn.next()
-                ?.setTint(if (this == CLOCK) highlightColor else regularColor)
-            while (semBtn.hasNext()) semBtn.next()
-                ?.setTint(if (this == SEMESTER) highlightColor else regularColor)
+            fun Drawable.highlight(b: Boolean) = setTint(if (b) highlightColor else regularColor)
+            while (dateBtn.hasNext()) dateBtn.next()?.highlight(this == CALENDAR)
+            while (timeBtn.hasNext()) timeBtn.next()?.highlight(this == CLOCK)
+            while (semBtn.hasNext()) semBtn.next()?.highlight(this == SEMESTER)
         }
     }
 
-    private var onConfirm = fun(_: Int, _: Long) {}
+    private var onConfirm = fun(_: Long) {}
     private lateinit var root: View
 
-    private var pos = -1
     private var year: Int
     private var month: Int
     private var day: Int
@@ -154,12 +151,10 @@ class DateTimeDialog : DialogFragment() {
     }
 
     /**
-     * Uloženie pozície položky v adapteri a doteraz nastaveného dátumu
-     * @param itemPos pozícia úlohy v adapteri
+     * Uloženie predvoleného dátumu a času
      * @param millis Dátum v milisekundách. Môže byť null.
      */
-    fun storeItemPositionAndDate(itemPos: Int, millis: Long? = null) {
-        pos = itemPos
+    fun setDateTime(millis: Long? = null) = also {
         App.cal.apply {
             timeInMillis = millis ?: System.currentTimeMillis()
             year = get(YEAR)
@@ -171,10 +166,10 @@ class DateTimeDialog : DialogFragment() {
     }
 
     /**
-     * Určuje, čo sa má stať po potvrdení zmien
-     * @param fn algoritmus, ktorý sa má vykonať
+     * Určuje, čo sa má vykonať so zvoleným dátumom a časom
+     * @param fn funkcia s 1 parametrom s vyslednym datumom
      */
-    fun setOnConfirm(fn: (Int, Long) -> Unit) {
+    fun setOnConfirm(fn: (Long) -> Unit) = also {
         onConfirm = fn
     }
 
@@ -218,12 +213,12 @@ class DateTimeDialog : DialogFragment() {
 
     override fun onCreateDialog(saved: Bundle?): Dialog {
         saved?.let {
-            storeItemPositionAndDate(it.getInt(POS, -1), it.getLong(MILLIS))
+            setDateTime(it.getLong(MILLIS))
             display = Display[it.getInt(DISPLAY)]
         }
         return AlertDialog.Builder(requireContext())
             .setView(buildView())
-            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm(pos, calendar.timeInMillis) }
+            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm(calendar.timeInMillis) }
             .setNegativeButton(R.string.abort) { _, _ -> }
             .create()
     }
@@ -231,7 +226,6 @@ class DateTimeDialog : DialogFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong(MILLIS, calendar.timeInMillis)
-        outState.putInt(POS, pos)
         outState.putInt(DISPLAY, display.value)
     }
 }

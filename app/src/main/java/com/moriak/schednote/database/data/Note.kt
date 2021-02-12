@@ -1,6 +1,7 @@
 package com.moriak.schednote.database.data
 
 import com.moriak.schednote.R
+import kotlin.Long.Companion.MAX_VALUE as MAX
 
 /**
  * Trieda na uchovávanie dát o úlohach
@@ -24,7 +25,8 @@ data class Note(
         val validFormat = "^[^\\s](\\s|.)*$".toRegex()
 
         /**
-         * Overenie správnosti formátu úlohy
+         * Overenie správnosti formátu popisu úlohy
+         * @param description popis úlohy
          */
         fun validDescription(description: String?) = when {
             description == null || description.trim().isEmpty() -> R.string.note_no_description
@@ -32,5 +34,13 @@ data class Note(
             !description.matches(validFormat) -> R.string.note_invalid_format
             else -> null
         }
+    }
+
+    operator fun compareTo(other: Note): Int {
+        var cmp: Int = ((deadline ?: MAX) - (other.deadline ?: MAX)).coerceIn(-1L..1L).toInt()
+        if (cmp == 0) cmp = sub.abb.compareTo(other.sub.abb)
+        if (cmp == 0) cmp = description.compareTo(other.description)
+        if (cmp == 0) cmp = (id - other.id).coerceIn(-1L..1L).toInt()
+        return cmp
     }
 }

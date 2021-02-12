@@ -1,131 +1,264 @@
 package com.moriak.schednote.adapters
 
-import android.text.Editable
-import android.text.TextWatcher
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.text.*
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.annotation.StringRes
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.database.data.Note
 import com.moriak.schednote.database.data.NoteCategory
 import com.moriak.schednote.database.data.Subject
+import com.moriak.schednote.other.TimeCategory
 import com.moriak.schednote.settings.Prefs
-import kotlinx.android.synthetic.main.note.view.*
+import kotlinx.android.synthetic.main.readable_note.view.*
+import kotlinx.android.synthetic.main.writable_note.view.*
 import java.util.*
 
 /**
  * V adaptéri zobrazujem mením a pridávam poznámky
  */
-class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val subjects = App.data.subjects()
-    private val items = ArrayList<Note?>()
-    private lateinit var category: NoteCategory
+class NoteAdapter(private var category: NoteCategory, private val subjects: ArrayList<Subject>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val items = ArrayList<Note>()
 
-    private var editPos: Int? = null
-    private var editId: Long? = null
-    private var editSub: Subject? = null
-    private var editInfo: String? = null
-    private var editDeadline: Long? = null
-
-    /**
-     * Položka je aktívna, keď je upravovaná.
-     * Keď je položka nová, musí mať rozrobené zmeny
-     */
-    val activePosition
-        get() = if (editId?.let { it > -1L } != false) editPos
-        else (editInfo ?: editDeadline)?.let { editPos }
-    private var activeHolder: NoteHolder? = null
-
-    private fun keepChanges(holder: NoteHolder) {
-        editPos = holder.adapterPosition
-        editId = holder.id
-        editInfo = holder.info
-        editSub = holder.subject
-        editDeadline = holder.millis
-    }
-
-    private lateinit var onDateTimeSetAttempt: (Int, Long?) -> Unit
-
-    private val nextSubject = View.OnClickListener {
-        val holder = it.tag as NoteHolder
-        val index = subjects.indexOf(holder.subject)
-        holder.subject = subjects[if (index + 1 < subjects.size) index + 1 else 0]
-    }
-
-    private val previousSubject = View.OnClickListener {
-        val holder = it.tag as NoteHolder
-        val index = subjects.indexOf(holder.subject)
-        holder.subject = subjects[if (index - 1 >= 0) index - 1 else subjects.lastIndex]
-    }
-
-    private val onSetCalendar = View.OnClickListener { v ->
-        val holder = when (v.tag) {
-            is NoteHolder -> v.tag as NoteHolder
-            else -> (v.parent as ViewGroup).set_date.tag as NoteHolder
+    private var noSubject: Subject = Subject(-1L, "NONE", App.str(R.string.no_subjects))
+    private val ePos: Int
+        get() = when {
+            subjects.isEmpty() -> -1
+            eId == -1L -> items.size
+            eId < -1L -> -1
+            else -> items.indexOfFirst { it.id == eId }
         }
-        onDateTimeSetAttempt(holder.adapterPosition, holder.millis)
-    }
-
-    private val onUnsetCalendar = View.OnClickListener {
-        val holder = it.tag as NoteHolder
-        holder.millis = null
-        if (holder.id > -1L && !holder.isEditing) App.data.changeNoteDeadline(holder.id, null)
-    }
-
-    private val onEditStart = View.OnClickListener { v ->
-        clearChanges()
-        activeHolder?.let { holder ->
-            val err = holder.save()
-            if (err != null) {
-                if (holder.id > -1L) App.toast(err)
-                holder.stopEditing()
-            } else removeOutcast(holder.adapterPosition)?.let { App.toast(it) }
+    private val eErr: Int
+        get() = when {
+            eSub == noSubject -> R.string.no_subjects
+            eInfo.isEmpty() -> R.string.note_no_description
+            eInfo.length > Note.limit -> R.string.note_description_length_exceeded
+            !eInfo.matches(Note.validFormat) -> R.string.note_invalid_format
+            eDate?.let { it <= System.currentTimeMillis() } == true -> R.string.time_out
+            else -> 0
         }
-        val holder = v.tag as NoteHolder
-        holder.startEditing()
-        activeHolder = holder
+    private var eCur: IntRange = 0..0
+    private var eId: Long = -1L
+    private var eSub: Subject = noSubject
+    private var eDate: Long? = null
+    private var eInfo: String = ""
+
+    init {
+        determineSubject()
     }
 
+    private val onEdit = View.OnClickListener { performEdit(holderPos(it)) }
+    private val onSave = View.OnClickListener {
+        (it.tag as WritableNoteHolder).focus = false
+        performEdit(items.size)
+    }
+    private val onLose = View.OnClickListener {
+        val pos = ePos
+        if (pos == items.size) initialize() //pri vkladani by cancel hodnoty nevynuloval
+        performEdit(items.size, pos < items.size)
+    }
+    private val onRemove = View.OnClickListener { removeItem(holderPos(it)) }
+    private var postDateTimeRequest = fun(_: Long?) = Unit
+    private val onPrevSub = View.OnClickListener { switchSubject(it, -1) }
+    private val onNextSub = View.OnClickListener { switchSubject(it, 1) }
+    private val onDateTimeRequest = View.OnClickListener { postDateTimeRequest(eDate) }
+    private val onDateClr = View.OnClickListener { setDeadline(null) }
+    private val onFocusChange = View.OnFocusChangeListener(this::switchKeyboard)
+    private val cursorWatcher = object : SpanWatcher {
+        override fun onSpanAdded(text: Spannable?, what: Any?, start: Int, end: Int) {}
+        override fun onSpanRemoved(text: Spannable?, what: Any?, start: Int, end: Int) {}
+        override fun onSpanChanged(s: Spannable?, o: Any?, os: Int, oe: Int, ns: Int, ne: Int) {
+            eCur = Selection.getSelectionStart(s)..Selection.getSelectionEnd(s)
+        }
+    }
     private val onRewrite = object : TextWatcher {
         private var st = 0
         private var en = 0
-        override fun afterTextChanged(s: Editable?) {
-            if (s?.contains(Note.validFormat) == false) s.delete(st, en)
-            if (s?.contains(Note.validFormat) == false) s.clear()
-            editInfo = s?.toString()
-        }
-
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             st = start
             en = start + count
         }
+
+        override fun afterTextChanged(s: Editable?) {
+            s ?: return
+            if (!s.contains(Note.validFormat)) s.delete(st, en)
+            if (!s.contains(Note.validFormat)) s.clear()
+            eCur = Selection.getSelectionStart(s)..Selection.getSelectionEnd(s)
+            eInfo = s.toString()
+            s.setSpan(cursorWatcher, 0, s.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        }
     }
 
-    private val onEditEnd = View.OnClickListener { v ->
-        val h = v.tag as NoteHolder
-        h.save()?.let { App.toast(it) } ?: let {
-            removeOutcast(h.adapterPosition)?.let { App.toast(it) }
-            addNewHolder()
+    private fun switchKeyboard(v: View?, visible: Boolean) {
+        v?.rootView ?: return
+        val imm = App.ctx.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(v, 0)
+        if (!visible) imm.hideSoftInputFromWindow(v.windowToken, 0)
+    }
+
+    /**
+     * Nastavenie správania, čo sa má stať pri žiadosti o nastavenie dátumu
+     * @param fn Metóda s jedným vstupným parametrom, v ktorom je pôvodný dátum v ms.
+     */
+    fun setOnDateTimeRequest(fn: (Long?) -> Unit) {
+        postDateTimeRequest = fn
+    }
+
+    private fun holderPos(v: View) =
+        v.tag?.let { if (it is AnyNoteHolder) it else null }?.adapterPosition ?: -1
+
+    private fun determineSubject(): Subject = when {
+        category is Subject -> category as Subject
+        eSub != noSubject -> eSub
+        subjects.isNotEmpty() -> subjects.first()
+        else -> noSubject
+    }
+
+    private fun initialize(pos: Int = -1) {
+        val item = if (pos in items.indices) items[pos] else null
+        eId = item?.id ?: -1L
+        eSub = item?.sub ?: determineSubject()
+        eDate = item?.deadline
+        eInfo = item?.description ?: ""
+        eCur = eInfo.length.let { it..it }
+    }
+
+    private fun performEdit(newPos: Int, cancel: Boolean = false) {
+        val oldPos = ePos
+        App.log("finish $oldPos, start $newPos, list: $items")
+        if (newPos in 0..items.size) when (oldPos) {
+            -1 -> {
+                App.toast("just editing")
+                initialize(newPos)
+                notifyItemChanged(newPos)
+            }
+            newPos -> {
+                val new = newPos == items.size
+                /*(zabranit vlozeniu / rebind), vložiť, pôvodné hodnoty, chyba */
+                when {
+                    new && cancel || !new && !cancel -> notifyItemChanged(newPos)
+                    new && !cancel -> when {
+                        saveItem() -> {
+                            initialize()
+                            notifyItemChanged(newPos)
+                            notifyItemInserted(items.size)
+                            removeOutcast(newPos)?.let(App::toast) ?: move(newPos)
+                        }
+                        eErr > 0 -> App.toast(eErr)
+                        else -> App.log("Trouble inserting note in NoteAdapter!")
+                    }
+                    !new && cancel -> {
+                        initialize(newPos)
+                        notifyItemChanged(newPos)
+                    }
+                    else -> throw Exception("Strange behaviour in NoteAdapter::performEdit!")
+                }
+            }
+            else -> {
+                val doneInserting = oldPos == items.size
+                val goneInserting = newPos == items.size
+
+                // ulozit sucasne upravovany zaznam
+                val saved = !cancel && saveItem()
+                val err = if (cancel) 0 else eErr
+                initialize(newPos)
+
+                when {
+                    doneInserting -> {
+                        App.toast("done inserting")
+                        if (saved) {
+                            notifyItemChanged(oldPos)
+                            removeOutcast(oldPos)?.also(App::toast) ?: move(oldPos)
+                        } else {
+                            notifyItemRemoved(oldPos)
+                            if (err > 0 && eInfo == "" && eDate == null) App.toast(err)
+                        }
+                        notifyItemChanged(newPos)
+                    }
+                    goneInserting -> {
+                        App.toast("gone inserting")
+                        when {
+                            saved || cancel -> {
+                                notifyItemChanged(oldPos)
+                                notifyItemInserted(newPos)
+                                removeOutcast(oldPos)?.also(App::toast) ?: move(oldPos)
+                            }
+                            err > 0 -> App.toast(err)
+                            else -> App.log("Trouble updating note in NoteAdapter!")
+                        }
+                    }
+                    else -> {
+                        App.toast("not inserting")
+                        notifyItemChanged(oldPos)
+                        notifyItemChanged(newPos)
+                        if (!saved) App.toast(err)
+                        else removeOutcast(oldPos)?.also(App::toast) ?: move(oldPos)
+                    }
+                }
+            }
         }
     }
-    private val onRemove = View.OnClickListener { v ->
-        val holder = v.tag as NoteHolder
-        val pos = holder.adapterPosition
-        if (editPos == pos) {
-            clearChanges()
-            activeHolder = null
+
+    private fun saveItem(): Boolean {
+        if (eErr > 0) return false
+        val id = App.data.setNote(eId, eSub.id, eInfo, eDate)
+        if (id > -1L) {
+            val note = Note(id, eSub, eInfo, eDate)
+            when (val pos = ePos) {
+                in items.indices -> items[pos] = note
+                items.size -> items.add(note)
+                else -> return false
+            }
         }
-        App.data.removeNote(holder.id)
-        items.removeAt(pos)
-        notifyItemRemoved(pos)
-        addNewHolder()
+        return id > -1L
     }
+
+    private fun removeItem(pos: Int): Boolean = when (pos) {
+        in items.indices -> true.also {
+            App.data.removeNote(items[pos].id)
+            items.removeAt(pos)
+            notifyItemRemoved(pos)
+        }
+        items.size -> true.also { performEdit(pos) }
+        else -> false
+    }
+
+    fun setDeadline(deadline: Long?) {
+        if (deadline != null && deadline < System.currentTimeMillis()) App.toast(R.string.time_out)
+        else {
+            eDate = deadline
+            val pos = ePos
+            performEdit(pos, pos == items.size)
+        }
+    }
+
+    private fun switchSubject(d: Int): String {
+        if (subjects.isEmpty()) {
+            eSub = noSubject
+            return "*"
+        }
+        var index = (subjects.indexOfFirst { it == eSub } + d) % subjects.size
+        if (index < 0) index += subjects.size
+        eSub = subjects[index]
+        val digits = "%0${"${subjects.size}".length}d"
+        return String.format("$digits / $digits", index + 1, subjects.size)
+    }
+
+    private fun switchSubject(v: View, d: Int) {
+        val count = switchSubject(d)
+        val sub = v.tag as TextView
+        sub.text = eSub.abb
+        (sub.tag as TextView).text = count
+    }
+
+    private lateinit var onDateTimeSetAttempt: (Int, Long?) -> Unit
 
     /**
      * Nastavenie správania, čo sa má stať pri pokuse o zmenu dátumu
@@ -140,40 +273,62 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * Odstránenie poznámky
      * @param position pozícia na ktorej sa poznámka nachádza
      */
+
     fun removeOutcast(position: Int): Int? {
-        if (position !in items.indices || editPos == position) return null
-        val id = items[position]?.id ?: -1L
-        if (id > -1L && !App.data.noteBelongsToCategory(items[position]!!.id, category)) {
-            items.removeAt(position)
-            notifyItemRemoved(position)
-            return R.string.outcast_note
+        if (position !in items.indices) return null
+        val item = items[position]
+        val belongs = when (category) {
+            TimeCategory.ALL -> true
+            TimeCategory.TIMELESS -> item.deadline == null
+            TimeCategory.LATE -> item.deadline?.let { item.deadline < System.currentTimeMillis() } == true
+            TimeCategory.TODAY, TimeCategory.TOMORROW, TimeCategory.IN_WEEK -> item.deadline?.let {
+                val cal = Calendar.getInstance()
+                cal.set(
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH) + 1,
+                    0,
+                    0,
+                    0
+                )
+                cal.set(Calendar.MILLISECOND, 0)
+                val midnight = cal.timeInMillis
+                val dif = when (category) {
+                    TimeCategory.IN_WEEK -> 6
+                    TimeCategory.TOMORROW -> 1
+                    else -> 0
+                }
+                if (dif > 0) {
+                    cal.add(Calendar.DAY_OF_YEAR, dif)
+                    it in midnight until cal.timeInMillis
+                } else it in System.currentTimeMillis() until midnight
+            } == true
+            is Subject -> category == item.sub
+            else -> true
         }
-        return null
+        if (belongs) return null
+        items.removeAt(position)
+        notifyItemRemoved(position)
+        return R.string.outcast_note
     }
 
-    private fun addNewHolder() {
-        if ((items.isEmpty() || items.last() != null) && App.data.hasSubjects()) {
-            items.add(null)
-            editPos = items.lastIndex
-            editId = -1L
-            editSub = null
-            editInfo = null
-            editDeadline = null
-            notifyItemInserted(items.lastIndex)
-        }
+    private fun move(oldPos: Int) {
+        if (items.size <= 1 || oldPos !in items.indices) return
+        var newPos = items.indexOfFirst { it > items[oldPos] }
+        if (newPos == -1) newPos = items.lastIndex
+        items.add(newPos, items.removeAt(oldPos))
+        notifyItemMoved(oldPos, newPos)
     }
 
     /**
      * Odstrániť všetky poznámky patriace pod súčasne vybranú kategóriu
      */
     fun clear() {
+        val oldCount = items.size
+        if (ePos in items.indices) performEdit(oldCount)
         App.data.clearNotesOfCategory(category)
-        activeHolder = null
-        clearChanges()
-        val range = items.indices
         items.clear()
-        notifyItemRangeRemoved(range.first, range.count())
-        addNewHolder()
+        notifyItemRangeRemoved(0, oldCount)
     }
 
     /**
@@ -181,50 +336,52 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * @param cat vybraná kategória
      */
     fun loadCategory(cat: NoteCategory) {
-        if (!this::category.isInitialized || category != cat) {
-            category = cat
-            items.clear()
-            items.addAll(App.data.notes(cat))
-            addNewHolder()
-            notifyDataSetChanged()
-        }
+        if (category != cat) initialize()
+        items.clear()
+        category = cat
+        items.addAll(App.data.notes(cat))
+        notifyDataSetChanged()
     }
 
     /**
      * Opätovné načítanie zoznamu úloh
      */
     fun reload() {
-        clearChanges()
         items.clear()
         items.addAll(App.data.notes(category))
-        addNewHolder()
         notifyDataSetChanged()
     }
 
-    private fun clearChanges() {
-        editPos = null
-        editId = null
-        editInfo = null
-        editSub = null
-        editDeadline = null
+    override fun getItemViewType(position: Int) = when {
+        position !in 0..items.size -> super.getItemViewType(position)
+        position == items.size || items[position].id == eId -> R.layout.writable_note
+        else -> R.layout.readable_note
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        NoteHolder(LayoutInflater.from(parent.context).inflate(R.layout.note, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val v = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+        return when (viewType) {
+            R.layout.readable_note -> ReadableNoteHolder(v)
+            R.layout.writable_note -> WritableNoteHolder(v)
+            else -> throw Exception("No such ViewType in NoteAdapter!")
+        }
+    }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() =
+        if (subjects.isEmpty()) 0 else items.size + if (eId == -1L) 1 else 0
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as NoteHolder).bind()
+        (holder as AnyNoteHolder).bind()
 
     override fun getItemId(position: Int): Long =
-        if (position in items.indices) items[position]?.id ?: -1L else -1L
+        if (position in items.indices) items[position].id else -1L
 
     /**
      * Získanie pozície úlohy s danym id
      * @param id
      */
     fun indexOfNote(id: Long) =
-        if (id == -1L) items.lastIndex else items.indexOfFirst { it?.id == id }
+        if (id == -1L) items.lastIndex else items.indexOfFirst { it.id == id }
 
     /**
      * Opätovné načítanie množiny predmetov
@@ -234,160 +391,103 @@ class NoteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         subjects.addAll(App.data.subjects())
     }
 
-    /**
-     * Holder, ktorý uchováva a zobrazuje dáta o danej úlohe
-     * @constructor Vytvorenie vizuálnej reprezentácie úlohy
-     * @property id id úlohy
-     * @property info popis úlohy
-     * @property millis dátum termínu v milisekundách - môže byť null
-     * @property subject predmet, pre ktorý úloha platí
-     */
-    inner class NoteHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val note
-            get() =
-                if (adapterPosition in items.indices) items[adapterPosition]
-                else throw Exception("ViewHolder is no longer bound to the list of notes!")
+    abstract inner class AnyNoteHolder(view: View) : RecyclerView.ViewHolder(view) {
+        protected abstract val sub: TextView
+        protected abstract val info: TextView
+        protected abstract val date: TextView
+        abstract fun bind()
+    }
 
-        val id get() = note?.id ?: -1
-        var info
-            get() = if (editMode) itemView.editable_text.text?.toString() else note?.description
-            set(value) {
-                if (editMode) itemView.editable_text.setText(value)
-                else itemView.readable_text.text = value
-            }
+    inner class ReadableNoteHolder(view: View) : AnyNoteHolder(view) {
+        override val sub = itemView.rn_sub!!
+        override val info = itemView.rn_text!!
+        override val date = itemView.rn_date!!
+        private val edit = itemView.rn_edit!!
+        private val del = itemView.rn_del!!
 
-        var millis
-            get() = itemView.date_label.tag as Long?
-            set(value) {
-                itemView.date_label.tag = value
-                itemView.date_label.text = value?.let { Prefs.settings.getDateTimeString(it) }
-                itemView.unset_date.visibility = millis?.let { VISIBLE } ?: GONE
-                if (!editMode) items[adapterPosition] = Note(id, subject, info ?: "", value)
-                else editDeadline = value
-            }
+        init {
+            edit.setOnClickListener(onEdit)
+            del.setOnClickListener(onRemove)
+            sub.setOnClickListener(onEdit)
+            date.setOnClickListener(onEdit)
+            info.setOnClickListener(onEdit)
+            edit.tag = this
+            del.tag = this
+            sub.tag = this
+            date.tag = this
+            info.tag = this
+        }
 
-        var subject
-            get() = itemView.note_title.tag as Subject
+        override fun bind() {
+            val item = if (adapterPosition in items.indices) items[adapterPosition] else null
+            sub.text = item?.sub?.abb ?: eSub.abb
+            date.text = (item?.deadline ?: eDate)?.let(Prefs.settings::getDateTimeString) ?: ""
+            info.text = item?.description ?: eInfo
+        }
+    }
+
+    inner class WritableNoteHolder(view: View) : AnyNoteHolder(view) {
+        override val sub = itemView.wn_sub!!
+        override val info = itemView.wn_text!!
+        override val date = itemView.wn_date!!
+        private val counter = itemView.wn_sub_counter!!
+        private val prev = itemView.wn_prev!!
+        private val next = itemView.wn_next!!
+        private val noDate = itemView.wn_date_clr!!
+        private val save = itemView.wn_save!!
+        private val cancel = itemView.wn_cancel!!
+        private var sel: IntRange
+            get() = info.text?.let { Selection.getSelectionStart(it)..Selection.getSelectionEnd(it) }
+                ?: 0..0
             set(value) {
-                itemView.note_title.tag = value
-                itemView.note_title.text = value.abb
-                itemView.counter.text = if (value in subjects) String.format(
-                    "%d/%d",
-                    subjects.indexOf(value) + 1,
-                    subjects.size
+                val rng = 0..(info.text?.length ?: 0)
+                Selection.setSelection(
+                    info.text,
+                    value.first.coerceIn(rng),
+                    value.last.coerceIn(rng)
                 )
-                else null
-                if (editMode) editSub = value
             }
-
-        private var editMode: Boolean = false
+        var focus: Boolean
+            get() = info.isFocused
             set(value) {
-                itemView.counter.visibility = if (value) VISIBLE else GONE
-                itemView.previous.visibility = if (value) VISIBLE else GONE
-                itemView.next.visibility = if (value) VISIBLE else GONE
-                itemView.editable_text_container.visibility = if (value) VISIBLE else GONE
-                itemView.save_btn.visibility = if (value) VISIBLE else GONE
-
-                itemView.readable_text.visibility = if (value) GONE else VISIBLE
-                itemView.edit_btn.visibility = if (value) GONE else VISIBLE
-                field = value
+                if (info.isFocused) info.clearFocus() else info.requestFocus()
+                if (value != info.isFocused) if (value) info.requestFocus() else info.clearFocus()
             }
 
-        /**
-         * Overuje, či je táto úloha práve upravovaná
-         */
-        val isEditing: Boolean get() = editMode
+        init {
+            prev.tag = sub
+            next.tag = sub
+            sub.tag = counter
+            info.tag = this
+            date.tag = this
+            noDate.tag = this
+            save.tag = this
+            cancel.tag = this
 
-        /**
-         * Vyskladanie viewHoldera
-         */
-        fun bind() {
-            editMode = (note?.id ?: -1L) == editId
-
-            itemView.previous.tag = this
-            itemView.next.tag = this
-            itemView.set_date.tag = this
-            itemView.readable_text.tag = this
-            itemView.unset_date.tag = this
-            itemView.save_btn.tag = this
-            itemView.edit_btn.tag = this
-            itemView.del_btn.tag = this
-
-            itemView.previous.setOnClickListener(previousSubject)
-            itemView.next.setOnClickListener(nextSubject)
-            itemView.set_date.setOnClickListener(onSetCalendar)
-            itemView.date_label.setOnClickListener(onSetCalendar)
-            itemView.unset_date.setOnClickListener(onUnsetCalendar)
-            itemView.save_btn.setOnClickListener(onEditEnd)
-            itemView.edit_btn.setOnClickListener(onEditStart)
-            itemView.readable_text.setOnClickListener(onEditStart)
-            itemView.del_btn.setOnClickListener(onRemove)
-            itemView.editable_text.addTextChangedListener(onRewrite)
-
-            subject = (if (editMode) editSub else note?.sub)
-                ?: (if (category is Subject) category as Subject else subjects.first())
-            info = if (editMode) editInfo else note?.description
-            millis = if (editMode) editDeadline else note?.deadline
-
-            if (editMode) activeHolder = this
+            save.setOnClickListener(onSave)
+            cancel.setOnClickListener(onLose)
+            prev.setOnClickListener(onPrevSub)
+            next.setOnClickListener(onNextSub)
+            date.setOnClickListener(onDateTimeRequest)
+            noDate.setOnClickListener(onDateClr)
+            val cur = eCur
+            info.addTextChangedListener(onRewrite)
+            info.onFocusChangeListener = onFocusChange
+            eCur = cur
         }
 
-        /**
-         * Začať upravovať
-         */
-        fun startEditing() {
-            editMode = true
-            itemView.editable_text.setText(note?.description)
-            keepChanges(this)
-        }
-
-        /**
-         * Skončiť úpravy
-         */
-        fun stopEditing() {
-            clearChanges()
-            val pos = adapterPosition
-            if (pos in items.indices) {
-                editMode = false
-                if (items[pos] == null) {
-                    items.removeAt(pos)
-                    notifyItemRemoved(pos)
-                } else {
-                    itemView.editable_text.text?.clear()
-                    itemView.readable_text.text = note?.description
-                    millis = note!!.deadline
-                    subject = note!!.sub
-                }
-            }
-        }
-
-        /**
-         * Nájdenie chýb pred uložením zmien
-         * @return resource id okdazujúci na reťazec, ktorý popisuje danú chybu - null, ak sú úpravy bezchybné
-         */
-        @StringRes
-        private fun errorPresence(): Int? {
-            if (itemView.note_title.tag !is Subject)
-                return R.string.subject_required
-            (itemView.date_label.tag as Long?)?.let {
-                if (it <= System.currentTimeMillis())
-                    return R.string.time_out
-            }
-            return Note.validDescription(itemView.editable_text.text?.toString())
-        }
-
-        /**
-         * Pokúsi sa uložiť vykonané zmeny.
-         * @return pri úspechu vráti null, inak vráti id odkazujúci na reťazec, ktorý popisuje chybu
-         */
-        fun save(): Int? = if (!editMode) null else errorPresence() ?: null.also {
-            val new = note == null
-            val newId = if (new) App.data.addNote(subject.id, info!!, millis) else id
-            if (newId == -1L) throw Exception("Note could not be inserted!")
-            val count = if (new) 1 else App.data.updateNote(note!!.id, subject.id, info!!, millis)
-            if (count != 1) throw Exception("Note could not be updated!")
-            items[adapterPosition] = Note(newId, subject, info!!, millis)
-            stopEditing()
+        override fun bind() {
+            val pCur = eCur
+            val pInfo = eInfo
+            counter.text = switchSubject(0)
+            sub.text = eSub.abb
+            date.text = eDate?.let(Prefs.settings::getDateTimeString) ?: ""
+            info.setText(pInfo)
+            info.text!!.setSpan(cursorWatcher, 0, pInfo.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+            eCur = pCur
+            sel = eCur
+            focus =
+                adapterPosition in items.indices || adapterPosition != -1 && (eInfo != "" || eDate != null)
         }
     }
 }

@@ -18,14 +18,31 @@
     <tbody>
     <tr>
         <td>
-            <h4><a href="-note-holder/index.html">NoteHolder</a></h4>
+            <h4><a href="-any-note-holder/index.html">AnyNoteHolder</a></h4>
         </td>
         <td>
-            <p>Holder, ktorý uchováva a zobrazuje dáta o danej úlohe</p>
-            <code><span class="keyword">inner</span> <span class="keyword">class </span><span
-                    class="identifier">NoteHolder</span>&nbsp;<span
+            <code><span class="keyword">abstract</span> <span class="keyword">inner</span> <span
+                    class="keyword">class </span><span class="identifier">AnyNoteHolder</span>&nbsp;<span
                     class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span></code>
         </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-readable-note-holder/index.html">ReadableNoteHolder</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">inner</span> <span class="keyword">class </span><span
+                    class="identifier">ReadableNoteHolder</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
+                    class="identifier">AnyNoteHolder</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="-writable-note-holder/index.html">WritableNoteHolder</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">inner</span> <span class="keyword">class </span><span
+                    class="identifier">WritableNoteHolder</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
+                    class="identifier">AnyNoteHolder</span></code></td>
     </tr>
     </tbody>
 </table>
@@ -39,24 +56,19 @@
         <td>
             <p>V adaptéri zobrazujem mením a pridávam poznámky</p>
             <code><span class="identifier">NoteAdapter</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$<init>(com.moriak.schednote.database.data.NoteCategory, java.util.ArrayList((com.moriak.schednote.database.data.Subject)))/category">category</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="../../com.moriak.schednote.database.data/-note-category.html"><span
+                    class="identifier">NoteCategory</span></a><span class="symbol">, </span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$<init>(com.moriak.schednote.database.data.NoteCategory, java.util.ArrayList((com.moriak.schednote.database.data.Subject)))/subjects">subjects</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html"><span
+                    class="identifier">ArrayList</span></a><span class="symbol">&lt;</span><a
+                    href="../../com.moriak.schednote.database.data/-subject/index.html"><span
+                    class="identifier">Subject</span></a><span class="symbol">&gt;</span><span
                     class="symbol">)</span></code></td>
-    </tr>
-    </tbody>
-</table>
-<h3>Properties</h3>
-<table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="active-position.html">activePosition</a></h4>
-        </td>
-        <td>
-            <p>Položka je aktívna, keď je upravovaná.
-                Keď je položka nová, musí mať rozrobené zmeny</p>
-            <code><span class="keyword">val </span><span
-                    class="identifier">activePosition</span><span class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
     </tr>
     </tbody>
 </table>
@@ -100,6 +112,22 @@
                     class="symbol">: </span><a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
                     class="identifier">Long</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="get-item-view-type.html">getItemViewType</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">getItemViewType</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$getItemViewType(kotlin.Int)/position">position</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
+                    class="identifier">Int</span></a></code></td>
     </tr>
     <tr>
         <td>
@@ -211,6 +239,41 @@
                     class="symbol">: </span><a
                     href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
                     class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-deadline.html">setDeadline</a></h4>
+        </td>
+        <td>
+            <code><span class="keyword">fun </span><span class="identifier">setDeadline</span><span
+                    class="symbol">(</span><span class="identifier"
+                                                 id="com.moriak.schednote.adapters.NoteAdapter$setDeadline(kotlin.Long)/deadline">deadline</span><span
+                    class="symbol">:</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span><span class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="set-on-date-time-request.html">setOnDateTimeRequest</a></h4>
+        </td>
+        <td>
+            <p>Nastavenie správania, čo sa má stať pri žiadosti o nastavenie dátumu</p>
+            <code><span class="keyword">fun </span><span
+                    class="identifier">setOnDateTimeRequest</span><span class="symbol">(</span><span
+                    class="identifier"
+                    id="com.moriak.schednote.adapters.NoteAdapter$setOnDateTimeRequest(kotlin.Function1((kotlin.Long, kotlin.Unit)))/fn">fn</span><span
+                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
+                    class="identifier">Long</span></a><span class="symbol">?</span><span
+                    class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a><span class="symbol">)</span><span
+                    class="symbol">: </span><a
+                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
+                    class="identifier">Unit</span></a></code></td>
     </tr>
     <tr>
         <td>

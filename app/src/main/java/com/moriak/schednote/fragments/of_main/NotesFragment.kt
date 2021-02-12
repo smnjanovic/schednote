@@ -25,7 +25,6 @@ import com.moriak.schednote.database.data.Note
 import com.moriak.schednote.database.data.NoteCategory
 import com.moriak.schednote.database.data.Subject
 import com.moriak.schednote.design.ItemTopSpacing
-import com.moriak.schednote.design.RecyclerViewEmptySupport
 import com.moriak.schednote.dialogs.DateTimeDialog
 import com.moriak.schednote.notifications.NoteReminder
 import com.moriak.schednote.other.Redirection
@@ -49,13 +48,8 @@ class NotesFragment : SubActivity() {
         private const val SCROLL = "SCROLL"
 
         private const val REQUEST_CALENDAR_ACCESS = 1000
-
-        private fun RecyclerViewEmptySupport.holder(pos: Int) =
-            if (pos in 0 until adapter!!.itemCount) findViewHolderForAdapterPosition(pos) as NoteAdapter.NoteHolder
-            else throw IndexOutOfBoundsException("There's no such index: $pos.")
     }
 
-    private val adapter = NoteAdapter()
     private val subjects = ArrayList<Subject>()
     private val categories = ArrayList<NoteCategory>()
     private lateinit var catAdapt: ArrayAdapter<NoteCategory>
@@ -66,6 +60,7 @@ class NotesFragment : SubActivity() {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
             adapter.loadCategory(parent!!.selectedItem as NoteCategory)
     }
+    private lateinit var adapter: NoteAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,24 +71,13 @@ class NotesFragment : SubActivity() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        saved: Bundle?
     ): View? {
         return inflater.inflate(R.layout.notes, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val onConfirm = fun(position: Int, millis: Long) {
-            if (millis <= System.currentTimeMillis()) App.toast(R.string.time_out)
-            else {
-                val id = adapter.getItemId(position)
-                val holder = view.note_list.holder(position)
-                holder.millis = millis
-                if (id > -1L && !holder.isEditing) App.data.changeNoteDeadline(id, millis)
-                adapter.removeOutcast(position)?.let { App.toast(it) }
-            }
-        }
 
         if (savedInstanceState == null) {
             subjects.clear()
@@ -108,37 +92,26 @@ class NotesFragment : SubActivity() {
         view.note_groups.adapter = catAdapt
         view.note_groups.onItemSelectedListener = categoryChoice
 
-        // nastavit vyber podla intentu ak je poziadavka zobrazit kategoriu alebo konkretnu ulohu
         if (savedInstanceState == null) {
-            val redirect: Redirection? = Redirection.detectRedirection(activity?.intent)
-            if (redirect == Redirection.NOTES) {
-                val note: Long? = activity?.intent?.let {
-                    if (!it.hasExtra(Redirection.EXTRA_NOTE_ID)) null
-                    else it.getLongExtra(Redirection.EXTRA_NOTE_ID, -1L)
-                }
-
-                val cat: NoteCategory? = when {
-                    activity!!.intent!!.hasExtra(Redirection.EXTRA_NOTE_CATEGORY) -> {
-                        val catId =
-                            activity!!.intent!!.getLongExtra(Redirection.EXTRA_NOTE_CATEGORY, -1L)
-                        if (catId < 1) TimeCategory.values()[-catId.toInt()]
-                        else App.data.subject(catId)
+            adapter = if (Redirection.detectRedirection(activity?.intent) == Redirection.NOTES) {
+                val cat = activity?.intent?.extras?.let { bdl ->
+                    if (bdl.containsKey(Redirection.EXTRA_NOTE_CATEGORY)) {
+                        val catId = bdl.getLong(Redirection.EXTRA_NOTE_CATEGORY, -1L)
+                        if (catId < 1) TimeCategory[-catId.toInt()] else App.data.subject(catId)
+                    } else {
+                        val note = bdl.getLong(Redirection.EXTRA_NOTE_ID, -1L)
+                        if (note > -1L) App.data.detectNoteCategory(note) else null
                     }
-                    note != null -> App.data.detectNoteCategory(note)
-                    else -> null
-                }
-
-                val catPos = categories.indexOf(cat)
-                if (catPos > -1) view.note_groups.setSelection(catPos)
-            }
+                } ?: TimeCategory.ALL
+                view.note_groups.setSelection(categories.indexOf(cat))
+                NoteAdapter(cat, subjects)
+            } else NoteAdapter(TimeCategory.ALL, subjects)
         }
 
-        adapter.setOnDateTimeSetAttempt { pos, deadline ->
-            val dateTime = DateTimeDialog()
-            dateTime.storeItemPositionAndDate(pos, deadline)
-            dateTime.setOnConfirm(onConfirm)
-            dateTime.setOnConfirm(onConfirm)
-            dateTime.show(fragmentManager!!, DATE_TIME)
+        adapter.setOnDateTimeRequest {
+            DateTimeDialog().setDateTime(it)
+                .setOnConfirm(adapter::setDeadline)
+                .show(fragmentManager!!, DATE_TIME)
         }
 
         view.note_list.layoutManager = LinearLayoutManager(requireContext())
@@ -149,7 +122,7 @@ class NotesFragment : SubActivity() {
 
         view.clear_all_label.setOnClickListener { adapter.clear() }
 
-        findFragment(DATE_TIME, DateTimeDialog::class.java)?.setOnConfirm(onConfirm)
+        findFragment(DATE_TIME, DateTimeDialog::class.java)?.setOnConfirm(adapter::setDeadline)
 
         view.to_the_calendar.setOnClickListener { sendNotesToTheCalendar() }
         view.out_of_calendar.setOnClickListener { loadNotesFromTheCalendar() }
@@ -160,16 +133,10 @@ class NotesFragment : SubActivity() {
         val v = view ?: return
         v.post {
             if (activity?.intent?.hasExtra(Redirection.EXTRA_NOTE_ID) == true) {
-                val pos = adapter.indexOfNote(
-                    activity!!.intent!!.getLongExtra(
-                        Redirection.EXTRA_NOTE_ID,
-                        -1L
-                    )
-                )
+                val id = activity!!.intent!!.getLongExtra(Redirection.EXTRA_NOTE_ID, -1L)
+                val pos = adapter.indexOfNote(id)
                 if (pos > -1) v.note_list.scrollToPosition(pos)
-                else adapter.activePosition?.let { v.note_list.scrollToPosition(it) }
-                activity!!.intent!!.removeExtra(Redirection.EXTRA_NOTE_ID)
-            } else adapter.activePosition?.let { v.note_list.scrollToPosition(it) }
+            }
         }
     }
 
@@ -242,12 +209,11 @@ class NotesFragment : SubActivity() {
                         adapter.reload()
                         val cat =
                             view?.note_groups?.selectedItem as NoteCategory? ?: return@withContext
-
                         subjects.clear()
-                        subjects.addAll(App.data.subjects())
                         categories.clear()
+                        subjects.addAll(App.data.subjects())
                         categories.addAll(TimeCategory.values())
-                        categories.addAll(App.data.subjects())
+                        categories.addAll(subjects)
                         adapter.reloadSubjects()
                         view!!.note_groups.setSelection(categories.indexOf(cat))
                     }
