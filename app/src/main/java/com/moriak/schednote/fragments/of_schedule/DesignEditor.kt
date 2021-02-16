@@ -1,12 +1,13 @@
 package com.moriak.schednote.fragments.of_schedule
 
-import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -14,11 +15,14 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
+import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.Toast.LENGTH_LONG
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.design.PaletteStorage
@@ -28,6 +32,7 @@ import com.moriak.schednote.fragments.of_main.SubActivity
 import com.moriak.schednote.fragments.of_schedule.DesignEditor.ImgFit.*
 import com.moriak.schednote.fragments.of_schedule.DesignEditor.OverSize.*
 import com.moriak.schednote.other.Redirection
+import com.moriak.schednote.other.Redirection.Companion.EXTRA_DESIGN_COLOR_GROUP
 import com.moriak.schednote.settings.ColorGroup.BACKGROUND
 import com.moriak.schednote.settings.Prefs
 import kotlinx.android.synthetic.main.style_layout.*
@@ -78,7 +83,7 @@ class DesignEditor : SubActivity(), SchedulePart {
      * vyšší ako predloha alebo pri rovnakej výške predlohy užší ako predloha
      * @property NONE Pomery strán predlohy a obrázka sa rovnajú alebo nie je k dispozícii  obrázok
      */
-    enum class OverSize {
+    private enum class OverSize {
         WIDTH, HEIGHT, NONE;
 
         companion object {
@@ -102,9 +107,9 @@ class DesignEditor : SubActivity(), SchedulePart {
     }
 
     /**
-     * Trieda pracuje s obrázkom na pozadí
+     * Súradnice a referencia obrázku
      */
-    inner class IMGCoordinates {
+    private inner class IMGCoordinates {
         private var drawable: Drawable? = null
         private var imgFit: ImgFit? = null
         private val frmW = App.w.coerceAtMost(App.h)
@@ -122,31 +127,6 @@ class DesignEditor : SubActivity(), SchedulePart {
          * Získanie informácie, o tom, či je obrázok, roztiahnutý, orezaný alebo natlačený
          */
         fun getFit() = imgFit
-
-        /**
-         * Zmena obrázka
-         * @param iv objekt ktorý má obrázok zobraziť
-         * @param uri odkaz na obrázok, ktorý má byť zobrazený
-         */
-        fun setUri(iv: ImageView?, uri: Uri?) {
-            iv ?: return
-            if (PackageManager.PERMISSION_GRANTED == activity?.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                try {
-                    iv.setImageURI(uri)
-                } catch (ex: SecurityException) {
-                    iv.setImageURI(null)
-                    App.toast(R.string.error_loading_image, Gravity.CENTER, Toast.LENGTH_LONG)
-                } finally {
-                    drawable = iv.drawable
-                    Prefs.states.bgImage = uri?.toString()
-                }
-            } else {
-                iv.setImageURI(null)
-                drawable = null
-                Prefs.states.bgImage = null
-            }
-            computeCoordinates(imgFit ?: Prefs.states.bgImageFit ?: FILL)
-        }
 
         /**
          * Uložiť pozíciu obrázku
@@ -192,16 +172,39 @@ class DesignEditor : SubActivity(), SchedulePart {
             boundsY = 0F..0F
         }
 
-        /**
-         * Vypočitanie nových súradníc obrázka po akejsi zmene
-         */
-        fun computeCoordinates(fit: ImgFit? = imgFit) {
-            imgFit = if (fit == null || drawable == null || origW * origH == 0) null else fit
-            if (imgFit == null) {
+        private fun middle(range: ClosedFloatingPointRange<Float>): Float {
+            return (range.start + (range.endInclusive - range.start) / 2).coerceIn(range)
+        }
+
+        fun center() {
+            x = middle(boundsX)
+            y = middle(boundsY)
+        }
+
+        fun setImage(iv: ImageView?, uri: Uri?, fit: ImgFit?): Boolean {
+            iv ?: return false
+            val allowed = activity?.checkSelfPermission(READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED
+            // nemozno nastavit obrazok
+            if (uri == null || fit == null || !allowed) {
+                imgFit = null
                 drawable = null
                 Prefs.states.bgImage = null
+                Prefs.states.bgImageFit = null
             }
-            Prefs.states.bgImageFit = imgFit
+            // nacitanie obrazku
+            else {
+                try {
+                    iv.setImageURI(uri)
+                } catch (ex: SecurityException) {
+                    iv.setImageURI(null)
+                    App.toast(R.string.error_loading_image, CENTER, LENGTH_LONG)
+                } finally {
+                    drawable = iv.drawable
+                    imgFit = drawable?.let { fit }
+                    Prefs.states.bgImage = drawable?.let { "$uri" }
+                    Prefs.states.bgImageFit = imgFit
+                }
+            }
 
             val overFlow = OverSize.getOverFlow(drawable)
             when (imgFit) {
@@ -220,13 +223,14 @@ class DesignEditor : SubActivity(), SchedulePart {
 
             x = if (imgFit == COVER && overFlow == WIDTH || imgFit == CONTAIN && overFlow == HEIGHT)
                 if (Prefs.states.bgImagePos in boundsX) Prefs.states.bgImagePos
-                else (boundsX.start + boundsX.endInclusive) / 2
-            else ((boundsX.start + boundsX.endInclusive) / 2)
+                else boundsX.start + (boundsX.start + boundsX.endInclusive) / 2
+            else boundsX.start + (boundsX.start + boundsX.endInclusive) / 2
 
             y = if (imgFit == CONTAIN && overFlow == WIDTH || imgFit == COVER && overFlow == HEIGHT)
                 if (Prefs.states.bgImagePos in boundsY) Prefs.states.bgImagePos
-                else (boundsY.start + boundsY.endInclusive) / 2
-            else ((boundsY.start + boundsY.endInclusive) / 2)
+                else boundsY.start + (boundsY.start + boundsY.endInclusive) / 2
+            else boundsY.start + (boundsY.start + boundsY.endInclusive) / 2
+            return drawable != null
         }
 
         /**
@@ -281,16 +285,14 @@ class DesignEditor : SubActivity(), SchedulePart {
             illustrator.storeColor(keys[colorKeyIndex])
     }
     private val changeImgFit = RadioGroup.OnCheckedChangeListener { group, checkedId ->
-        val fit = (group.findViewById(checkedId) as RadioButton?)?.tag as ImgFit?
-        imageCoordinates.computeCoordinates(fit)
-        if (Prefs.states.bgImageFit == null && fit != null) {
-            group.clearCheck()
-            App.toast(R.string.no_image_present)
-        } else view?.bg_image?.let { img ->
-            if (fit == null && Prefs.states.bgImageFit != null) imageCoordinates.setUri(img, null)
-            img.post {
-                imageCoordinates.applySize(img)
-                img.post { imageCoordinates.applyCoordinates(img) }
+        if (isResumed) {
+            val fit = group.findViewById<RadioButton?>(checkedId)?.tag as ImgFit?
+            val uri = fit?.let { Prefs.states.bgImage?.let(Uri::parse) }
+            if (!changeImage(uri, fit)) {
+                group.clearCheck()
+                App.toast(R.string.no_image_present)
+            } else {
+                imageCoordinates.center()
             }
         }
     }
@@ -319,16 +321,16 @@ class DesignEditor : SubActivity(), SchedulePart {
         }
     }
     private val setImage = View.OnClickListener {
-        if (activity?.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+        if (activity?.checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
             requestPermissions(
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                arrayOf(READ_EXTERNAL_STORAGE),
                 NEW_IMG_PERMISSION
             )
         else attemptToPickImage()
     }
     private val unsetImage = View.OnClickListener {
         view?.radios?.clearCheck()
-        it.visibility = View.GONE
+        it.visibility = GONE
         bg_image.setImageURI(null)
     }
 
@@ -358,6 +360,29 @@ class DesignEditor : SubActivity(), SchedulePart {
         }
     }
 
+    private var resumedFnArgs = ArrayList<Array<out Any?>>()
+    private var resumedFns = ArrayList<(Array<out Any?>) -> Unit>()
+
+    private fun doWhenResumed(vararg args: Any?, fn: (Array<out Any?>) -> Unit) {
+        if (resumedFns.isEmpty() && isResumed) fn(args)
+        else {
+            resumedFns.add(fn)
+            resumedFnArgs.add(args)
+        }
+    }
+
+    private fun changeImage(uri: Uri?, fit: ImgFit?): Boolean {
+        val v = view?.bg_image ?: return false
+        val visible = imageCoordinates.setImage(v, uri, fit)
+        v.visibility = if (visible) VISIBLE else GONE
+        if (visible) doWhenResumed(v) {
+            val img = it.first() as ImageView
+            imageCoordinates.applySize(img)
+            img.post { imageCoordinates.applyCoordinates(img) }
+        }
+        return visible
+    }
+
     private fun refreshColorValues() {
         PaletteStorage.getColor(keys[colorKeyIndex], palette)
         view?.color_group?.text = PaletteStorage.getString(keys[colorKeyIndex])
@@ -375,120 +400,122 @@ class DesignEditor : SubActivity(), SchedulePart {
         startActivityForResult(Intent(Intent.ACTION_PICK).also { it.type = "image/*" }, IMG_REQUEST)
     }
 
+    private fun setTagsAndEvents() {
+        val v = view ?: return
+        //nastavenia tagov
+        v.rangeH.tag = v.hnum
+        v.rangeS.tag = v.snum
+        v.rangeL.tag = v.lnum
+        v.rangeA.tag = v.anum
+        v.hnum.tag = HSLPartition.HUE
+        v.snum.tag = HSLPartition.SATURATION
+        v.lnum.tag = HSLPartition.LUMINANCE
+        v.anum.tag = HSLPartition.ALPHA
+        v.previous_color.tag = -1
+        v.next_color.tag = 1
+        v.cover.tag = COVER
+        v.contain.tag = CONTAIN
+        v.fill.tag = FILL
+
+        // nastavenia posluchacov udalosti podla tagov
+        v.rangeH.setOnSeekBarChangeListener(recolor)
+        v.rangeS.setOnSeekBarChangeListener(recolor)
+        v.rangeL.setOnSeekBarChangeListener(recolor)
+        v.rangeA.setOnSeekBarChangeListener(recolor)
+        v.previous_color.setOnClickListener(switchColors)
+        v.next_color.setOnClickListener(switchColors)
+        v.wallpaper.setOnClickListener(setAsWallpaper)
+        v.radios.setOnCheckedChangeListener(changeImgFit)
+        v.schedule_frame.setOnTouchListener(tableMovement)
+        v.bg_image.setOnTouchListener(imageMovement)
+        v.add_image.setOnClickListener(setImage)
+        v.remove_image.setOnClickListener(unsetImage)
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.setTitle(R.string.design)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?) =
         inflater.inflate(R.layout.style_layout, container, false)!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         var key = -BACKGROUND.ordinal
-        if (savedInstanceState == null) {
-            if (activity?.intent?.action == Redirection.DESIGN.action) {
-                key =
-                    activity?.intent?.getIntExtra(Redirection.EXTRA_DESIGN_COLOR_GROUP, key) ?: key
-                colorKeyIndex = keys.indexOf(key).let { if (it == -1) 0 else it }
-                PaletteStorage.getColor(key, palette)
-            }
+        if (savedInstanceState == null && activity?.intent?.action == Redirection.DESIGN.action) {
+            key = activity?.intent?.getIntExtra(EXTRA_DESIGN_COLOR_GROUP, key) ?: key
+            colorKeyIndex = keys.indexOf(key).coerceAtLeast(0)
+            PaletteStorage.getColor(key, palette)
         }
 
         // pridanie tabulky rozvrhu
-        savedInstanceState?.let { if (this::illustrator.isInitialized) illustrator else null }
-            .also {
-                illustrator = ScheduleIllustrator
-                    .schedule(it, false)
-                    .involveButtons(view.odd_btn, view.even_btn)
-                    .background(view.screen)
-                    .attachTo(view.schedule_frame)
-                it ?: illustrator.redraw()
-            } ?: illustrator.customizeColumnWidth()
-
-        //nastavenia tagov
-        view.rangeH.tag = view.hnum
-        view.rangeS.tag = view.snum
-        view.rangeL.tag = view.lnum
-        view.rangeA.tag = view.anum
-        view.hnum.tag = HSLPartition.HUE
-        view.snum.tag = HSLPartition.SATURATION
-        view.lnum.tag = HSLPartition.LUMINANCE
-        view.anum.tag = HSLPartition.ALPHA
-        view.previous_color.tag = -1
-        view.next_color.tag = 1
-        view.cover.tag = COVER
-        view.contain.tag = CONTAIN
-        view.fill.tag = FILL
-
-        // nastavenia posluchacov udalosti podla tagov
-        view.rangeH.setOnSeekBarChangeListener(recolor)
-        view.rangeS.setOnSeekBarChangeListener(recolor)
-        view.rangeL.setOnSeekBarChangeListener(recolor)
-        view.rangeA.setOnSeekBarChangeListener(recolor)
-        view.previous_color.setOnClickListener(switchColors)
-        view.next_color.setOnClickListener(switchColors)
-        view.wallpaper.setOnClickListener(setAsWallpaper)
-        view.radios.setOnCheckedChangeListener(changeImgFit)
-        view.schedule_frame.setOnTouchListener(tableMovement)
-        view.bg_image.setOnTouchListener(imageMovement)
-        view.add_image.setOnClickListener(setImage)
-        view.remove_image.setOnClickListener(unsetImage)
-
+        illustrator = ScheduleIllustrator
+            .schedule(if (this::illustrator.isInitialized) illustrator else null, false)
+            .involveButtons(view.odd_btn, view.even_btn)
+            .background(view.screen)
+            .attachTo(view.schedule_frame)
+        if (savedInstanceState == null) illustrator.redraw()
+        setTagsAndEvents()
         refreshColorValues()
 
-        // nastavenia vzhladu platna
+        // nastavenia vzhladu plátna
         val w = App.w.coerceAtMost(App.h)
         val h = App.w.coerceAtLeast(App.h)
+        val horizontalMargin = w * 20 / 720F // w * 20 / 720
+        val verticalMargin = w * 140 / 720F // w * 140 / 720
+
         view.screen.layoutParams.width = w
         view.screen.layoutParams.height = h
         view.screen.foreground = GradientDrawable().also { it.setStroke(App.dp(4), Color.BLACK) }
 
-        // nastavit obrazok
-        imageCoordinates.setUri(view.bg_image, Prefs.states.bgImage?.let { Uri.parse(it) })
-        view.remove_image.visibility =
-            if (view.bg_image.drawable == null) View.GONE else View.VISIBLE
+        doWhenResumed(
+            w,
+            h,
+            horizontalMargin,
+            verticalMargin,
+            view.screen,
+            view.schedule_frame,
+            view.frame
+        ) {
+            val frmW = it[0] as Int
+            val frmH = it[1] as Int
+            val horM = it[2] as Float
+            val verM = it[3] as Float
+            val screen = it[4] as View
+            val table = it[5] as View
+            val frame = it[6] as View
+            table.layoutParams.width = (frmW - 2F * horM).roundToInt()
+            this@DesignEditor.view?.post {
+                App.log("frm: $frmW x $frmH\t\treal: ${table.width} x ${table.height}")
+                val scale = (1F * frame.width / frmW).coerceAtMost(1F * frame.height / frmH)
+                screen.scaleX = scale
+                screen.scaleY = scale
+                tableMovement.notifyScale(scale)
+                imageMovement.notifyScale(scale)
 
-        // nastavenie obrazku
-        imageCoordinates.getFit()
-            ?.let { view.radios.findViewWithTag<RadioButton?>(it) }
+                // nastavenie hranice posuvania tabulky
+                val boundsY = verM..frmH - verM - table.height
+                table.x = horM
+                table.y = Prefs.states.tableY.coerceIn(boundsY)
+                tableMovement.setBoundsX(horM..horM)
+                tableMovement.setBoundsY(boundsY)
+                illustrator.customizeColumnWidth((frmW - 2 * horM).toInt())
+            }
+        }
+
+        // nastavit obrazok
+        changeImage(Prefs.states.bgImage?.let(Uri::parse), Prefs.states.bgImageFit)
+
+        // nastavenie rozmerov a obrazku
+        view.radios.findViewWithTag<RadioButton?>(imageCoordinates.getFit())
             ?.let { it.isChecked = true } ?: view.radios.clearCheck()
     }
 
     override fun onResume() {
         super.onResume()
-        // nastavenie rozmeru tabulky
-
-        val v = view ?: return
-        val w = App.w.coerceAtMost(App.h)
-        val h = App.w.coerceAtLeast(App.h)
-
-        // nastavenia rozmerov a hranic pozicie tabulky s rozvrhom
-        val horizontalMargin = w * 20 / 720F // w * 20 / 720
-        val verticalMargin = w * 140 / 720F // w * 140 / 720
-        v.schedule_frame.layoutParams.width = (w - 2F * horizontalMargin).roundToInt()
-
-        view?.post {
-            //nastavenie pomeru zmensenia
-            val scale = (v.frame.width.toFloat() / w).coerceAtMost(v.frame.height.toFloat() / h)
-            v.screen.scaleX = scale
-            v.screen.scaleY = scale
-            tableMovement.notifyScale(scale)
-            imageMovement.notifyScale(scale)
-
-            // nastavenie hranice posuvania tabulky
-            val boundsY = verticalMargin..h - verticalMargin - v.schedule_frame.height
-            v.schedule_frame.x = horizontalMargin
-            v.schedule_frame.y = Prefs.states.tableY.coerceIn(boundsY)
-            tableMovement.setBoundsX(horizontalMargin..horizontalMargin)
-            tableMovement.setBoundsY(boundsY)
-            illustrator.customizeColumnWidth((w - 2 * horizontalMargin).toInt())
-        }
+        while (resumedFns.size > 0) resumedFns.removeFirst()(resumedFnArgs.removeFirst())
     }
 
     /**
@@ -503,25 +530,23 @@ class DesignEditor : SubActivity(), SchedulePart {
         granted: IntArray
     ) {
         if (request == NEW_IMG_PERMISSION)
-            if (granted.firstOrNull() == PackageManager.PERMISSION_GRANTED) attemptToPickImage()
+            if (granted.firstOrNull() == PERMISSION_GRANTED) attemptToPickImage()
             else App.toast(R.string.read_storage_permission_for_gallery)
         else super.onRequestPermissionsResult(request, permissions, granted)
     }
 
     /**
      * Ak fotku nie je mozne pridat, stara zostava
-     * @param requestCode kod ziadosti
-     * @param resultCode kod vysledku
-     * @param result vysledne data
+     * @param request kod ziadosti
+     * @param result kod vysledku
+     * @param data vysledne data
      */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, result: Intent?) {
-        super.onActivityResult(requestCode, resultCode, result)
-        if (resultCode == Activity.RESULT_OK && requestCode == IMG_REQUEST) {
-            imageCoordinates.setUri(view!!.bg_image, result?.data)
-            view?.remove_image?.visibility = result?.data?.let { View.VISIBLE } ?: View.GONE
-            val fit =
-                imageCoordinates.getFit()?.let { view?.radios?.findViewWithTag<RadioButton?>(it) }
-            fit?.let { it.isChecked = true } ?: view?.radios?.clearCheck()
-        }
+    override fun onActivityResult(request: Int, result: Int, data: Intent?) {
+        if (result == Activity.RESULT_OK && request == IMG_REQUEST) {
+            changeImage(data?.data, imageCoordinates.getFit() ?: FILL)
+            val g = view?.radios ?: return super.onActivityResult(request, result, data)
+            val r = g.findViewWithTag<RadioButton?>(imageCoordinates.getFit())
+            r?.let { it.isChecked = true } ?: g.clearCheck()
+        } else super.onActivityResult(request, result, data)
     }
 }
