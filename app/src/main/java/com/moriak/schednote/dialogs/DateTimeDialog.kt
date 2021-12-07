@@ -2,230 +2,206 @@ package com.moriak.schednote.dialogs
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.graphics.drawable.Drawable
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
-import androidx.annotation.ColorInt
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.CalendarView.OnDateChangeListener
+import android.widget.TimePicker.OnTimeChangedListener
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.moriak.schednote.App
 import com.moriak.schednote.R
-import com.moriak.schednote.design.Palette
-import com.moriak.schednote.dialogs.DateTimeDialog.Display.*
-import com.moriak.schednote.other.Day
-import com.moriak.schednote.settings.Prefs.settings
-import com.moriak.schednote.settings.TimeFormat
+import com.moriak.schednote.enums.Day
+import com.moriak.schednote.enums.TimeFormat.H24
+import com.moriak.schednote.storage.Prefs.Settings.semesterStart
+import com.moriak.schednote.storage.Prefs.Settings.semesterValid
+import com.moriak.schednote.storage.Prefs.Settings.semesterWeekCount
+import com.moriak.schednote.storage.Prefs.Settings.timeFormat
+import com.moriak.schednote.storage.Prefs.Settings.workWeek
 import kotlinx.android.synthetic.main.datetime_picker.view.*
 import java.util.Calendar.*
 
 /**
- * Dialóg nastavenia dátumu a času úlohy v adapteri.
+ * Dialóg nastavenia dátumu a času. Počas semestrálneho obdobia možno dátum
+ * nastaviť aj relatívne zadaním semestrálneho týždňa a pracovného dňa.
  */
-class DateTimeDialog : DialogFragment() {
-    private companion object {
-        private const val MILLIS = "MILLIS"
-        private const val DISPLAY = "DISPLAY"
+class DateTimeDialog(
+    millis: Long? = null,
+    private var flags: Int = FLAG_DATE or FLAG_SEMESTER or FLAG_TIME
+) : DialogFragment() {
+    companion object {
+        private const val MS = "STORAGE"
+        const val FLAG_TIME = 1
+        const val FLAG_SEMESTER = 2
+        const val FLAG_DATE = 4
     }
 
-    private enum class Display(val value: Int) {
-        CALENDAR(0), CLOCK(1), SEMESTER(2);
+    private data class Item<T>(val data: T, val description: String = data.toString()) {
+        override fun toString() = description
+    }
 
-        companion object {
-            operator fun get(int: Int) = when (int) {
-                CALENDAR.value -> CALENDAR
-                CLOCK.value -> CLOCK
-                SEMESTER.value -> SEMESTER
-                else -> throw IllegalArgumentException("No such value for enum Display!")
+    private val change = object: OnDateChangeListener, OnTimeChangedListener, OnItemSelectedListener {
+        override fun onSelectedDayChange(view: CalendarView, y: Int, m: Int, d: Int) {
+            if (mode and FLAG_DATE > 0) {
+                year = y
+                month = m
+                day = d
+                if (flags and FLAG_SEMESTER > 0 && semesterValid) {
+                    root.week.setSelection(week)
+                    var index = workWeek.workDays.indexOf(Day[dow])
+                    if (index == -1) index = workWeek.workDays.lastIndex
+                    root.day.setSelection(index)
+                }
             }
+        }
 
-            @ColorInt
-            private val highlightColor: Int
-
-            @ColorInt
-            private val regularColor: Int
-
-            init {
-                val palette = Palette.resource(R.color.colorPrimaryDark)
-                highlightColor = palette.luminance((palette.luminance + 15).coerceAtMost(100)).color
-                regularColor = palette.luminance(25).saturation(30).color
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            if (mode and FLAG_SEMESTER > 0) {
+                when (val newSel = (parent?.selectedItem as Item<*>).data) {
+                    is Day -> day += newSel.value - dow
+                    is Int -> day += 7 * (newSel - week)
+                }
+                root.date_setter.date = cal.timeInMillis
             }
         }
 
-        fun affectVisibility(view: View?) {
-            view ?: return
-            view.date_setter.visibility = if (this == CALENDAR) VISIBLE else GONE
-            view.time_setter.visibility = if (this == CLOCK) VISIBLE else GONE
-            view.semester_setter.visibility = if (this == SEMESTER) VISIBLE else GONE
-
-            val timeBtn = view.timeBtn.compoundDrawables.iterator()
-            val dateBtn = view.dateBtn.compoundDrawables.iterator()
-            val semBtn = view.semester_btn.compoundDrawables.iterator()
-            fun Drawable.highlight(b: Boolean) = setTint(if (b) highlightColor else regularColor)
-            while (dateBtn.hasNext()) dateBtn.next()?.highlight(this == CALENDAR)
-            while (timeBtn.hasNext()) timeBtn.next()?.highlight(this == CLOCK)
-            while (semBtn.hasNext()) semBtn.next()?.highlight(this == SEMESTER)
-        }
-    }
-
-    private var onConfirm = fun(_: Long) {}
-    private lateinit var root: View
-
-    private var year: Int
-    private var month: Int
-    private var day: Int
-    private var hour: Int
-    private var minute: Int
-    private var display: Display = CALENDAR
-        set(value) {
-            field = value
-            if (value == SEMESTER)
-                if (settings.semesterValid && this::root.isInitialized) computeSemesterDate(
-                    root.week,
-                    root.day,
-                    root.date_setter
-                )
-                else throw IllegalArgumentException("Invalid semester!")
+        override fun onTimeChanged(view: TimePicker?, h: Int, m: Int) {
+            if (mode and FLAG_TIME > 0) {
+                hour = h
+                minute = m
+            }
         }
 
-    init {
-        App.now.apply {
-            year = get(YEAR)
-            month = get(MONTH)
-            day = get(DAY_OF_MONTH)
-            hour = get(HOUR_OF_DAY)
-            minute = get(MINUTE)
-        }
-    }
-
-    private val calendar
-        get() = App.cal.apply {
-            timeInMillis = 0
-            set(year, month, day, hour, minute)
-        }
-    private lateinit var weeks: Array<Int>
-    private lateinit var days: Array<Day>
-
-    private val semesterChange = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {}
-        override fun onItemSelected(parent: AdapterView<*>?, v: View?, position: Int, id: Long) {
-            computeSemesterDate(root.week, root.day, root.date_setter)
+    }
+    private lateinit var root: View
+    private var mode: Int = Integer.highestOneBit((flags and 7).coerceAtLeast(1)); set(value) {
+        field = value
+        if (value and FLAG_SEMESTER > 0 && this::root.isInitialized) {
+            val wasWeekend = Day[dow] in workWeek.weekend
+            fun Spinner.fn() = change.
+                onItemSelected(this, selectedView, selectedItemPosition, selectedItemId)
+            root.day.fn()
+            root.week.fn()
+            if (wasWeekend) day -= 7
         }
     }
-    private val dateChange = CalendarView.OnDateChangeListener { _, y, m, d ->
-        if (display == CALENDAR) {
-            year = y
-            month = m
-            day = d
-            setSemesterValues()
+    private val cal = getInstance()
+    private var year: Int get() = cal.get(YEAR); set(value) = cal.set(YEAR, value)
+    private var month: Int get() = cal.get(MONTH); set(value) = cal.set(MONTH, value)
+    private var day: Int get() = cal.get(DAY_OF_MONTH); set(value) = cal.set(DAY_OF_MONTH, value)
+    private val dow: Int get() = cal.get(DAY_OF_WEEK)
+    private val week: Int get() = semesterStart?.let{
+        val dif = (cal.timeInMillis - it) / 1000 / 60 / 60 / 24 / 7
+        if (dif in 0 until semesterWeekCount) dif.toInt()
+        else null
+    } ?: 0
+    private var hour: Int get() = cal.get(HOUR_OF_DAY); set(value) = cal.set(HOUR_OF_DAY, value)
+    private var minute: Int get() = cal.get(MINUTE); set(value) = cal.set(MINUTE, value)
+    private var onConfirm = fun(_: Long?) {}
+
+    init { cal.timeInMillis = millis ?: System.currentTimeMillis() }
+
+    private fun affectVisibility(pTab: Int) {
+        if (mode != pTab) mode = pTab
+        root.date_setter.visibility = if (pTab and FLAG_DATE > 0) VISIBLE else GONE
+        root.time_setter.visibility = if (pTab and FLAG_TIME > 0) VISIBLE else GONE
+        root.semester_setter.visibility = if (pTab and FLAG_SEMESTER > 0) VISIBLE else GONE
+        root.date_btn.alpha = if (pTab and FLAG_DATE > 0) 1.0F else 0.55F
+        root.time_btn.alpha = if (pTab and FLAG_TIME > 0) 1.0F else 0.55F
+        root.semester_btn.alpha = if (pTab and FLAG_SEMESTER > 0) 1.0F else 0.55F
+    }
+
+    private fun buildView(context: Context): View {
+        @SuppressLint("InflateParams")
+        root = LayoutInflater.from(context).inflate(R.layout.datetime_picker, null, false)
+        val days = workWeek.workDays.map { Item(it, getString(it.res)) }
+        val weeks = (0 until if (semesterValid) semesterWeekCount else 0).map {
+            Item(it, "${it + 1}")
         }
-    }
-    private val timeChange = TimePicker.OnTimeChangedListener { _, h, m ->
-        hour = h
-        minute = m
-    }
+        root.week.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, weeks)
+        root.day.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, days)
 
-    private fun setSemesterValues() {
-        if (settings.semesterValid) {
-            val currDay = calendar.get(DAY_OF_WEEK)
-            val days = settings.workWeek.workDays
-            root.week.setSelection(settings.semesterWeek(calendar.timeInMillis))
-            root.day.setSelection(days.find { currDay == it.value }?.let { days.indexOf(it) } ?: 0)
+        root.time_setter.hour = hour
+        root.time_setter.minute = minute
+        root.date_setter.date = cal.timeInMillis
+        if (semesterValid) {
+            root.week.setSelection(week)
+            var index = workWeek.workDays.indexOf(Day[dow])
+            if (index == -1) index = workWeek.workDays.lastIndex
+            root.day.setSelection(index)
         }
-    }
 
-    private fun computeSemesterDate(weekSel: Spinner, daySel: Spinner, cal: CalendarView) {
-        if (weekSel.adapter.count == 0 || daySel.adapter.count == 0 || display != SEMESTER) return
-        App.cal.timeInMillis = settings.semesterStart!!
-        App.cal.add(DAY_OF_YEAR, 7 * (weekSel.selectedItem as Int - 1))
-        while ((daySel.selectedItem as Day).value != App.cal.get(DAY_OF_WEEK))
-            App.cal.add(DAY_OF_YEAR, 1)
-
-        year = App.cal.get(YEAR)
-        month = App.cal.get(MONTH)
-        day = App.cal.get(DAY_OF_MONTH)
-        cal.date = calendar.timeInMillis
-    }
-
-    /**
-     * Uloženie predvoleného dátumu a času
-     * @param millis Dátum v milisekundách. Môže byť null.
-     */
-    fun setDateTime(millis: Long? = null) = also {
-        App.cal.apply {
-            timeInMillis = millis ?: System.currentTimeMillis()
-            year = get(YEAR)
-            month = get(MONTH)
-            day = get(DAY_OF_MONTH)
-            hour = get(HOUR_OF_DAY)
-            minute = get(MINUTE)
+        val mode = View.OnClickListener { v ->
+            if (v.tag != mode) affectVisibility(v.tag as Int)
+            else if (v.tag == FLAG_DATE) root.date_setter.date = System.currentTimeMillis()
+            else if (v.tag == FLAG_TIME) {
+                val oldMs = cal.timeInMillis
+                cal.timeInMillis = System.currentTimeMillis()
+                val h = hour
+                val m = minute
+                cal.timeInMillis = oldMs
+                root.time_setter.hour = h
+                root.time_setter.minute = m
+            }
+            else if (v.tag == FLAG_SEMESTER && semesterValid) {
+                cal.timeInMillis = System.currentTimeMillis()
+                val isWeekend = Day[dow] in workWeek.weekend
+                root.week.setSelection(if (isWeekend) week - 1 else week)
+                root.day.setSelection(if (isWeekend) workWeek.workDays.lastIndex
+                else workWeek.workDays.indexOf(Day[dow]))
+            }
         }
+
+        root.date_setter.setOnDateChangeListener(change)
+        root.time_setter.setOnTimeChangedListener(change)
+        root.time_setter.setIs24HourView(timeFormat == H24)
+        root.week.onItemSelectedListener = change
+        root.day.onItemSelectedListener = change
+
+        root.date_btn.tag = FLAG_DATE
+        root.time_btn.tag = FLAG_TIME
+        root.semester_btn.tag = FLAG_SEMESTER
+
+        root.date_btn.visibility = if (flags and FLAG_DATE > 0) VISIBLE else GONE
+        root.semester_btn.visibility = if (flags and FLAG_SEMESTER > 0 && semesterValid) VISIBLE else GONE
+        root.time_btn.visibility = if (flags and FLAG_TIME > 0) VISIBLE else GONE
+
+        root.date_btn.setOnClickListener(mode)
+        root.time_btn.setOnClickListener(mode)
+        root.semester_btn.setOnClickListener(mode)
+
+        root.post { affectVisibility(this.mode) }
+        return root
     }
 
     /**
      * Určuje, čo sa má vykonať so zvoleným dátumom a časom
      * @param fn funkcia s 1 parametrom s vyslednym datumom
+     * @return ten istý fragment, v ktorom bola táto metóda volaná
      */
-    fun setOnConfirm(fn: (Long) -> Unit) = also {
-        onConfirm = fn
-    }
-
-    @SuppressLint("InflateParams")
-    private fun buildView(): View {
-        root = LayoutInflater.from(App.ctx).inflate(R.layout.datetime_picker, null, false)
-        days = settings.workWeek.workDays
-        weeks = if (settings.semesterValid) (1..settings.semesterWeekCount).toList()
-            .toTypedArray() else arrayOf()
-        root.week.adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, weeks)
-        root.day.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, days)
-
-        root.time_setter.hour = hour
-        root.time_setter.minute = minute
-        root.date_setter.date = calendar.timeInMillis
-        setSemesterValues()
-
-        val mode = View.OnClickListener {
-            display = it.tag as Display
-            display.affectVisibility(root)
-        }
-
-        root.date_setter.setOnDateChangeListener(dateChange)
-        root.time_setter.setOnTimeChangedListener(timeChange)
-        root.time_setter.setIs24HourView(settings.timeFormat == TimeFormat.H24)
-        root.week.onItemSelectedListener = semesterChange
-        root.day.onItemSelectedListener = semesterChange
-
-        root.dateBtn.tag = CALENDAR
-        root.timeBtn.tag = CLOCK
-        root.semester_btn.tag = SEMESTER
-        root.semester_btn.visibility = if (settings.semesterValid) VISIBLE else GONE
-        root.dateBtn.setOnClickListener(mode)
-        root.timeBtn.setOnClickListener(mode)
-        root.semester_btn.setOnClickListener(mode)
-
-        root.post { display.affectVisibility(root) }
-        return root
-    }
+    fun setOnConfirm(fn: (Long?) -> Unit) = also { onConfirm = fn }
 
     override fun onCreateDialog(saved: Bundle?): Dialog {
-        saved?.let {
-            setDateTime(it.getLong(MILLIS))
-            display = Display[it.getInt(DISPLAY)]
+        saved?.getLongArray(MS)?.let {
+            cal.timeInMillis = it[0]
+            flags = it[1].toInt()
+            mode = it[2].toInt()
         }
         return AlertDialog.Builder(requireContext())
-            .setView(buildView())
-            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm(calendar.timeInMillis) }
+            .setView(buildView(requireContext()))
+            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm(cal.timeInMillis) }
+            .setNeutralButton(R.string.delete) { _, _ -> onConfirm(null) }
             .setNegativeButton(R.string.abort) { _, _ -> }
             .create()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putLong(MILLIS, calendar.timeInMillis)
-        outState.putInt(DISPLAY, display.value)
+        outState.putLongArray(MS, longArrayOf(cal.timeInMillis, flags.toLong(), mode.toLong()))
     }
 }

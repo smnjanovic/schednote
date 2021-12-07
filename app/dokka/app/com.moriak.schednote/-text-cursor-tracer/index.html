@@ -1,0 +1,133 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TextCursorTracer - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote</a>&nbsp;/&nbsp;<a href="./index.html">TextCursorTracer</a><br/>
+<br/>
+<h1>TextCursorTracer</h1>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">TextCursorTracer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/text/TextWatcher.html"><span class="identifier">TextWatcher</span></a></code>
+<p>Objekt pozoruje zmeny užívateľom upraviteľného textového poľa vrátane zmien kurzora</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-text-action/index.html">TextAction</a></h4>
+</td>
+<td>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">TextAction</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>pri vzniku sa ako parameter zadá formát, ktorý musí byť dodržaný.
+Zadaný formát môže byť aj null, čo znamená, že text môže obsahovať ľubovoľné znaky
+v ľubovoľnom počte.</p>
+<code><span class="identifier">TextCursorTracer</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$<init>(kotlin.text.Regex)/format">format</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-regex/index.html"><span class="identifier">Regex</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="action.html">action</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">action</span><span class="symbol">: </span><span class="identifier">TextAction</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="en.html">en</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">en</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="format.html">format</a></h4>
+</td>
+<td>
+<p>ak nie je null, formát zadávaneho textu musí platiť</p>
+<code><span class="keyword">val </span><span class="identifier">format</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-regex/index.html"><span class="identifier">Regex</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="st.html">st</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">st</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="after-invalid-text-change.html">afterInvalidTextChange</a></h4>
+</td>
+<td>
+<p>Táto funkcia sa zavolá, ak dôjde k nepovolenej zmene</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">afterInvalidTextChange</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$afterInvalidTextChange(android.text.Editable)/s">s</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/text/Editable.html"><span class="identifier">Editable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="after-text-changed.html">afterTextChanged</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">afterTextChanged</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$afterTextChanged(android.text.Editable)/s">s</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/text/Editable.html"><span class="identifier">Editable</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="after-valid-text-change.html">afterValidTextChange</a></h4>
+</td>
+<td>
+<p>Táto funkcia sa zavolá, ak dôjde k povolenej zmene</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">afterValidTextChange</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$afterValidTextChange(android.text.Editable)/s">s</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/text/Editable.html"><span class="identifier">Editable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="before-text-changed.html">beforeTextChanged</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">beforeTextChanged</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$beforeTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/s">s</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$beforeTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/start">start</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$beforeTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/count">count</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$beforeTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/after">after</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-cursor-changed.html">onCursorChanged</a></h4>
+</td>
+<td>
+<p>Táto funkcia sa vykoná vždy, keď sa v texte presunie kurzor</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">onCursorChanged</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$onCursorChanged(kotlin.ranges.IntRange)/range">range</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/-int-range/index.html"><span class="identifier">IntRange</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-text-changed.html">onTextChanged</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onTextChanged</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$onTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/s">s</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$onTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/start">start</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$onTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/before">before</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$onTextChanged(kotlin.CharSequence, kotlin.Int, kotlin.Int, kotlin.Int)/count">count</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="set-span.html">setSpan</a></h4>
+</td>
+<td>
+<p>Aplikuje <a href="https://developer.android.com/reference/android/text/SpanWatcher.html">SpanWatcher</a> na celý text.</p>
+<code><span class="keyword">fun </span><span class="identifier">setSpan</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.TextCursorTracer$setSpan(android.text.Editable)/s">s</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/text/Editable.html"><span class="identifier">Editable</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,8 +1,8 @@
 <HTML>
 <HEAD>
-    <meta charset="UTF-8">
-    <title>com.moriak.schednote.fragments.of_main - app</title>
-    <link href="../../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>com.moriak.schednote.fragments.of_main - app</title>
+<link rel="stylesheet" href="../../style.css">
 </HEAD>
 <BODY>
 <a href="../index.html">app</a>&nbsp;/&nbsp;<a href="./index.html">com.moriak.schednote.fragments.of_main</a><br/>
@@ -10,80 +10,50 @@
 <h2>Package com.moriak.schednote.fragments.of_main</h2>
 <h3>Types</h3>
 <table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="-alarms-fragment/index.html">AlarmsFragment</a></h4>
-        </td>
-        <td>
-            <p>V tento fragment má vnorené ďalšie fragmenty súvisiace s upozorneniami (Budíky a
-                notifikácie)</p>
-            <code><span class="keyword">class </span><span class="identifier">AlarmsFragment</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<a href="-sub-activity/index.html"><span
-                    class="identifier">SubActivity</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-notes-fragment/index.html">NotesFragment</a></h4>
-        </td>
-        <td>
-            <p>Fragment načítava zoznam úloh podľa vybranej kategórie. Úlohy
-                je tu možné uložiť do kalendára a spätne ich z neho aj načítať</p>
-            <code><span class="keyword">class </span><span class="identifier">NotesFragment</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<a href="-sub-activity/index.html"><span
-                    class="identifier">SubActivity</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-schedule-fragment/index.html">ScheduleFragment</a></h4>
-        </td>
-        <td>
-            <p>Fragment má vnorené ďalšie fragmenty ktoré súvisia s rozvrhom. Vždy je zobrazený iba
-                1 z nich</p>
-            <code><span class="keyword">class </span><span
-                    class="identifier">ScheduleFragment</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
-                    href="-sub-activity/index.html"><span class="identifier">SubActivity</span></a></code>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-semester-fragment/index.html">SemesterFragment</a></h4>
-        </td>
-        <td>
-            <p>Vo fragmente možno nastaviť dátum začiatku semestra a jeho trvanie. Ak semester práve
-                beží
-                program bude počítať koľký je semestrálny týžden a úloham bude možné nastaviť úlohy
-                na n-tý týždeň
-                bez znalosti presného dátumu</p>
-            <code><span class="keyword">class </span><span
-                    class="identifier">SemesterFragment</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
-                    href="-sub-activity/index.html"><span class="identifier">SubActivity</span></a></code>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-sub-activity/index.html">SubActivity</a></h4>
-        </td>
-        <td>
-            <p>Fragment predstavuje vnorený obsah v aktivite alebo vo fragmente</p>
-            <code><span class="keyword">abstract</span> <span class="keyword">class </span><span
-                    class="identifier">SubActivity</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<span class="identifier">Fragment</span></code>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-subjects-fragment/index.html">SubjectsFragment</a></h4>
-        </td>
-        <td>
-            <p>V tomto fragmente je načítaný abecedný zoznam všetkých predmetov ktoré v ňom
-                možno upravovať, odstrániť alebo pridať.</p>
-            <code><span class="keyword">class </span><span
-                    class="identifier">SubjectsFragment</span>&nbsp;<span class="symbol">:</span>&nbsp;<a
-                    href="-sub-activity/index.html"><span class="identifier">SubActivity</span></a></code>
-        </td>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<td>
+<h4><a href="-note-list/index.html">NoteList</a></h4>
+</td>
+<td>
+<p>Fragment zobrazí zoznam úloh vyhovujúcich danej kategórií a umožní tento zoznam spravovať.</p>
+<code><span class="keyword">class </span><span class="identifier">NoteList</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.moriak.schednote.fragments/-list-sub-activity/index.html"><span class="identifier">ListSubActivity</span></a><span class="symbol">&lt;</span><a href="../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-notification-settings/index.html">NotificationSettings</a></h4>
+</td>
+<td>
+<p>Fragment má v sebe vnorené fragmenty súvisiace s upozorneniami</p>
+<code><span class="keyword">class </span><span class="identifier">NotificationSettings</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.moriak.schednote.fragments/-extended-sub-activity/index.html"><span class="identifier">ExtendedSubActivity</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-schedule-content/index.html">ScheduleContent</a></h4>
+</td>
+<td>
+<p>Fragment má v sebe vnorené fragmenty súvisiace s rozvrhom.</p>
+<code><span class="keyword">class </span><span class="identifier">ScheduleContent</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.moriak.schednote.fragments/-extended-sub-activity/index.html"><span class="identifier">ExtendedSubActivity</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-semester-settings/index.html">SemesterSettings</a></h4>
+</td>
+<td>
+<p>Vo fragmente možno nastaviť dátum začiatku semestra a jeho trvanie. Ak semester práve beží
+program bude počítať koľký je semestrálny týžden a úloham bude možné nastaviť úlohy na n-tý týždeň
+bez znalosti presného dátumu</p>
+<code><span class="keyword">class </span><span class="identifier">SemesterSettings</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.moriak.schednote.fragments/-sub-activity/index.html"><span class="identifier">SubActivity</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-subject-list/index.html">SubjectList</a></h4>
+</td>
+<td>
+<p>Tento fragment obsahuje abecedný zoznam a správu predmetov.</p>
+<code><span class="keyword">class </span><span class="identifier">SubjectList</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.moriak.schednote.fragments/-list-sub-activity/index.html"><span class="identifier">ListSubActivity</span></a><span class="symbol">&lt;</span><a href="../com.moriak.schednote.data/-subject/index.html"><span class="identifier">Subject</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
 </table>
 </BODY>
 </HTML>

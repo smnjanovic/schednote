@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>NoteCategory - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.interfaces</a>&nbsp;/&nbsp;<a href="./index.html">NoteCategory</a><br/>
+<br/>
+<h1>NoteCategory</h1>
+<code><span class="keyword">interface </span><span class="identifier">NoteCategory</span></code>
+<p>Objekty tohto typu budú slúžiť na označenie kategórie zoznamu úloh</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="id.html">id</a></h4>
+</td>
+<td>
+<p>Identifikátor kategórie úloh</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="get.html">get</a></h4>
+</td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.interfaces.NoteCategory.Companion$get(kotlin.Long)/category">category</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">NoteCategory</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="../../com.moriak.schednote.data/-subject/index.html">Subject</a></h4>
+</td>
+<td>
+<p>Trieda uchováva dáta o predmete.</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Subject</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">NoteCategory</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../../com.moriak.schednote.enums/-time-category/index.html">TimeCategory</a></h4>
+</td>
+<td>
+<p>Kategória, podľa ktorej sa filtruje zoznam úloh
+<a href="../../com.moriak.schednote.enums/-time-category/-a-l-l.html">ALL</a> všetky úlohy
+<a href="../../com.moriak.schednote.enums/-time-category/-t-i-m-e-l-e-s-s.html">TIMELESS</a> úlohy bez termínu
+<a href="../../com.moriak.schednote.enums/-time-category/-l-a-t-e.html">LATE</a> oneskorené / staré úlohy
+<a href="../../com.moriak.schednote.enums/-time-category/-u-p-c-o-m-i-n-g.html">UPCOMING</a> nadchádzajúce úlohy
+<a href="../../com.moriak.schednote.enums/-time-category/-t-o-d-a-y.html">TODAY</a> dnešné úlohy
+<a href="../../com.moriak.schednote.enums/-time-category/-t-o-m-o-r-r-o-w.html">TOMORROW</a> úlohy na zajtra
+<a href="../../com.moriak.schednote.enums/-time-category/-i-n_-w-e-e-k.html">IN_WEEK</a> úlohy na nasledujúcich 7 dní.
+<a href="../../com.moriak.schednote.enums/-time-category/-i-n_-m-o-n-t-h.html">IN_MONTH</a> úlohy na nasledujúcich 28-31 dní</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">TimeCategory</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">NoteCategory</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

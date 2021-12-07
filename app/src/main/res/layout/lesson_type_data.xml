@@ -4,57 +4,56 @@
     android:id="@+id/line"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bordered_frame"
     android:gravity="center">
 
     <TextView
-        android:id="@+id/type_name"
+        android:id="@+id/lt_readable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         android:layout_weight="1"
+        android:textColor="#171717"
         android:textSize="18sp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/type_name_container"
+    <EditText
+        android:id="@+id/lt_editable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:layout_weight="1">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/type_name_editable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionDone" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_weight="1"
+        android:autofillHints=""
+        android:hint="@string/lesson_type"
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName"
+        android:textColor="#171717"
+        android:textSize="18sp" />
 
     <ImageButton
-        android:id="@+id/save"
+        android:id="@+id/lt_save"
         style="@style/adapter_action_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_margin="4dp"
         android:contentDescription="@string/save"
-        android:tint="#304FFE"
         app:srcCompat="@drawable/ic_save_black_24dp" />
 
     <ImageButton
-        android:id="@+id/edit"
+        android:id="@+id/lt_edit"
         style="@style/adapter_action_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_margin="4dp"
         android:contentDescription="@string/edit"
-        android:tint="#FFC400"
+        android:tint="#171717"
         app:srcCompat="@drawable/ic_edit_black_24dp" />
 
     <ImageButton
-        android:id="@+id/delete"
+        android:id="@+id/lt_delete"
         style="@style/adapter_action_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_margin="4dp"
         android:contentDescription="@string/delete"
-        android:tint="@android:color/holo_red_dark"
+        android:tint="#171717"
         app:srcCompat="@drawable/ic_delete_black_24dp" />
 </LinearLayout>

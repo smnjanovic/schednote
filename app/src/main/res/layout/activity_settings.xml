@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -51,35 +50,15 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:text="@string/work_week" />
 
-            <ImageButton
-                android:id="@+id/previous_work_week"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/previous"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
-
-            <TextView
-                android:id="@+id/work_week_value"
-                android:layout_width="wrap_content"
+            <com.moriak.schednote.views.OptionStepper
+                android:id="@+id/workweek_choice"
+                style="@style/optionStepper"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxEms="12"
-                android:textAlignment="center" />
-
-            <ImageButton
-                android:id="@+id/next_work_week"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/next"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                android:layout_weight="7" />
 
         </LinearLayout>
 
@@ -96,35 +75,15 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:text="@string/lesson_labeling" />
 
-            <ImageButton
-                android:id="@+id/previous_lesson_format"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/previous"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
-
-            <TextView
-                android:id="@+id/lesson_format_value"
-                android:layout_width="wrap_content"
+            <com.moriak.schednote.views.OptionStepper
+                android:id="@+id/les_label_choice"
+                style="@style/optionStepper"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxEms="12"
-                android:textAlignment="center" />
-
-            <ImageButton
-                android:id="@+id/next_lesson_format"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/next"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                android:layout_weight="7" />
 
         </LinearLayout>
 
@@ -145,35 +104,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:text="@string/alarm_snooze" />
 
-            <ImageButton
-                android:id="@+id/previous_snooze"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/previous"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:src="@drawable/ic_chevron_left_black_24dp" />
-
-            <TextView
-                android:id="@+id/snooze_minutes"
-                android:layout_width="wrap_content"
+            <com.moriak.schednote.views.OptionStepper
+                android:id="@+id/snooze_choice"
+                style="@style/optionStepper"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxEms="12"
-                android:textAlignment="center" />
-
-            <ImageButton
-                android:id="@+id/next_snooze"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/next"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:src="@drawable/ic_chevron_right_black_24dp" />
+                android:layout_weight="7" />
 
         </LinearLayout>
 
@@ -191,35 +130,15 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:text="@string/date_time_format" />
 
-            <ImageButton
-                android:id="@+id/previous_datetime_format"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/previous"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:src="@drawable/ic_chevron_left_black_24dp" />
-
-            <TextView
-                android:id="@+id/datetime_format_value"
-                android:layout_width="wrap_content"
+            <com.moriak.schednote.views.OptionStepper
+                android:id="@+id/dtf_choice"
+                style="@style/optionStepper"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxEms="12"
-                android:textAlignment="center" />
-
-            <ImageButton
-                android:id="@+id/next_datetime_format"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:contentDescription="@string/next"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:src="@drawable/ic_chevron_right_black_24dp" />
+                android:layout_weight="7" />
 
         </LinearLayout>
 
@@ -237,33 +156,24 @@
             android:paddingBottom="8dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:gravity="center"
+                android:layout_weight="2"
                 android:text="@string/alarm_tone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text=":"
-                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/alarm_tune_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="4dp"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:drawableStart="@drawable/ic_audiotrack_black_24dp"
                 android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
                 android:drawableTint="@color/colorPrimaryDark"
+                android:ellipsize="end"
                 android:gravity="center|start"
+                android:lines="1"
                 android:text="@string/default_" />
 
         </LinearLayout>

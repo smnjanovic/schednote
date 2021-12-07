@@ -1,105 +1,64 @@
 package com.moriak.schednote.adapters
 
-import android.view.LayoutInflater
+import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.CompoundButton
-import androidx.recyclerview.widget.RecyclerView
+import com.moriak.schednote.storage.Prefs
 import com.moriak.schednote.R
-import com.moriak.schednote.other.Day
-import com.moriak.schednote.settings.Prefs
-import com.moriak.schednote.settings.Regularity
-import com.moriak.schednote.settings.WorkWeek
+import com.moriak.schednote.enums.Day
+import com.moriak.schednote.enums.Regularity
+import com.moriak.schednote.notifications.AlarmClockSetter
 import kotlinx.android.synthetic.main.day_alarm.view.*
 
 /**
- * Adapter zobrazuje budíky pre daný pracovný týždeň či už v párnom, nepárnom alebo v každom týždni
- * Na každý pracovný deň možno nastaviť iba 1 budík.
+ * Adapter zobrazuje budíky pracovné dni v týždni. Na každý deň možno nastaviť max. 1 budík.
  */
-class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val workWeek: WorkWeek = Prefs.settings.workWeek
-    private var regularity: Regularity = Regularity.currentWeek
-    private var onAllAlarmsEnableChange: (Boolean) -> Unit = fun(_) {}
-    private val onEnableChange = CompoundButton.OnCheckedChangeListener { switch, enable ->
-        val before = Prefs.notifications.alarmsEnabled
-        Prefs.notifications.enableAlarm((switch.tag as AlarmHolder).day, regularity, enable)
-        val now = Prefs.notifications.alarmsEnabled
-        if (before != now) onAllAlarmsEnableChange(now)
+class AlarmAdapter(private var regularity: Regularity): CustomAdapter<Day>(R.layout.day_alarm) {
+    /**
+     * @property ACTION_ALARM_ON Označenie pre pokus o zapnutie budíka
+     * @property ACTION_ALARM_OFF Označenie pre pokus o vypnutie budíka
+     * @property ACTION_ALARM_SET Označenie pre pokus o nastavenie času budenia
+     */
+    companion object {
+        const val ACTION_ALARM_ON = 1990
+        const val ACTION_ALARM_OFF = 1991
+        const val ACTION_ALARM_SET = 1992
     }
-    private var onChangeAttempt = fun(_: Day, _: Int) = Unit
-    private val onSetTime = View.OnClickListener {
-        val holder = it.tag as AlarmHolder
-        onChangeAttempt(holder.day, Prefs.notifications.getAlarm(holder.day, regularity))
+    private var clickAction = View.OnClickListener {
+        val h = it.tag as AlarmHolder
+        triggerItemAction(h.adapterPosition, extras, ACTION_ALARM_SET)
+    }
+    private var switchAction = CompoundButton.OnCheckedChangeListener { btn, b ->
+        val h = btn.tag as AlarmHolder
+        triggerItemAction(h.adapterPosition, extras, if (b) ACTION_ALARM_ON else ACTION_ALARM_OFF)
     }
 
     /**
-     * Nastavenie, čo sa má stať, keď sa pokúsim zmeniť budík
-     * @param fn Metóda, ktorá sa má spustiť má 2 vstupné parametre:
-     * deň [Day] a čas v minútach od najneskoršej polnoci [Int]
+     * Nastaviť týždeň pre ktorý sa budú zobrazovať budíky
+     * @param reg týždeň (párny / nepárny / každý)
      */
-    fun setOnChangeAttempt(fn: (Day, Int) -> Unit) {
-        onChangeAttempt = fn
+    fun setRegularity(reg: Regularity) {
+        regularity = reg
+        if (itemCount > 0) notifyItemRangeChanged(0, itemCount)
     }
+
+    override fun instantiateViewHolder(v: View): CustomViewHolder = AlarmHolder(v)
+    override fun bundleToItem(bundle: Bundle): Day = throw Exception("Unimplemented!!!")
+    override fun itemToBundle(item: Day, bundle: Bundle) { throw Exception("Unimplemented!!!") }
 
     /**
-     * Nastavenie, čo sa udeje keď všetky budíky zapnem alebo vypnem
-     * @param fn Metóda má 1 vstupný parameter [Boolean], ktorý je true, ak som všetky budíky zapol, a false naopak.
+     * Objekt vizualizuje položku zoznamu (deň budenia)
      */
-    fun setOnAllAlarmsDisabled(fn: (Boolean) -> Unit) {
-        onAllAlarmsEnableChange = fn
-    }
-
-    /**
-     * Načíta budíky pre párny, nepárny alebo každý týždeň
-     * @param reg Udáva či je týždeň párny alebo nepárny. Pokiaľ nie je nastavený 2-týždenný rozvrh,
-     * treťou možnou hodnotou je každý týždeň.
-     */
-    fun loadRegularity(reg: Regularity) {
-        if (regularity != reg) {
-            regularity = reg
-            notifyItemRangeChanged(0, workWeek.workDays.size)
-        }
-    }
-
-    /**
-     * Došlo k zmene budíka, treba aj viditeľne prepísať zmeny
-     * @param day Deň v ktorom sa zmena vyskytla
-     */
-    fun updateDay(day: Day) {
-        val pos = workWeek.workDays.indexOf(day)
-        if (pos > -1) notifyItemChanged(pos)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        AlarmHolder(LayoutInflater.from(parent.context).inflate(R.layout.day_alarm, parent, false))
-
-    override fun getItemCount(): Int = workWeek.workDays.size
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as AlarmHolder).bind()
-
-    private inner class AlarmHolder(view: View) : RecyclerView.ViewHolder(view) {
-        /**
-         * deň, pre ktorý viewHolder platí
-         */
-        lateinit var day: Day
-
-        /**
-         * Vyskladanie viewHoldera
-         */
-        fun bind() {
-            day = workWeek.workDays[adapterPosition]
-            itemView.on_off.tag = this
-            itemView.change_time.tag = this
-            itemView.alarm_time.tag = this
-
-            itemView.alarm_day.text = day.toString()
-            itemView.alarm_time.text =
-                Prefs.settings.getTimeString(Prefs.notifications.getAlarm(day, regularity))
-            itemView.on_off.isChecked = Prefs.notifications.isAlarmEnabled(day, regularity)
-
-            itemView.alarm_time.setOnClickListener(onSetTime)
-            itemView.change_time.setOnClickListener(onSetTime)
-            itemView.on_off.setOnCheckedChangeListener(onEnableChange)
+    inner class AlarmHolder(v: View): CustomViewHolder(v) {
+        override fun bind(pos: Int) {
+            itemView.alarm_day.text = itemView.context.getString(item!!.res)
+            val minutes = AlarmClockSetter.getAlarm(item!!, regularity)
+            itemView.alarm_time.text = Prefs.Settings.timeFormat.getFormat(minutes)
+            itemView.alarm_edit.tag = this
+            itemView.alarm_on_off.tag = this
+            itemView.alarm_on_off.isChecked = AlarmClockSetter.isEnabled(item!!, regularity)
+            itemView.alarm_edit.setOnClickListener(clickAction)
+            itemView.alarm_on_off.setOnCheckedChangeListener(switchAction)
         }
     }
 }

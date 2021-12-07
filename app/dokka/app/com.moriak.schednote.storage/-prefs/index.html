@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Prefs - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.storage</a>&nbsp;/&nbsp;<a href="./index.html">Prefs</a><br/>
+<br/>
+<h1>Prefs</h1>
+<code><span class="keyword">object </span><span class="identifier">Prefs</span></code>
+<p>Objekt <a href="./index.html">Prefs</a> zoskupuje objekty, ktoré pristupujú k pamäti <a href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>.
+Pri zápise a získavaní údajov sa nevyžaduje použitie kľúča a možno zapisovať
+a získavať objekty viacerých typov.</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-first-visit/index.html">FirstVisit</a></h4>
+</td>
+<td>
+<p>V tomto objekte zisťujeme, či daný fragment alebo aktivita boli užívateľovi zobrazené 1.-krát</p>
+<code><span class="keyword">object </span><span class="identifier">FirstVisit</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-notifications/index.html">Notifications</a></h4>
+</td>
+<td>
+<p>Uchováva nastavenia upozornení</p>
+<code><span class="keyword">object </span><span class="identifier">Notifications</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-prefs-control/index.html">PrefsControl</a></h4>
+</td>
+<td>
+<p>Objekt obsahuje funkcie, ktoré odbremeňujú používateľa od nutnosti vytvárať inštancie
+<a href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a> pre čítanie a <a href="https://developer.android.com/reference/android/content/SharedPreferences/Editor.html">SharedPreferences.Editor</a> pre zápis. Do funkcie
+vstupuje callback funkcia, do ktorej táto (už vytvorená) inštancia vstupuje ako callback.
+funkcia podľa vloženého typu vie, akú funkciu vstupnej inštancie má zavolať pre zápis alebo
+zisk konkrétnych dát.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">PrefsControl</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-settings/index.html">Settings</a></h4>
+</td>
+<td>
+<p>Táto trieda uchováva informácie o prispôsobení aplikácie</p>
+<code><span class="keyword">object </span><span class="identifier">Settings</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-states/index.html">States</a></h4>
+</td>
+<td>
+<p>Uchováva informáciu o poslednom zobrazenom obsahu, posledných zadávaných hodnotách a posledných úprav grafických prvkov</p>
+<code><span class="keyword">object </span><span class="identifier">States</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-widgets/index.html">Widgets</a></h4>
+</td>
+<td>
+<p>Nastavuje konfiguráciu widgetov</p>
+<code><span class="keyword">object </span><span class="identifier">Widgets</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">PrefsControl</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

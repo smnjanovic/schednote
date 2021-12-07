@@ -19,7 +19,7 @@
         android:layout_margin="4dp" />
 
     <ImageButton
-        android:id="@+id/change_time"
+        android:id="@+id/alarm_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -28,7 +28,7 @@
         app:srcCompat="@drawable/ic_edit_black_24dp" />
 
     <Switch
-        android:id="@+id/on_off"
+        android:id="@+id/alarm_on_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp" />

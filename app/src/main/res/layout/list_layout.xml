@@ -16,7 +16,7 @@
         android:textSize="16sp"
         android:textStyle="bold|italic" />
 
-    <com.moriak.schednote.design.RecyclerViewEmptySupport
+    <com.moriak.schednote.views.RecyclerViewEmptySupport
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>getRegularity - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote</a>&nbsp;/&nbsp;<a href="index.html">java.util.Calendar</a>&nbsp;/&nbsp;<a href="./get-regularity.html">getRegularity</a><br/>
+<br/>
+<h1>getRegularity</h1>
+<a name="com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek, kotlin.Boolean)"></a>
+<code><span class="keyword">fun </span><a href="https://docs.oracle.com/javase/6/docs/api/java/util/Calendar.html"><span class="identifier">Calendar</span></a><span class="symbol">.</span><span class="identifier">getRegularity</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek, kotlin.Boolean)/ww">ww</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.enums/-work-week/index.html"><span class="identifier">WorkWeek</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek, kotlin.Boolean)/dualWeek">dualWeek</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.moriak.schednote.enums/-regularity/index.html"><span class="identifier">Regularity</span></a></code>
+<p>Pre 2-týždňový rozvrh je hodnota <a href="get-regularity.html#com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek, kotlin.Boolean)/dualWeek">dualWeek</a> nastavená na true a podľa nastavenia
+pracovného týždňa vráti <a href="../../com.moriak.schednote.enums/-regularity/-e-v-e-n.html">Regularity.EVEN</a>, ak je týždeň párny alebo <a href="../../com.moriak.schednote.enums/-regularity/-o-d-d.html">Regularity.ODD</a>,
+ak je nepárny. Pre 1-týždňový rozvrh vráti vždy <a href="../../com.moriak.schednote.enums/-regularity/-e-v-e-r-y.html">Regularity.EVERY</a>.</p>
+<h3>Parameters</h3>
+<p><a name="ww"></a>
+<code>ww</code> - Pracovný týždeň - nie všade začína v Pondelok a končí v Piatok</p>
+<p><a name="dualWeek"></a>
+<code>dualWeek</code> - true - 2-týždňový rozvrh, false 1-týždenný rozvrh</p>
+<p><strong>Return</strong><br/>
+<a href="../../com.moriak.schednote.enums/-regularity/-e-v-e-n.html">Regularity.EVEN</a>, ak je tento týždeň párny, inak <a href="../../com.moriak.schednote.enums/-regularity/-o-d-d.html">Regularity.ODD</a></p>
+<a name="com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek)"></a>
+<code><span class="keyword">fun </span><a href="https://docs.oracle.com/javase/6/docs/api/java/util/Calendar.html"><span class="identifier">Calendar</span></a><span class="symbol">.</span><span class="identifier">getRegularity</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek)/ww">ww</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.enums/-work-week/index.html"><span class="identifier">WorkWeek</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.moriak.schednote.enums/-regularity/index.html"><span class="identifier">Regularity</span></a></code>
+<p>Podľa nastavenia pracovného týždňa vráti <a href="../../com.moriak.schednote.enums/-regularity/-e-v-e-n.html">Regularity.EVEN</a>, ak je týždeň párny alebo
+<a href="../../com.moriak.schednote.enums/-regularity/-o-d-d.html">Regularity.ODD</a>, ak je nepárny.</p>
+<p>V tejto aplikácii sa považuje začiatok víkendu za začiatok týždňa.</p>
+<h3>Parameters</h3>
+<p><a name="ww"></a>
+<code>ww</code> - Pracovný týždeň - nie všade začína v Pondelok a končí v Piatok</p>
+<p><strong>Return</strong><br/>
+<a href="../../com.moriak.schednote.enums/-regularity/-e-v-e-n.html">Regularity.EVEN</a>, ak je tento týždeň párny, inak <a href="../../com.moriak.schednote.enums/-regularity/-o-d-d.html">Regularity.ODD</a></p>
+</BODY>
+</HTML>

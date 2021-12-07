@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>IColorGroup - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.interfaces</a>&nbsp;/&nbsp;<a href="./index.html">IColorGroup</a><br/>
+<br/>
+<h1>IColorGroup</h1>
+<code><span class="keyword">interface </span><span class="identifier">IColorGroup</span></code>
+<p>Dizajn rozvrhu sa skladá z niekoľkých zoskupených častí, ktoré majú spoločné sfarbenie</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="color.html">color</a></h4>
+</td>
+<td>
+<p>paleta s dátami o farbe</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">color</span><span class="symbol">: </span><a href="../../com.moriak.schednote/-palette/index.html"><span class="identifier">Palette</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="id.html">id</a></h4>
+</td>
+<td>
+<p>identifikácia farebnej skupiny</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="get.html">get</a></h4>
+</td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.interfaces.IColorGroup.Companion$get(kotlin.Int)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">IColorGroup</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="get-groups.html">getGroups</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getGroups</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="../../com.moriak.schednote.enums/-color-group/index.html">ColorGroup</a></h4>
+</td>
+<td>
+<p>Pri nastavovaní dizajnu rozvrhu okrem buniek rôznych typov hodín možno upravovať farby aj iných prvkov.
+<a href="../../com.moriak.schednote.enums/-color-group/-b-a-c-k-g-r-o-u-n-d.html">BACKGROUND</a> pozadie plátna
+<a href="../../com.moriak.schednote.enums/-color-group/-h-e-a-d-e-r.html">HEADER</a> hlavička tabuľky rozvrhu
+<a href="../../com.moriak.schednote.enums/-color-group/-f-r-e-e.html">FREE</a> bloky voľného času v rozvrhu</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">ColorGroup</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">IColorGroup</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../../com.moriak.schednote.data/-lesson-type/index.html">LessonType</a></h4>
+</td>
+<td>
+<p>Trieda uchováva dáta o type hodiny</p>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">LessonType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">IColorGroup</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

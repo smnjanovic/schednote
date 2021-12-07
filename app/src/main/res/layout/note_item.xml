@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#70FFFFFF">
+
+    <TextView
+        android:id="@+id/ni_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="3"
+        android:maxLength="5"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ni_deadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@+id/ni_sub"
+        app:layout_constraintTop_toTopOf="@+id/ni_sub" />
+
+    <TextView
+        android:id="@+id/ni_readable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ni_select_date"
+        app:layout_constraintStart_toStartOf="@+id/ni_sub"
+        app:layout_constraintTop_toBottomOf="@+id/ni_sub" />
+
+    <EditText
+        android:id="@+id/ni_editable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints=""
+        android:hint="@string/fill"
+        android:inputType="text"
+        android:textSize="18sp"
+        android:imeOptions="actionDone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ni_select_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ni_sub" />
+
+    <ImageButton
+        android:id="@+id/ni_select_date"
+        style="@style/icon"
+        android:layout_width="29dp"
+        android:layout_height="21dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/edit"
+        android:tint="#388E3C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ni_edit_start"
+        app:layout_constraintTop_toBottomOf="@+id/ni_sub"
+        app:srcCompat="@drawable/ic_date_range_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/ni_edit_start"
+        style="@style/icon"
+        android:layout_width="22dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/edit"
+        android:tint="#F9A825"
+        app:layout_constraintBottom_toBottomOf="@+id/ni_select_date"
+        app:layout_constraintEnd_toStartOf="@+id/ni_select_sub"
+        app:layout_constraintTop_toTopOf="@+id/ni_select_date"
+        app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/ni_select_sub"
+        style="@style/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/edit"
+        android:tint="#EF5B0A"
+        app:layout_constraintBottom_toBottomOf="@+id/ni_edit_start"
+        app:layout_constraintEnd_toStartOf="@+id/ni_delete"
+        app:layout_constraintTop_toTopOf="@+id/ni_edit_start"
+        app:layout_constraintVertical_bias="0.507"
+        app:srcCompat="@drawable/ic_books" />
+
+    <ImageButton
+        android:id="@+id/ni_delete"
+        style="@style/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/delete"
+        android:tint="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/ni_select_sub"
+        app:layout_constraintEnd_toStartOf="@+id/ni_save"
+        app:layout_constraintTop_toTopOf="@+id/ni_select_sub"
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/ni_save"
+        style="@style/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/delete"
+        android:tint="#0048FD"
+        app:layout_constraintBottom_toBottomOf="@+id/ni_delete"
+        app:layout_constraintEnd_toStartOf="@+id/ni_edit_stop"
+        app:layout_constraintTop_toTopOf="@+id/ni_delete"
+        app:srcCompat="@drawable/ic_save_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/ni_edit_stop"
+        style="@style/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/delete"
+        android:tint="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/ni_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ni_save"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

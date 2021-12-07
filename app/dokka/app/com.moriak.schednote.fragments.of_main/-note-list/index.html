@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>NoteList - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.fragments.of_main</a>&nbsp;/&nbsp;<a href="./index.html">NoteList</a><br/>
+<br/>
+<h1>NoteList</h1>
+<code><span class="keyword">class </span><span class="identifier">NoteList</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.fragments/-list-sub-activity/index.html"><span class="identifier">ListSubActivity</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code>
+<p>Fragment zobrazí zoznam úloh vyhovujúcich danej kategórií a umožní tento zoznam spravovať.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Fragment zobrazí zoznam úloh vyhovujúcich danej kategórií a umožní tento zoznam spravovať.</p>
+<code><span class="identifier">NoteList</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="adapter.html">adapter</a></h4>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">adapter</span><span class="symbol">: </span><a href="../../com.moriak.schednote.adapters/-note-adapter/index.html"><span class="identifier">NoteAdapter</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="first-load.html">firstLoad</a></h4>
+</td>
+<td>
+<p>Táto funkcia slúži na získanie dát pre adaptér <a href="../../com.moriak.schednote.adapters/-custom-adapter/index.html">CustomAdapter</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">firstLoad</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-attach.html">onAttach</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onAttach</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.fragments.of_main.NoteList$onAttach(android.content.Context)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-item-action.html">onItemAction</a></h4>
+</td>
+<td>
+<p>Činnosť ktorá sa má vykonať pre položku adaptéra na pozícii <a href="../../com.moriak.schednote.fragments/-list-sub-activity/on-item-action.html#com.moriak.schednote.fragments.ListSubActivity$onItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/pos">pos</a>, s dátami <a href="../../com.moriak.schednote.fragments/-list-sub-activity/on-item-action.html#com.moriak.schednote.fragments.ListSubActivity$onItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/data">data</a> na základe
+kódu <a href="../../com.moriak.schednote.fragments/-list-sub-activity/on-item-action.html#com.moriak.schednote.fragments.ListSubActivity$onItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/code">code</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">onItemAction</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.fragments.of_main.NoteList$onItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/pos">pos</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.fragments.of_main.NoteList$onItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/data">data</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.fragments.of_main.NoteList$onItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/code">code</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-view-created.html">onViewCreated</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onViewCreated</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.fragments.of_main.NoteList$onViewCreated(android.view.View, android.os.Bundle)/view">view</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.fragments.of_main.NoteList$onViewCreated(android.view.View, android.os.Bundle)/savedInstanceState">savedInstanceState</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

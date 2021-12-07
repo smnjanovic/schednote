@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <TextView
+            android:id="@+id/ac_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_audiotrack_black_24dp"
+            android:drawablePadding="4dp"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:gravity="center|start" />
+
+        <ImageButton
+            android:id="@+id/ac_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0FFF"
+            android:tint="#16B11D"
+            app:srcCompat="@android:drawable/ic_media_play"
+            android:contentDescription="@string/play_ringtone" />
+
+        <ImageButton
+            android:id="@+id/ac_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0FFF"
+            android:tint="#FFAB00"
+            app:srcCompat="@android:drawable/ic_media_pause"
+            android:contentDescription="@string/stop" />
+
+        <ImageButton
+            android:id="@+id/ac_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0FFF"
+            android:tint="#DDD"
+            app:srcCompat="@drawable/ic_done_black_36dp"
+            android:contentDescription="@string/set_as_alarm_tone" />
+
+        <ImageButton
+            android:id="@+id/ac_chosen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0FFF"
+            android:tint="#16B11D"
+            app:srcCompat="@drawable/ic_done_black_36dp"
+            android:contentDescription="@string/alarm_tone"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

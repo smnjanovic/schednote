@@ -1,303 +1,202 @@
 <HTML>
 <HEAD>
-    <meta charset="UTF-8">
-    <title>NoteAdapter - app</title>
-    <link href="../../../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>NoteAdapter - app</title>
+<link rel="stylesheet" href="../../../style.css">
 </HEAD>
 <BODY>
-<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
-        href="../index.html">com.moriak.schednote.adapters</a>&nbsp;/&nbsp;<a href="./index.html">NoteAdapter</a><br/>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.adapters</a>&nbsp;/&nbsp;<a href="./index.html">NoteAdapter</a><br/>
 <br/>
 <h1>NoteAdapter</h1>
-<code><span class="keyword">class </span><span class="identifier">NoteAdapter</span>&nbsp;<span
-        class="symbol">:</span>&nbsp;<span class="identifier">Adapter</span><span class="symbol">&lt;</span><span
-        class="identifier">ViewHolder</span><span class="symbol">&gt;</span></code>
-<p>V adaptéri zobrazujem mením a pridávam poznámky</p>
+<code><span class="keyword">class </span><span class="identifier">NoteAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-custom-adapter/index.html"><span class="identifier">CustomAdapter</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code>
+<p>Adapter spravuje zoznam úloh</p>
 <h3>Types</h3>
 <table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="-any-note-holder/index.html">AnyNoteHolder</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">abstract</span> <span class="keyword">inner</span> <span
-                    class="keyword">class </span><span class="identifier">AnyNoteHolder</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span></code>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-readable-note-holder/index.html">ReadableNoteHolder</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">inner</span> <span class="keyword">class </span><span
-                    class="identifier">ReadableNoteHolder</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
-                    class="identifier">AnyNoteHolder</span></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-writable-note-holder/index.html">WritableNoteHolder</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">inner</span> <span class="keyword">class </span><span
-                    class="identifier">WritableNoteHolder</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
-                    class="identifier">AnyNoteHolder</span></code></td>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<td>
+<h4><a href="-note-holder/index.html">NoteHolder</a></h4>
+</td>
+<td>
+<p>Blok v tejto inštancii vizualizuje jednu položku zo zoznamu (úlohu)</p>
+<code><span class="keyword">inner</span> <span class="keyword">class </span><span class="identifier">NoteHolder</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">CustomViewHolder</span><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
 </table>
 <h3>Constructors</h3>
 <table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
-        </td>
-        <td>
-            <p>V adaptéri zobrazujem mením a pridávam poznámky</p>
-            <code><span class="identifier">NoteAdapter</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$<init>(com.moriak.schednote.database.data.NoteCategory, java.util.ArrayList((com.moriak.schednote.database.data.Subject)))/category">category</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="../../com.moriak.schednote.database.data/-note-category.html"><span
-                    class="identifier">NoteCategory</span></a><span class="symbol">, </span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$<init>(com.moriak.schednote.database.data.NoteCategory, java.util.ArrayList((com.moriak.schednote.database.data.Subject)))/subjects">subjects</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://docs.oracle.com/javase/6/docs/api/java/util/ArrayList.html"><span
-                    class="identifier">ArrayList</span></a><span class="symbol">&lt;</span><a
-                    href="../../com.moriak.schednote.database.data/-subject/index.html"><span
-                    class="identifier">Subject</span></a><span class="symbol">&gt;</span><span
-                    class="symbol">)</span></code></td>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<td>
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Adapter spravuje zoznam úloh</p>
+<code><span class="identifier">NoteAdapter</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
 </table>
 <h3>Functions</h3>
 <table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="clear.html">clear</a></h4>
-        </td>
-        <td>
-            <p>Odstrániť všetky poznámky patriace pod súčasne vybranú kategóriu</p>
-            <code><span class="keyword">fun </span><span class="identifier">clear</span><span
-                    class="symbol">(</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="get-item-count.html">getItemCount</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="identifier">getItemCount</span><span
-                    class="symbol">(</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="get-item-id.html">getItemId</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="identifier">getItemId</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.adapters.NoteAdapter$getItemId(kotlin.Int)/position">position</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
-                    class="identifier">Long</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="get-item-view-type.html">getItemViewType</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">getItemViewType</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$getItemViewType(kotlin.Int)/position">position</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="index-of-note.html">indexOfNote</a></h4>
-        </td>
-        <td>
-            <p>Získanie pozície úlohy s danym id</p>
-            <code><span class="keyword">fun </span><span class="identifier">indexOfNote</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.adapters.NoteAdapter$indexOfNote(kotlin.Long)/id">id</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
-                    class="identifier">Long</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="load-category.html">loadCategory</a></h4>
-        </td>
-        <td>
-            <p>Načítanie úloh patriacich pod vybranú kategóriu</p>
-            <code><span class="keyword">fun </span><span class="identifier">loadCategory</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.adapters.NoteAdapter$loadCategory(com.moriak.schednote.database.data.NoteCategory)/cat">cat</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="../../com.moriak.schednote.database.data/-note-category.html"><span
-                    class="identifier">NoteCategory</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="on-bind-view-holder.html">onBindViewHolder</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">onBindViewHolder</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$onBindViewHolder(androidx.recyclerview.widget.RecyclerView.ViewHolder, kotlin.Int)/holder">holder</span><span
-                    class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span><span
-                    class="symbol">, </span><span class="identifier"
-                                                  id="com.moriak.schednote.adapters.NoteAdapter$onBindViewHolder(androidx.recyclerview.widget.RecyclerView.ViewHolder, kotlin.Int)/position">position</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="on-create-view-holder.html">onCreateViewHolder</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">onCreateViewHolder</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/parent">parent</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://developer.android.com/reference/android/view/ViewGroup.html"><span
-                    class="identifier">ViewGroup</span></a><span class="symbol">, </span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/viewType">viewType</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><span class="identifier">ViewHolder</span></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="reload.html">reload</a></h4>
-        </td>
-        <td>
-            <p>Opätovné načítanie zoznamu úloh</p>
-            <code><span class="keyword">fun </span><span class="identifier">reload</span><span
-                    class="symbol">(</span><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="reload-subjects.html">reloadSubjects</a></h4>
-        </td>
-        <td>
-            <p>Opätovné načítanie množiny predmetov</p>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">reloadSubjects</span><span class="symbol">(</span><span
-                    class="symbol">)</span><span class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="remove-outcast.html">removeOutcast</a></h4>
-        </td>
-        <td>
-            <p>Odstránenie poznámky</p>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">removeOutcast</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$removeOutcast(kotlin.Int)/position">position</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">?</span></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="set-deadline.html">setDeadline</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span class="identifier">setDeadline</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.adapters.NoteAdapter$setDeadline(kotlin.Long)/deadline">deadline</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
-                    class="identifier">Long</span></a><span class="symbol">?</span><span
-                    class="symbol">)</span><span class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="set-on-date-time-request.html">setOnDateTimeRequest</a></h4>
-        </td>
-        <td>
-            <p>Nastavenie správania, čo sa má stať pri žiadosti o nastavenie dátumu</p>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">setOnDateTimeRequest</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.adapters.NoteAdapter$setOnDateTimeRequest(kotlin.Function1((kotlin.Long, kotlin.Unit)))/fn">fn</span><span
-                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
-                    class="identifier">Long</span></a><span class="symbol">?</span><span
-                    class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="set-on-date-time-set-attempt.html">setOnDateTimeSetAttempt</a></h4>
-        </td>
-        <td>
-            <p>Nastavenie správania, čo sa má stať pri pokuse o zmenu dátumu</p>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">setOnDateTimeSetAttempt</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.adapters.NoteAdapter$setOnDateTimeSetAttempt(kotlin.Function2((kotlin.Int, kotlin.Long, kotlin.Unit)))/fn">fn</span><span
-                    class="symbol">:</span>&nbsp;<span class="symbol">(</span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-                    class="identifier">Int</span></a><span class="symbol">,</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span
-                    class="identifier">Long</span></a><span class="symbol">?</span><span
-                    class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<td>
+<h4><a href="bundle-to-item.html">bundleToItem</a></h4>
+</td>
+<td>
+<p>Z úložiska <a href="../-custom-adapter/bundle-to-item.html#com.moriak.schednote.adapters.CustomAdapter$bundleToItem(android.os.Bundle)/bundle">bundle</a> Načíta údaje a vytvorí z nich objekt typu <a href="../-custom-adapter/-custom-view-holder/index.html#T">T</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">bundleToItem</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.NoteAdapter$bundleToItem(android.os.Bundle)/bundle">bundle</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="compare.html">compare</a></h4>
+</td>
+<td>
+<p>Porovnávajú sa 2 položky</p>
+<code><span class="keyword">fun </span><span class="identifier">compare</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.NoteAdapter$compare(com.moriak.schednote.data.Note, com.moriak.schednote.data.Note)/a">a</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.NoteAdapter$compare(com.moriak.schednote.data.Note, com.moriak.schednote.data.Note)/b">b</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="instantiate-view-holder.html">instantiateViewHolder</a></h4>
+</td>
+<td>
+<p>Vytvorí a vráti potomka inštancie <a href="../-custom-adapter/-custom-view-holder/index.html">CustomViewHolder</a></p>
+<code><span class="keyword">fun </span><span class="identifier">instantiateViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.NoteAdapter$instantiateViewHolder(android.view.View)/v">v</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">CustomViewHolder</span><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="item-to-bundle.html">itemToBundle</a></h4>
+</td>
+<td>
+<p>Odloží objekt <a href="../-custom-adapter/item-to-bundle.html#com.moriak.schednote.adapters.CustomAdapter$itemToBundle(com.moriak.schednote.adapters.CustomAdapter.T, android.os.Bundle)/item">item</a> alebo jeho množinu atribútov do úložiska <a href="../-custom-adapter/item-to-bundle.html#com.moriak.schednote.adapters.CustomAdapter$itemToBundle(com.moriak.schednote.adapters.CustomAdapter.T, android.os.Bundle)/bundle">bundle</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">itemToBundle</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.NoteAdapter$itemToBundle(com.moriak.schednote.data.Note, android.os.Bundle)/item">item</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.NoteAdapter$itemToBundle(com.moriak.schednote.data.Note, android.os.Bundle)/bundle">bundle</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="new-item-from-bundle.html">newItemFromBundle</a></h4>
+</td>
+<td>
+<p>Vytvorí objekt typu Note pre novú položku, ktorá by použítím metódy <a href="bundle-to-item.html">bundleToItem</a> vyšla null.</p>
+<code><span class="keyword">fun </span><span class="identifier">newItemFromBundle</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.NoteAdapter$newItemFromBundle(android.os.Bundle)/bundle">bundle</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-a-c-t-i-o-n_-d-e-l-e-t-e.html">ACTION_DELETE</a></h4>
+</td>
+<td>
+<p>Označenie pre pokus o odstránenie úlohy</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ACTION_DELETE</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-a-c-t-i-o-n_-e-d-i-t_-s-a-v-e.html">ACTION_EDIT_SAVE</a></h4>
+</td>
+<td>
+<p>Označanie pre pokus o uloženie zmien v úlohe</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ACTION_EDIT_SAVE</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-a-c-t-i-o-n_-e-d-i-t_-s-t-a-r-t.html">ACTION_EDIT_START</a></h4>
+</td>
+<td>
+<p>Označanie pre pokus o zahájenie zmeny úlohy</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ACTION_EDIT_START</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-a-c-t-i-o-n_-e-d-i-t_-s-t-o-p.html">ACTION_EDIT_STOP</a></h4>
+</td>
+<td>
+<p>Označanie pre pokus o vrátenie zmien úlohy</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ACTION_EDIT_STOP</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-a-c-t-i-o-n_-s-e-l-e-c-t_-d-e-a-d-l-i-n-e.html">ACTION_SELECT_DEADLINE</a></h4>
+</td>
+<td>
+<p>Označanie pre pokus o zmenu termínu úlohy</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ACTION_SELECT_DEADLINE</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-a-c-t-i-o-n_-s-e-l-e-c-t_-s-u-b-j-e-c-t.html">ACTION_SELECT_SUBJECT</a></h4>
+</td>
+<td>
+<p>Označanie pre pokus o zmenu predmetu, ku ktorému sa úloha viaže</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ACTION_SELECT_SUBJECT</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-c-u-r-s-o-r_-e-n-d.html">CURSOR_END</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie konca kurzora upravovaného textu</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">CURSOR_END</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-c-u-r-s-o-r_-s-t-a-r-t.html">CURSOR_START</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie začiatku kurzora upravovaného textu</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">CURSOR_START</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-i-d.html">ID</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie ID upravovanej úlohy</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">ID</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-i-n-f-o.html">INFO</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie popisu upravovanej úlohy</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">INFO</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-s-u-b_-a-b-b.html">SUB_ABB</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie skratky predmetu, ku ktorému sa upravovaná úloha viaže</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">SUB_ABB</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-s-u-b_-i-d.html">SUB_ID</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie ID predmetu, ku ktorému sa upravovaná úloha viaže</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">SUB_ID</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-s-u-b_-n-a-m-e.html">SUB_NAME</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie názvu predmetu, ku ktorému sa upravovaná úloha viaže</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">SUB_NAME</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-w-h-e-n.html">WHEN</a></h4>
+</td>
+<td>
+<p>kľúč pre uchovanie termínu upravovanej úlohy</p>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">WHEN</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
 </table>
 </BODY>
 </HTML>

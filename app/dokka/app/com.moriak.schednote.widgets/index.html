@@ -1,40 +1,41 @@
 <HTML>
 <HEAD>
-    <meta charset="UTF-8">
-    <title>com.moriak.schednote.widgets - app</title>
-    <link href="../../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>com.moriak.schednote.widgets - app</title>
+<link rel="stylesheet" href="../../style.css">
 </HEAD>
 <BODY>
-<a href="../index.html">app</a>&nbsp;/&nbsp;<a
-        href="./index.html">com.moriak.schednote.widgets</a><br/>
+<a href="../index.html">app</a>&nbsp;/&nbsp;<a href="./index.html">com.moriak.schednote.widgets</a><br/>
 <br/>
 <h2>Package com.moriak.schednote.widgets</h2>
 <h3>Types</h3>
 <table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="-note-widget/index.html">NoteWidget</a></h4>
-        </td>
-        <td>
-            <p>Trieda spravuje widget so zoznamom úloh</p>
-            <code><span class="keyword">class </span><span class="identifier">NoteWidget</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://developer.android.com/reference/android/appwidget/AppWidgetProvider.html"><span
-                    class="identifier">AppWidgetProvider</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="-schedule-widget/index.html">ScheduleWidget</a></h4>
-        </td>
-        <td>
-            <p>Trieda spravuje widgety, ktoré majú tú najjednoduchšiu úlohu. Zobraziť rozvrh.</p>
-            <code><span class="keyword">class </span><span class="identifier">ScheduleWidget</span>&nbsp;<span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://developer.android.com/reference/android/appwidget/AppWidgetProvider.html"><span
-                    class="identifier">AppWidgetProvider</span></a></code></td>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<td>
+<h4><a href="-note-widget/index.html">NoteWidget</a></h4>
+</td>
+<td>
+<p>Widget tohoto typu zobrazuje zoznam úloh podľa nakonfigurovanej kategórie</p>
+<code><span class="keyword">class </span><span class="identifier">NoteWidget</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/appwidget/AppWidgetProvider.html"><span class="identifier">AppWidgetProvider</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-note-widget-service/index.html">NoteWidgetService</a></h4>
+</td>
+<td>
+<p>Trieda pristupuje k vzdialenému Adaptéru <a href="-note-widget-service/-note-widget-factory/index.html">NoteWidgetFactory</a>.</p>
+<code><span class="keyword">class </span><span class="identifier">NoteWidgetService</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/widget/RemoteViewsService.html"><span class="identifier">RemoteViewsService</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-schedule-widget/index.html">ScheduleWidget</a></h4>
+</td>
+<td>
+<p>Úlohou tohto typu widgetu je zobraziť rozvrh.</p>
+<code><span class="keyword">class </span><span class="identifier">ScheduleWidget</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/appwidget/AppWidgetProvider.html"><span class="identifier">AppWidgetProvider</span></a></code></td>
+</tr>
+</tbody>
 </table>
 </BODY>
 </HTML>

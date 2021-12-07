@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.moriak.schednote.views.RecyclerViewEmptySupport
         android:id="@+id/alarms_list"
         android:layout_width="0dp"
         android:layout_height="0dp"

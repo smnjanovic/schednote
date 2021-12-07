@@ -1,0 +1,129 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>OptionStepper - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.views</a>&nbsp;/&nbsp;<a href="./index.html">OptionStepper</a><br/>
+<br/>
+<h1>OptionStepper</h1>
+<code><span class="keyword">class </span><span class="identifier">OptionStepper</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-custom-view/index.html"><span class="identifier">CustomView</span></a></code>
+<p>Okno, v ktorom užívateľ vyberá spomedzi niekoľkých volieb. Zvolená voľba sa mu zobrazí ako text.
+Voľba môže byť objekt akéhokoľvek typu. Voľba je reprezentovaná textom, ktorý je výsledkom
+funkcie <a href="#">toString</a> alebo textom vo formáte nastavenom v objekte <a href="-format/index.html">Format</a>.
+Objekty na popredí možno meniť v rade za sebou jednym z dvoch smerov</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-format/index.html">Format</a></h4>
+</td>
+<td>
+<p>Objekty implementujúce tento interface sú schopné ovplivniť textové zobrazenie
+zvoleného objektu</p>
+<code><span class="keyword">interface </span><span class="identifier">Format</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-on-change/index.html">OnChange</a></h4>
+</td>
+<td>
+<p>Objekty implementujúce tento interface budú reagovať na zmeny vo voľbách vykonané používateľom</p>
+<code><span class="keyword">interface </span><span class="identifier">OnChange</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<code><span class="identifier">OptionStepper</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">?</span><span class="symbol">)</span></code><br/>
+<code><span class="identifier">OptionStepper</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet)/attrs">attrs</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/util/AttributeSet.html"><span class="identifier">AttributeSet</span></a><span class="symbol">?</span><span class="symbol">)</span></code><br/>
+<code><span class="identifier">OptionStepper</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet, kotlin.Int)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet, kotlin.Int)/attrs">attrs</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/util/AttributeSet.html"><span class="identifier">AttributeSet</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet, kotlin.Int)/defStyleAttr">defStyleAttr</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code><br/>
+<code><span class="identifier">OptionStepper</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet, kotlin.Int, kotlin.Int)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet, kotlin.Int, kotlin.Int)/attrs">attrs</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/util/AttributeSet.html"><span class="identifier">AttributeSet</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet, kotlin.Int, kotlin.Int)/defStyleAttr">defStyleAttr</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$<init>(android.content.Context, android.util.AttributeSet, kotlin.Int, kotlin.Int)/defStyleRes">defStyleRes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="--index--.html">index</a></h4>
+</td>
+<td>
+<p>vráti pozíciu zvoleného objektu. Ak je zoznam objektov prázdny, <a href="--index--.html">index</a> je -1.</p>
+<code><span class="keyword">var </span><span class="identifier">index</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="option.html">option</a></h4>
+</td>
+<td>
+<p>vráti zvolený objekt. Ak je zoznam objektov prázdny, <a href="option.html">option</a> je null.</p>
+<code><span class="keyword">val </span><span class="identifier">option</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="text.html">text</a></h4>
+</td>
+<td>
+<p>vráti text popisujúci zvolený objekt.</p>
+<code><span class="keyword">val </span><span class="identifier">text</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="on-draw.html">onDraw</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onDraw</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$onDraw(android.graphics.Canvas)/canvas">canvas</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/graphics/Canvas.html"><span class="identifier">Canvas</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-measure.html">onMeasure</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onMeasure</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$onMeasure(kotlin.Int, kotlin.Int)/widthMeasureSpec">widthMeasureSpec</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$onMeasure(kotlin.Int, kotlin.Int)/heightMeasureSpec">heightMeasureSpec</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="set-format.html">setFormat</a></h4>
+</td>
+<td>
+<p>Nastaví formát textu popisujúceho jednotlivé objekty v zozname</p>
+<code><span class="keyword">fun </span><span class="identifier">setFormat</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$setFormat(com.moriak.schednote.views.OptionStepper.Format)/f">f</span><span class="symbol">:</span>&nbsp;<span class="identifier">Format</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="set-on-change.html">setOnChange</a></h4>
+</td>
+<td>
+<p>Nastaví poslúchač na zmenu možnosti.</p>
+<code><span class="keyword">fun </span><span class="identifier">setOnChange</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$setOnChange(com.moriak.schednote.views.OptionStepper.OnChange)/l">l</span><span class="symbol">:</span>&nbsp;<span class="identifier">OnChange</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Nastaví poslúchač na zmenu možnosti, ktorý vykoná funkciu <a href="set-on-change.html#com.moriak.schednote.views.OptionStepper$setOnChange(kotlin.Function1((kotlin.Any, kotlin.Unit)))/fn">fn</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">setOnChange</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$setOnChange(kotlin.Function1((kotlin.Any, kotlin.Unit)))/fn">fn</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="set-options.html">setOptions</a></h4>
+</td>
+<td>
+<p>Nastavuje možností výberu</p>
+<code><span class="keyword">fun </span><span class="identifier">setOptions</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$setOptions(kotlin.Array((kotlin.Any)))/options">options</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">setOptions</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.views.OptionStepper$setOptions(kotlin.collections.List((kotlin.Any)))/options">options</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

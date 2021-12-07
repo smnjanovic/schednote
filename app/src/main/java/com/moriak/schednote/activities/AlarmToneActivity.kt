@@ -1,23 +1,31 @@
 package com.moriak.schednote.activities
 
-import android.Manifest
-import android.content.ContentUris
-import android.content.pm.PackageManager
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
+import android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+import android.util.DisplayMetrics.DENSITY_DEFAULT
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.RadioButton
-import androidx.lifecycle.Lifecycle
+import androidx.core.net.toUri
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.moriak.schednote.AlarmTone
 import com.moriak.schednote.App
+import com.moriak.schednote.ItemTopSpacing
 import com.moriak.schednote.R
-import com.moriak.schednote.dialogs.InfoFragment
-import com.moriak.schednote.settings.AlarmTone
-import com.moriak.schednote.settings.Prefs
+import com.moriak.schednote.adapters.AlarmToneAdapter
+import com.moriak.schednote.adapters.AlarmToneAdapter.Companion.ACTION_PAUSE
+import com.moriak.schednote.adapters.AlarmToneAdapter.Companion.ACTION_PLAY
+import com.moriak.schednote.adapters.AlarmToneAdapter.Companion.ACTION_SET
+import com.moriak.schednote.adapters.AlarmToneAdapter.Companion.ACTION_SET_PLAY_PAUSE
+import com.moriak.schednote.adapters.AlarmToneAdapter.Companion.PLAYING
+import com.moriak.schednote.contracts.PermissionContract
+import com.moriak.schednote.contracts.PickContract
+import com.moriak.schednote.dialogs.InfoDialog
+import com.moriak.schednote.enums.PermissionHandler.AUDIO_ACCESS
+import com.moriak.schednote.storage.Prefs
+import com.moriak.schednote.storage.Prefs.Settings.alarmTone
 import kotlinx.android.synthetic.main.activity_alarm_tune.*
-import android.provider.MediaStore.Audio.Media as Tune
 
 /**
  * Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
@@ -26,103 +34,134 @@ import android.provider.MediaStore.Audio.Media as Tune
 class AlarmToneActivity : ShakeCompatActivity() {
     private companion object {
         private const val INFO = "INFO"
-        private const val ACCESS_MUSIC = 1
-
-        private var audio = MediaPlayer.create(App.ctx, Prefs.settings.alarmTone.uri)
-        private var audioPos = audio?.currentPosition ?: 0
-
-        // priznak toho, ci aktivita zanika na pokyn uzivatela alebo systemu
-        private var destroyedByUser: Boolean = true
+        private const val LLM = "LLM"
     }
 
     private var tunes = ArrayList<AlarmTone>()
+    private lateinit var adapter: AlarmToneAdapter
+    private var player: MediaPlayer? = null
+    private var lastPlayed: Pair<Uri, Int>? = null
+
+    private val picker = registerForActivityResult(PickContract) {
+        it?.let {
+            val tone = AlarmTone.seek(it)
+            if (it == tone.uri) {
+                val pos = adapter.findIndexOf(this::findByUri, alarmTone.uri)
+                alarmTone = tone
+                if (pos > -1) adapter.notifyItemChanged(pos)
+                adapter.insertItem(tone)
+            }
+        }
+    }
+
+    private val requester = registerForActivityResult(PermissionContract) {
+        if (it) picker.launch(EXTERNAL_CONTENT_URI)
+    }
+
+    private fun inform() = InfoDialog(R.string.info_audio_tunes).show(supportFragmentManager, INFO)
+
+    private fun findByUri(tone: AlarmTone, uri: Any?) = tone.uri == uri
+
+    private fun old2new(old: Uri?, new: Uri) {
+        val posOld = old?.let { adapter.findIndexOf(this::findByUri, old) }
+        val posNew = adapter.findIndexOf(this::findByUri, new)
+        posOld?.let(adapter::notifyItemChanged)
+        adapter.notifyItemChanged(posNew)
+    }
+
+    private fun play(uri: Uri?) {
+        player?.stop()
+        player?.release()
+        player = uri?.let { MediaPlayer.create(this, uri) }
+        if (uri != null && lastPlayed?.first == uri) player!!.seekTo(lastPlayed!!.second)
+        player?.isLooping = true
+        player?.start()
+        lastPlayed = null
+    }
+
+    private fun toneAction(pos: Int, data: Bundle, action: Int) {
+        when (action) {
+            ACTION_PLAY -> {
+                val oldPlaying = data.getString(PLAYING)?.toUri()
+                val newPlaying = adapter.getItemAt(pos)
+                data.putString(PLAYING, newPlaying.uri.toString())
+                old2new(oldPlaying, newPlaying.uri)
+                play(newPlaying.uri)
+            }
+            ACTION_PAUSE -> {
+                lastPlayed = data.getString(PLAYING)?.toUri()?.to(player?.currentPosition ?: 0)
+                play(null)
+                data.putString(PLAYING, null)
+                adapter.notifyItemChanged(pos)
+            }
+            ACTION_SET -> {
+                val oldChosen = adapter.findIndexOf(this::findByUri, alarmTone.uri)
+                val newRingtone = adapter.getItemAt(pos)
+                alarmTone = newRingtone
+                if (oldChosen > -1) adapter.notifyItemChanged(oldChosen)
+                if (alarmTone.uri != newRingtone.uri) {
+                    adapter.deleteItem(pos)
+                    val newPos = adapter.findIndexOf(this::findByUri, alarmTone.uri)
+                    if (newPos > -1) adapter.notifyItemChanged(newPos)
+                    App.toast(R.string.audio_file_removed_or_moved)
+                }
+                else adapter.notifyItemChanged(pos)
+            }
+            ACTION_SET_PLAY_PAUSE -> {
+                val oldChosen = adapter.findIndexOf(this::findByUri, alarmTone.uri)
+                val oldPlayed = adapter.findIndexOf(this::findByUri, data.getString(PLAYING)?.toUri())
+                if (oldPlayed != -1) adapter.triggerItemAction(oldPlayed, data, ACTION_PAUSE)
+                adapter.triggerItemAction(pos, data, ACTION_SET)
+                if (pos != oldChosen || pos != oldPlayed) adapter.triggerItemAction(pos, data, ACTION_PLAY)
+            }
+        }
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.just_info, menu)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.ringtone_action_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.help) inform()
-        else return super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.help -> inform()
+            R.id.external_ringtone -> AUDIO_ACCESS.allowMe(this, requester) {
+                picker.launch(EXTERNAL_CONTENT_URI)
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
         return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm_tune)
-
-        if (audioPos > 0 && !destroyedByUser) {
-            music_on_off.isChecked = true
-            audio.seekTo(audioPos)
-            audio.start()
-        }
-
-        destroyedByUser = true
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        audio_group.setOnCheckedChangeListener { group, checkedId ->
-            if (lifecycle.currentState == Lifecycle.State.RESUMED && checkedId > -1) {
-                music_on_off.isChecked = false
-                Prefs.settings.alarmTone =
-                    group.findViewById<RadioButton>(checkedId).tag as AlarmTone
-                music_on_off.isChecked = true
-            }
+        adapter = AlarmToneAdapter()
+        adapter.onItemAction(this::toneAction)
+        AlarmTone.seek(tunes)
+        val ringtone = alarmTone
+        if (tunes.indexOfFirst { it.uri == ringtone.uri } == -1) tunes.add(ringtone)
+        adapter.putItems(tunes)
+        alarm_tone_list.adapter = adapter
+        alarm_tone_list.layoutManager = LinearLayoutManager(this).also {
+            if (savedInstanceState != null)
+                it.onRestoreInstanceState(savedInstanceState.getParcelable(LLM))
         }
+        val space = 4 * resources.displayMetrics.densityDpi / DENSITY_DEFAULT
+        alarm_tone_list.addItemDecoration(ItemTopSpacing(space))
 
-        music_on_off.setOnCheckedChangeListener { _, ch ->
-            audio?.stop()
-            if (ch) {
-                audio = MediaPlayer.create(this, Prefs.settings.alarmTone.uri)
-                if (audio == null) {
-                    music_on_off.isChecked = false
-                    App.toast(R.string.audio_file_removed_or_moved, Gravity.BOTTOM)
-                } else audio.start()
-            }
-        }
-
-        request_permission_btn.setOnClickListener {
-            if (!checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE))
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACCESS_MUSIC)
-        }
+        if (Prefs.FirstVisit.alarmTune) inform()
     }
 
-    override fun onResume() {
-        super.onResume()
-        reloadTunes()
-        request_permission_btn.visibility =
-            if (checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) View.GONE else View.VISIBLE
-
-        scroll_container.post {
-            val view = audio_group.findViewById<RadioButton>(audio_group.checkedRadioButtonId)
-                ?: return@post
-            scroll_container.scrollTo(0, (view.top - scroll_container.height / 2 + view.height / 2))
-            if (Prefs.firstVisit.alarmTune) {
-                inform()
-                Prefs.firstVisit.alarmTune = false
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), ACCESS_MUSIC)
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        request: Int,
-        permissions: Array<out String>,
-        granted: IntArray
-    ) {
-        when (request) {
-            ACCESS_MUSIC -> {
-                if (granted.firstOrNull() != PackageManager.PERMISSION_GRANTED)
-                    App.toast(R.string.read_storage_permission_for_music)
-                else reloadTunes()
-            }
-            else -> super.onRequestPermissionsResult(request, permissions, granted)
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(LLM, alarm_tone_list.layoutManager?.onSaveInstanceState())
     }
 
     /**
@@ -130,61 +169,17 @@ class AlarmToneActivity : ShakeCompatActivity() {
      * inak sa vykoná rodičovská metóda
      */
     override fun onShake() {
-        if (audio.isPlaying) {
-            music_on_off.isChecked = false
-            App.toast(R.string.music_stopped)
-        } else super.onShake()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        destroyedByUser = false
+        adapter.extras.getString(PLAYING)?.toUri()?.let {
+            val pos = adapter.findIndexOf(this::findByUri, it)
+            adapter.triggerItemAction(pos, adapter.extras, ACTION_PAUSE)
+        } ?: super.onShake()
     }
 
     override fun onDestroy() {
+        adapter.extras.getString(PLAYING)?.toUri()?.let {
+            val pos = adapter.findIndexOf(this::findByUri, it)
+            adapter.triggerItemAction(pos, adapter.extras, ACTION_PAUSE)
+        }
         super.onDestroy()
-        if (destroyedByUser) audio.stop() else audio.pause()
-        audioPos = audio.currentPosition
     }
-
-    private fun reloadTunes() {
-        tunes.clear()
-        tunes.add(AlarmTone())
-
-        if (checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            val ext = Tune.EXTERNAL_CONTENT_URI
-            contentResolver.query(
-                ext,
-                arrayOf(Tune._ID, Tune.DISPLAY_NAME),
-                null,
-                null,
-                Tune.DISPLAY_NAME
-            )?.use {
-                while (it.moveToNext()) {
-                    val id = it.getLong(0)
-                    val title = it.getString(1)
-                    tunes.add(AlarmTone(id, title, ContentUris.withAppendedId(ext, id), true))
-                }
-                it.close()
-            }
-        }
-
-        audio_group.removeAllViews()
-        for (tune in tunes) {
-            val radio = RadioButton(this)
-            audio_group.addView(radio)
-            radio.text = tune.label
-            radio.tag = tune
-            radio.isChecked = Prefs.settings.alarmTone.id == tune.id
-            radio.setPadding(App.dp(8), App.dp(12), App.dp(8), App.dp(12))
-        }
-
-        if (audio_group.checkedRadioButtonId == -1) {
-            Prefs.settings.alarmTone = AlarmTone()
-            (audio_group.getChildAt(0) as RadioButton).isChecked = true
-        }
-    }
-
-    private fun inform() =
-        InfoFragment.create(R.string.info_audio_tunes).show(supportFragmentManager, INFO)
 }

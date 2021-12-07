@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ReminderSetter - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.notifications</a>&nbsp;/&nbsp;<a href="./index.html">ReminderSetter</a><br/>
+<br/>
+<h1>ReminderSetter</h1>
+<code><span class="keyword">object </span><span class="identifier">ReminderSetter</span></code>
+<p><a href="./index.html">ReminderSetter</a> slúži ako organizátor úloh.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="add-notes.html">addNotes</a></h4>
+</td>
+<td>
+<p>Pridanie viacerých úloh.</p>
+<code><span class="keyword">fun </span><span class="identifier">addNotes</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$addNotes(android.content.Context, kotlin.collections.List((com.moriak.schednote.data.Note)))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$addNotes(android.content.Context, kotlin.collections.List((com.moriak.schednote.data.Note)))/notes">notes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="clear-notes-of-category.html">clearNotesOfCategory</a></h4>
+</td>
+<td>
+<p>Odstráni všetky úlohy patriace do kategórie <a href="clear-notes-of-category.html#com.moriak.schednote.notifications.ReminderSetter$clearNotesOfCategory(android.content.Context, com.moriak.schednote.interfaces.NoteCategory)/category">category</a> z databázy, a k nim naplánované upozornenia.</p>
+<code><span class="keyword">fun </span><span class="identifier">clearNotesOfCategory</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$clearNotesOfCategory(android.content.Context, com.moriak.schednote.interfaces.NoteCategory)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$clearNotesOfCategory(android.content.Context, com.moriak.schednote.interfaces.NoteCategory)/category">category</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.interfaces/-note-category/index.html"><span class="identifier">NoteCategory</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="enable-reminders.html">enableReminders</a></h4>
+</td>
+<td>
+<p>naplánuje alebo zruší upozornenia na všetky nadchádzajúce úlohy</p>
+<code><span class="keyword">fun </span><span class="identifier">enableReminders</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$enableReminders(android.content.Context, kotlin.Boolean)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$enableReminders(android.content.Context, kotlin.Boolean)/enable">enable</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="set-note.html">setNote</a></h4>
+</td>
+<td>
+<p>Pokúsi sa vytvoriť úlohu, uložiť ju do databázy a nastaviť k nej pripomienku,
+ak sú upozornenia na pripomienky zapnuté.</p>
+<code><span class="keyword">fun </span><span class="identifier">setNote</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$setNote(android.content.Context, com.moriak.schednote.data.Note, kotlin.Function1((com.moriak.schednote.data.Note, kotlin.Unit)))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$setNote(android.content.Context, com.moriak.schednote.data.Note, kotlin.Function1((com.moriak.schednote.data.Note, kotlin.Unit)))/note">note</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$setNote(android.content.Context, com.moriak.schednote.data.Note, kotlin.Function1((com.moriak.schednote.data.Note, kotlin.Unit)))/onSuccess">onSuccess</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="unset-note.html">unsetNote</a></h4>
+</td>
+<td>
+<p>Pokúsi sa odstrániť danú úlohu z databázy a zrušiť naplánované upozornenie.</p>
+<code><span class="keyword">fun </span><span class="identifier">unsetNote</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$unsetNote(android.content.Context, com.moriak.schednote.data.Note)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.notifications.ReminderSetter$unsetNote(android.content.Context, com.moriak.schednote.data.Note)/note">note</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

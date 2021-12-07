@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ISubContent - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.interfaces</a>&nbsp;/&nbsp;<a href="./index.html">ISubContent</a><br/>
+<br/>
+<h1>ISubContent</h1>
+<code><span class="keyword">interface </span><span class="identifier">ISubContent</span></code>
+<p>Objekty tohto typu reprezentujú vnorené obsahy k nadradenému obsahu. Musia byť typu <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a>.</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-i-sub-content-companion/index.html">ISubContentCompanion</a></h4>
+</td>
+<td>
+<p>Objekty tohto typu by mali byť spoločníkmi (Companion) tried typov <a href="./index.html">ISubContent</a>.</p>
+<code><span class="keyword">interface </span><span class="identifier">ISubContentCompanion</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="button.html">button</a></h4>
+</td>
+<td>
+<p>ID tlačidla, ktoré je určené k tomu, aby sa po kliknutí naň zobrazil daný obsah</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">button</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="fragment-class.html">fragmentClass</a></h4>
+</td>
+<td>
+<p>Trieda fragmentu, ktorý má daný obsah zobraziť</p>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">fragmentClass</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/6/docs/api/java/lang/Class.html"><span class="identifier">Class</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="../../com.moriak.schednote.fragments/-sub-activity/index.html"><span class="identifier">SubActivity</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="parent.html">parent</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">parent</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">ISubContent</span></a><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="remember.html">remember</a></h4>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">remember</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="../../com.moriak.schednote.enums/-alarm-category/index.html">AlarmCategory</a></h4>
+</td>
+<td>
+<p>Inštancie tejto triedy reprezentujú obsah týkajúci sa oznámení.
+<a href="../../com.moriak.schednote.enums/-alarm-category/-r-e-m-i-n-d-e-r.html">REMINDER</a> Položka sa sústreďuje na notifikácie k upozorneniam
+<a href="../../com.moriak.schednote.enums/-alarm-category/-a-l-a-r-m.html">ALARM</a> Položka sa sústreďuje na budíky</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">AlarmCategory</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ISubContent</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../../com.moriak.schednote.enums/-schedule-display/index.html">ScheduleDisplay</a></h4>
+</td>
+<td>
+<p>Inštancie tejto triedy predstavujú obsah týkajúci sa rozvrhu.
+<a href="../../com.moriak.schednote.enums/-schedule-display/-d-e-s-i-g-n.html">DESIGN</a> Položka sa sústreďuje na úpravy dizajnu rozvrrhu
+<a href="../../com.moriak.schednote.enums/-schedule-display/-l-e-s-s-o-n_-s-c-h-e-d-u-l-e.html">LESSON_SCHEDULE</a> Položka sa sústreďuje na náhľad a zmeny v rozvrhu
+<a href="../../com.moriak.schednote.enums/-schedule-display/-t-i-m-e_-s-c-h-e-d-u-l-e.html">TIME_SCHEDULE</a> Položka sa sústreďuje hodiny ako najmenšie časové jednotky rozvrhu
+<a href="../../com.moriak.schednote.enums/-schedule-display/-l-e-s-s-o-n_-t-y-p-e-s.html">LESSON_TYPES</a> Položka sa sústreďuje na zobrazenie a manipuláciu s typmi hodín</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">ScheduleDisplay</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ISubContent</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../../com.moriak.schednote.enums/-sub-content/index.html">SubContent</a></h4>
+</td>
+<td>
+<p>Inštancie trieda reprezentujú jednotlivé položky hlavného menu.</p>
+<code><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">SubContent</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ISubContent</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

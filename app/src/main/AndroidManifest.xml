@@ -3,16 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.moriak.schednote">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- Android 12+ -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="android.permission.ACCESS_MEDIA_LOCATION"
-        android:minSdkVersion="29" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
 
     <application
         android:name=".App"
@@ -21,12 +27,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup">
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
+        tools:ignore="AllowBackup"
+        tools:targetApi="q">
 
-        <receiver android:name=".BootReceiver">
+        <receiver
+            android:name=".BootReceiver"
+            android:directBootAware="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <category android:name="android.intent.category.HOME" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
@@ -39,28 +54,40 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/note_widget_info" />
         </receiver>
+
         <receiver android:name=".widgets.ScheduleWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/schedule_widget_info" />
         </receiver>
-        <receiver android:name=".notifications.NoteReminder" />
-        <receiver android:name=".notifications.ClockReceiver" />
+
+        <receiver android:name=".notifications.ReminderReceiver" />
+
+        <receiver android:name=".notifications.AlarmClockReceiver" />
 
         <service
-            android:name=".notifications.AlarmClockService"
+            android:name=".notifications.AlarmClockRingTone"
             android:enabled="true" />
+
         <service
-            android:name=".adapters.NoteWidgetService"
+            android:name=".widgets.NoteWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <activity
+            android:name=".activities.LockScreenAlarmActivity"
+            android:showForAllUsers="true"
+            android:label="@string/alarm_clock"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".activities.AlarmToneActivity"
             android:label="@string/alarm_tone" />
+
         <activity
             android:name=".activities.NoteWidgetConfigActivity"
             android:label="@string/notes">
@@ -71,12 +98,17 @@
         <activity
             android:name=".activities.Settings"
             android:label="@string/settings" />
-        <activity android:name=".activities.MainActivity">
+
+        <activity
+            android:name=".activities.MainActivity"
+            android:clearTaskOnLaunch="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

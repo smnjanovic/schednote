@@ -1,0 +1,271 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CustomAdapter - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.adapters</a>&nbsp;/&nbsp;<a href="./index.html">CustomAdapter</a><br/>
+<br/>
+<h1>CustomAdapter</h1>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">CustomAdapter</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Adapter</span><span class="symbol">&lt;</span><span class="identifier">ViewHolder</span><span class="symbol">&gt;</span></code>
+<p>Rozšírený <a href="#">RecyclerView.Adapter</a>, so zoradenými obnoviteľnými prvkami.</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-custom-view-holder/index.html">CustomViewHolder</a></h4>
+</td>
+<td>
+<p>Rozšírený <a href="#">RecyclerView.ViewHolder</a></p>
+<code><span class="keyword">abstract</span> <span class="keyword">inner</span> <span class="keyword">class </span><span class="identifier">CustomViewHolder</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Rozšírený <a href="#">RecyclerView.Adapter</a>, so zoradenými obnoviteľnými prvkami.</p>
+<code><span class="identifier">CustomAdapter</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$<init>(kotlin.Int)/itemLayout">itemLayout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="extras.html">extras</a></h4>
+</td>
+<td>
+<p>doplňujúce dáta</p>
+<code><span class="keyword">val </span><span class="identifier">extras</span><span class="symbol">: </span><a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="items.html">items</a></h4>
+</td>
+<td>
+<p>zoznam položiek adaptéra</p>
+<code><span class="keyword">val </span><span class="identifier">items</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="bundle-to-item.html">bundleToItem</a></h4>
+</td>
+<td>
+<p>Z úložiska <a href="bundle-to-item.html#com.moriak.schednote.adapters.CustomAdapter$bundleToItem(android.os.Bundle)/bundle">bundle</a> Načíta údaje a vytvorí z nich objekt typu <a href="-custom-view-holder/index.html#T">T</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">bundleToItem</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$bundleToItem(android.os.Bundle)/bundle">bundle</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="clear-items.html">clearItems</a></h4>
+</td>
+<td>
+<p>Odstráni všetky položky</p>
+<code><span class="keyword">fun </span><span class="identifier">clearItems</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="compare.html">compare</a></h4>
+</td>
+<td>
+<p>Porovnávajú sa 2 položky</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">compare</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$compare(com.moriak.schednote.adapters.CustomAdapter.T, com.moriak.schednote.adapters.CustomAdapter.T)/a">a</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$compare(com.moriak.schednote.adapters.CustomAdapter.T, com.moriak.schednote.adapters.CustomAdapter.T)/b">b</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="delete-item.html">deleteItem</a></h4>
+</td>
+<td>
+<p>Odstráni sa položka na pozícii <a href="delete-item.html#com.moriak.schednote.adapters.CustomAdapter$deleteItem(kotlin.Int)/pos">pos</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">deleteItem</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$deleteItem(kotlin.Int)/pos">pos</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="delete-range.html">deleteRange</a></h4>
+</td>
+<td>
+<p>Odstráni sa niekoľko položiek na pozíciach v rozsahu <a href="delete-range.html#com.moriak.schednote.adapters.CustomAdapter$deleteRange(kotlin.ranges.IntRange)/posRng">posRng</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">deleteRange</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$deleteRange(kotlin.ranges.IntRange)/posRng">posRng</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/-int-range/index.html"><span class="identifier">IntRange</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="find-index-of.html">findIndexOf</a></h4>
+</td>
+<td>
+<p>Nájde pozície prvého prvku, ktorý vyhovuje podmienke <a href="find-index-of.html#com.moriak.schednote.adapters.CustomAdapter$findIndexOf(kotlin.Function2((com.moriak.schednote.adapters.CustomAdapter.T, kotlin.Any, kotlin.Boolean)), kotlin.Any)/fn">fn</a>, teda prvý prvok, pre ktorý funkcia
+<a href="find-index-of.html#com.moriak.schednote.adapters.CustomAdapter$findIndexOf(kotlin.Function2((com.moriak.schednote.adapters.CustomAdapter.T, kotlin.Any, kotlin.Boolean)), kotlin.Any)/fn">fn</a> vráti true.</p>
+<code><span class="keyword">fun </span><span class="identifier">findIndexOf</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$findIndexOf(kotlin.Function2((com.moriak.schednote.adapters.CustomAdapter.T, kotlin.Any, kotlin.Boolean)), kotlin.Any)/fn">fn</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">T</span><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$findIndexOf(kotlin.Function2((com.moriak.schednote.adapters.CustomAdapter.T, kotlin.Any, kotlin.Boolean)), kotlin.Any)/data">data</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="get-item-at.html">getItemAt</a></h4>
+</td>
+<td>
+<p>Získa položku na pozícii <a href="get-item-at.html#com.moriak.schednote.adapters.CustomAdapter$getItemAt(kotlin.Int)/pos">pos</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">getItemAt</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$getItemAt(kotlin.Int)/pos">pos</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="get-item-count.html">getItemCount</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getItemCount</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="insert-item.html">insertItem</a></h4>
+</td>
+<td>
+<p>Pridá sa položka do zoznamu na takú pozíciu, aby bol zoznam stále utriedený.</p>
+<code><span class="keyword">fun </span><span class="identifier">insertItem</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$insertItem(com.moriak.schednote.adapters.CustomAdapter.T)/item">item</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="instantiate-view-holder.html">instantiateViewHolder</a></h4>
+</td>
+<td>
+<p>Vytvorí a vráti potomka inštancie <a href="-custom-view-holder/index.html">CustomViewHolder</a></p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">instantiateViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$instantiateViewHolder(android.view.View)/v">v</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">CustomViewHolder</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="item-to-bundle.html">itemToBundle</a></h4>
+</td>
+<td>
+<p>Odloží objekt <a href="item-to-bundle.html#com.moriak.schednote.adapters.CustomAdapter$itemToBundle(com.moriak.schednote.adapters.CustomAdapter.T, android.os.Bundle)/item">item</a> alebo jeho množinu atribútov do úložiska <a href="item-to-bundle.html#com.moriak.schednote.adapters.CustomAdapter$itemToBundle(com.moriak.schednote.adapters.CustomAdapter.T, android.os.Bundle)/bundle">bundle</a>.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">itemToBundle</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$itemToBundle(com.moriak.schednote.adapters.CustomAdapter.T, android.os.Bundle)/item">item</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$itemToBundle(com.moriak.schednote.adapters.CustomAdapter.T, android.os.Bundle)/bundle">bundle</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-bind-view-holder.html">onBindViewHolder</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onBindViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$onBindViewHolder(androidx.recyclerview.widget.RecyclerView.ViewHolder, kotlin.Int)/holder">holder</span><span class="symbol">:</span>&nbsp;<span class="identifier">ViewHolder</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$onBindViewHolder(androidx.recyclerview.widget.RecyclerView.ViewHolder, kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-create-view-holder.html">onCreateViewHolder</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onCreateViewHolder</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/parent">parent</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/view/ViewGroup.html"><span class="identifier">ViewGroup</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$onCreateViewHolder(android.view.ViewGroup, kotlin.Int)/viewType">viewType</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ViewHolder</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-item-action.html">onItemAction</a></h4>
+</td>
+<td>
+<p>Nastaviť funkciu, ktorá sa má vykonať po určitej interakcii s niektorou z položiek.</p>
+<code><span class="keyword">fun </span><span class="identifier">onItemAction</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$onItemAction(kotlin.Function3((kotlin.Int, android.os.Bundle, , kotlin.Unit)))/fn">fn</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">,</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="put-items.html">putItems</a></h4>
+</td>
+<td>
+<p>Pridá do zoznamu nové položky. A utriedi</p>
+<code><span class="keyword">fun </span><span class="identifier">putItems</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$putItems(kotlin.collections.Collection((com.moriak.schednote.adapters.CustomAdapter.T)))/pItems">pItems</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="restore-or-put-items.html">restoreOrPutItems</a></h4>
+</td>
+<td>
+<p>Položky zoznamu <a href="items.html">items</a> a doplňujúce dáta <a href="extras.html">extras</a> sa načítajú z inštancie <a href="restore-or-put-items.html#com.moriak.schednote.adapters.CustomAdapter$restoreOrPutItems(android.os.Bundle, kotlin.Function0((kotlin.collections.List((com.moriak.schednote.adapters.CustomAdapter.T)))))/bundle">bundle</a>.
+Ak je <a href="restore-or-put-items.html#com.moriak.schednote.adapters.CustomAdapter$restoreOrPutItems(android.os.Bundle, kotlin.Function0((kotlin.collections.List((com.moriak.schednote.adapters.CustomAdapter.T)))))/bundle">bundle</a> null, tak sa vytvorí nový zoznam pomocou funkcie <a href="restore-or-put-items.html#com.moriak.schednote.adapters.CustomAdapter$restoreOrPutItems(android.os.Bundle, kotlin.Function0((kotlin.collections.List((com.moriak.schednote.adapters.CustomAdapter.T)))))/getItems">getItems</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">restoreOrPutItems</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$restoreOrPutItems(android.os.Bundle, kotlin.Function0((kotlin.collections.List((com.moriak.schednote.adapters.CustomAdapter.T)))))/bundle">bundle</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$restoreOrPutItems(android.os.Bundle, kotlin.Function0((kotlin.collections.List((com.moriak.schednote.adapters.CustomAdapter.T)))))/getItems">getItems</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="store-items.html">storeItems</a></h4>
+</td>
+<td>
+<p>Položky zoznamu <a href="items.html">items</a> a doplňujúce dáta <a href="extras.html">extras</a> sa uložia zapíšu do inštancie <a href="store-items.html#com.moriak.schednote.adapters.CustomAdapter$storeItems(android.os.Bundle)/bundle">bundle</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">storeItems</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$storeItems(android.os.Bundle)/bundle">bundle</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="trigger-item-action.html">triggerItemAction</a></h4>
+</td>
+<td>
+<p>Vykonať funkciu ktorá sa má vykonať po určitej interakcii <a href="trigger-item-action.html#com.moriak.schednote.adapters.CustomAdapter$triggerItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/key">key</a>
+s položkou na pozícii <a href="trigger-item-action.html#com.moriak.schednote.adapters.CustomAdapter$triggerItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/position">position</a> s doplňujúcimi dátami <a href="trigger-item-action.html#com.moriak.schednote.adapters.CustomAdapter$triggerItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/data">data</a>.</p>
+<code><span class="keyword">fun </span><span class="identifier">triggerItemAction</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$triggerItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/position">position</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$triggerItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/data">data</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$triggerItemAction(kotlin.Int, android.os.Bundle, kotlin.Int)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="update-item.html">updateItem</a></h4>
+</td>
+<td>
+<p>Aktualizuje sa položka a presunie sa na takú pozíciu, aby bol zoznam stále utriedený.</p>
+<code><span class="keyword">fun </span><span class="identifier">updateItem</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$updateItem(com.moriak.schednote.adapters.CustomAdapter.T, kotlin.Int)/item">item</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.adapters.CustomAdapter$updateItem(com.moriak.schednote.adapters.CustomAdapter.T, kotlin.Int)/pos">pos</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="../-alarm-adapter/index.html">AlarmAdapter</a></h4>
+</td>
+<td>
+<p>Adapter zobrazuje budíky pracovné dni v týždni. Na každý deň možno nastaviť max. 1 budík.</p>
+<code><span class="keyword">class </span><span class="identifier">AlarmAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CustomAdapter</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.enums/-day/index.html"><span class="identifier">Day</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../-alarm-tone-adapter/index.html">AlarmToneAdapter</a></h4>
+</td>
+<td>
+<p>Adaptér zobrazuje zoznam tónov budenia</p>
+<code><span class="keyword">class </span><span class="identifier">AlarmToneAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CustomAdapter</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote/-alarm-tone/index.html"><span class="identifier">AlarmTone</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../-lesson-time-adapter/index.html">LessonTimeAdapter</a></h4>
+</td>
+<td>
+<p>Tento adaptér spravuje zoznam časových blokov rozvrhu.</p>
+<code><span class="keyword">class </span><span class="identifier">LessonTimeAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CustomAdapter</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-lesson-time/index.html"><span class="identifier">LessonTime</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../-lesson-type-adapter/index.html">LessonTypeAdapter</a></h4>
+</td>
+<td>
+<p>Adaptér spravuje zoznam kategórii vyučovacích hodín.</p>
+<code><span class="keyword">class </span><span class="identifier">LessonTypeAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CustomAdapter</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-lesson-type/index.html"><span class="identifier">LessonType</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../-note-adapter/index.html">NoteAdapter</a></h4>
+</td>
+<td>
+<p>Adapter spravuje zoznam úloh</p>
+<code><span class="keyword">class </span><span class="identifier">NoteAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CustomAdapter</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-note/index.html"><span class="identifier">Note</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="../-subject-adapter/index.html">SubjectAdapter</a></h4>
+</td>
+<td>
+<p>Adapter spravuje zoznam predmetov</p>
+<code><span class="keyword">class </span><span class="identifier">SubjectAdapter</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CustomAdapter</span></a><span class="symbol">&lt;</span><a href="../../com.moriak.schednote.data/-subject/index.html"><span class="identifier">Subject</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

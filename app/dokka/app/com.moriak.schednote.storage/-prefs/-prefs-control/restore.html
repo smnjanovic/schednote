@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Prefs.PrefsControl.restore - app</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">app</a>&nbsp;/&nbsp;<a href="../../index.html">com.moriak.schednote.storage</a>&nbsp;/&nbsp;<a href="../index.html">Prefs</a>&nbsp;/&nbsp;<a href="index.html">PrefsControl</a>&nbsp;/&nbsp;<a href="./restore.html">restore</a><br/>
+<br/>
+<h1>restore</h1>
+<a name="com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.Function1((android.content.SharedPreferences, com.moriak.schednote.storage.Prefs.PrefsControl.restore.T)))"></a>
+<code><span class="keyword">protected</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">restore</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.Function1((android.content.SharedPreferences, com.moriak.schednote.storage.Prefs.PrefsControl.restore.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/content/SharedPreferences.html"><span class="identifier">SharedPreferences</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code><a name="com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.String)"></a>
+<code><span class="keyword">protected</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="keyword">reified</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">restore</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code>
+<p>Zísanie údaja typu <a href="restore.html#T">T</a> z pamäte <a href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - kľúč pod ktorým bude údaj uložený</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidTypeException"></a>
+<code>InvalidTypeException</code> - keď zo získaneho údaja nie je možné vytvoriť objekt typu <a href="restore.html#T">T</a></p>
+<p><strong>Return</strong><br/>
+údaj typu <a href="restore.html#T">T</a></p>
+<a name="com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.storage.Prefs.PrefsControl.restore.T)"></a>
+<code><span class="keyword">protected</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="keyword">reified</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">restore</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.storage.Prefs.PrefsControl.restore.T)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.storage.Prefs.PrefsControl.restore.T)/default">default</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code>
+<p>Zísanie údaja typu <a href="restore.html#T">T</a> z pamäte <a href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>. Ak v pamäti taký údaj ešte nie je
+uložený alebo nie je typu <a href="restore.html#T">T</a>, tak vráti predvolený údaj <a href="restore.html#com.moriak.schednote.storage.Prefs.PrefsControl$restore(kotlin.String, com.moriak.schednote.storage.Prefs.PrefsControl.restore.T)/default">default</a>.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - kľúč pod ktorým bude údaj uložený</p>
+<p><a name="default"></a>
+<code>default</code> - predvolený údaj</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidTypeException"></a>
+<code>InvalidTypeException</code> - keď zo získaneho údaja nie je možné vytvoriť objekt typu <a href="restore.html#T">T</a></p>
+<p><strong>Return</strong><br/>
+údaj typu <a href="restore.html#T">T</a></p>
+</BODY>
+</HTML>

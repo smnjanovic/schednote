@@ -56,35 +56,35 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/dateBtn"
+        <ImageView
+            android:id="@+id/date_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:contentDescription="@string/date"
-            android:drawableStart="@drawable/ic_date_range_black_40dp"
-            android:textSize="0sp" />
+            android:src="@drawable/ic_date_range_black_40dp"
+            android:tint="@color/colorPrimaryDark" />
 
-        <TextView
-            android:id="@+id/timeBtn"
+        <ImageView
+            android:id="@+id/time_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:contentDescription="@string/time"
-            android:drawableStart="@drawable/ic_schedule_black_40dp"
-            android:textSize="0sp" />
+            android:src="@drawable/ic_schedule_black_40dp"
+            android:tint="@color/colorPrimaryDark" />
 
-        <TextView
+        <ImageView
             android:id="@+id/semester_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:contentDescription="@string/time"
-            android:drawableStart="@drawable/ic_semester_40dp"
-            android:textSize="0sp" />
+            android:src="@drawable/ic_semester_40dp"
+            android:tint="@color/colorPrimaryDark" />
     </LinearLayout>
 
 </LinearLayout>

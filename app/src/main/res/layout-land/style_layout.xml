@@ -1,312 +1,388 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/frame"
+    <com.moriak.schednote.views.WallpaperView
+        android:id="@+id/screen_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toEndOf="@+id/add_image"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <FrameLayout
-            android:id="@+id/screen"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/bg_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/bg_image"
-                android:scaleType="fitXY" />
-
-            <FrameLayout
-                android:id="@+id/schedule_frame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageButton
-        android:id="@+id/remove_image"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="#0000"
-        android:contentDescription="@string/remove_bg_image"
-        android:foreground="@drawable/ic_cancel_black_12dp"
-        android:foregroundGravity="bottom|right"
-        app:layout_constraintBottom_toTopOf="@+id/add_image"
-        app:layout_constraintEnd_toEndOf="@+id/add_image"
-        app:layout_constraintStart_toStartOf="@+id/add_image"
-        app:srcCompat="@drawable/ic_image_black_24dp" />
-
-    <ImageButton
-        android:id="@+id/add_image"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="#0000"
-        android:contentDescription="@string/set_bg_image"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/palette_box"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/odd_btn"
+        style="@style/border_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="I."
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/even_btn"
+        style="@style/border_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="II."
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/odd_btn"
+        app:layout_constraintStart_toStartOf="@+id/odd_btn"
+        app:layout_constraintTop_toBottomOf="@+id/odd_btn"
+        tools:ignore="HardcodedText" />
+
+    <ImageButton
+        android:id="@+id/bg_img_open"
+        style="@style/border_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/set_bg_image"
+        app:layout_constraintEnd_toStartOf="@+id/palette_box"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_image_black_24dp" />
 
     <ImageButton
         android:id="@+id/wallpaper"
+        style="@style/border_button"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:background="#0000"
+        android:layout_margin="8dp"
         android:contentDescription="@string/set_as_wallpaper"
-        app:layout_constraintBottom_toTopOf="@+id/remove_image"
-        app:layout_constraintEnd_toEndOf="@+id/remove_image"
-        app:layout_constraintStart_toStartOf="@+id/remove_image"
-        app:srcCompat="@drawable/ic_wallpaper_black_24dp" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/frame"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_phone_android_black_24dp" />
+
+    <ImageView
+        android:id="@+id/bg_rotate_left"
+        style="@style/border_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/rotate_left"
+        app:layout_constraintTop_toTopOf="@id/wallpaper"
+        app:layout_constraintBottom_toBottomOf="@id/wallpaper"
+        app:layout_constraintLeft_toRightOf="@id/wallpaper"
+        app:srcCompat="@drawable/ic_rotate_left_black_24dp" />
+
+    <ImageView
+        android:id="@+id/bg_rotate_right"
+        style="@style/border_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/rotate_right"
+        app:layout_constraintTop_toTopOf="@id/bg_rotate_left"
+        app:layout_constraintBottom_toBottomOf="@id/bg_rotate_left"
+        app:layout_constraintLeft_toRightOf="@id/bg_rotate_left"
+        app:srcCompat="@drawable/ic_rotate_right_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/palette_open"
+        style="@style/border_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/set_colors"
+        android:src="@drawable/ic_palette_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/palette_box" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/palette_box"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#B792E1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bg_img_box"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/odd_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:gravity="center"
-            android:text="I."
-            android:textStyle="bold"
+        <View
+            android:id="@+id/palette_divider"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="#5C348C" />
+
+        <Button
+            android:id="@+id/palette_close"
+            style="@style/juicy_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_margin="4dp"
+            android:layout_marginEnd="84dp"
+            android:text="×"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText" />
 
+        <com.moriak.schednote.views.OptionStepper
+            android:id="@+id/palette_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:arrowBackground="#4FFF"
+            app:arrowColor="#5C348C"
+            app:arrowStroke="3dp"
+            app:layout_constraintBottom_toTopOf="@+id/palette_h_range"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
-            android:id="@+id/even_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:gravity="center"
-            android:text="II."
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
+            android:id="@+id/palette_h_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/hue"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_h_range"
+            app:layout_constraintEnd_toStartOf="@+id/palette_h_range"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/palette_divider"
+            app:layout_constraintTop_toTopOf="@+id/palette_h_range" />
 
-    </LinearLayout>
+        <SeekBar
+            android:id="@+id/palette_h_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="359"
+            android:minWidth="160dp"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_h_number"
+            app:layout_constraintEnd_toEndOf="@+id/palette_s_range"
+            app:layout_constraintStart_toStartOf="@+id/palette_s_range"
+            app:layout_constraintTop_toTopOf="@+id/palette_h_number" />
 
-    <LinearLayout
-        android:id="@+id/design_tools"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="4dp"
+        <TextView
+            android:id="@+id/palette_h_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:ems="2"
+            app:layout_constraintBottom_toTopOf="@+id/palette_s_number"
+            app:layout_constraintEnd_toEndOf="@+id/palette_s_number" />
+
+        <TextView
+            android:id="@+id/palette_s_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/saturation"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_s_range"
+            app:layout_constraintEnd_toStartOf="@+id/palette_s_range"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/palette_divider"
+            app:layout_constraintTop_toTopOf="@+id/palette_s_range"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <SeekBar
+            android:id="@+id/palette_s_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:minWidth="160dp"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_s_number"
+            app:layout_constraintEnd_toStartOf="@+id/palette_s_number"
+            app:layout_constraintTop_toTopOf="@+id/palette_s_number" />
+
+        <TextView
+            android:id="@+id/palette_s_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:ems="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/palette_l_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/luminance"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_l_range"
+            app:layout_constraintEnd_toEndOf="@+id/palette_s_label"
+            app:layout_constraintEnd_toStartOf="@+id/palette_l_range"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/palette_divider"
+            app:layout_constraintTop_toTopOf="@+id/palette_l_range" />
+
+        <SeekBar
+            android:id="@+id/palette_l_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="160dp"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_l_number"
+            app:layout_constraintEnd_toEndOf="@+id/palette_s_range"
+            app:layout_constraintStart_toStartOf="@+id/palette_s_range"
+            app:layout_constraintTop_toTopOf="@+id/palette_l_number" />
+
+        <TextView
+            android:id="@+id/palette_l_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="2"
+            app:layout_constraintEnd_toEndOf="@+id/palette_s_number"
+            app:layout_constraintTop_toBottomOf="@+id/palette_s_number" />
+
+        <TextView
+            android:id="@+id/palette_a_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/alpha"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_a_range"
+            app:layout_constraintEnd_toEndOf="@+id/palette_l_label"
+            app:layout_constraintEnd_toStartOf="@+id/palette_a_range"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/palette_divider"
+            app:layout_constraintTop_toTopOf="@+id/palette_a_range" />
+
+        <SeekBar
+            android:id="@+id/palette_a_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="160dp"
+            app:layout_constraintBottom_toBottomOf="@+id/palette_a_number"
+            app:layout_constraintEnd_toEndOf="@+id/palette_s_range"
+            app:layout_constraintStart_toStartOf="@+id/palette_s_range"
+            app:layout_constraintTop_toTopOf="@+id/palette_a_number" />
+
+        <TextView
+            android:id="@+id/palette_a_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="2"
+            app:layout_constraintEnd_toEndOf="@+id/palette_s_number"
+            app:layout_constraintTop_toBottomOf="@+id/palette_l_number" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bg_img_box"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="#AED2F4"
+        android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TableLayout
+        <View
+            android:id="@+id/bg_img_divider"
+            android:layout_width="3dp"
+            android:layout_height="409dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="#2E577E" />
+
+        <Button
+            android:id="@+id/bg_img_close"
+            style="@style/juicy_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="×"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/bg_img_set"
+            style="@style/border_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_margin="8dp"
+            android:text="@string/set_bg_image"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/bg_img_remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bg_img_divider" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="3"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    tools:ignore="UselessParent">
-
-                    <ImageButton
-                        android:id="@+id/next_color"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="4dp"
-                        android:background="#0000"
-                        android:contentDescription="@string/next_color"
-                        android:src="@drawable/ic_chevron_left_black_24dp" />
-
-                    <TextView
-                        android:id="@+id/color_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <ImageButton
-                        android:id="@+id/previous_color"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_margin="4dp"
-                        android:background="#0000"
-                        android:contentDescription="@string/previous_color"
-                        android:src="@drawable/ic_chevron_right_black_24dp" />
-
-                </LinearLayout>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/hue_label"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hue" />
-
-                <SeekBar
-                    android:id="@+id/rangeH"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/hnum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:ems="2" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/sat_label"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/saturation" />
-
-                <SeekBar
-                    android:id="@+id/rangeS"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/snum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:ems="2" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/light_label"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/luminance" />
-
-                <SeekBar
-                    android:id="@+id/rangeL"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/lnum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:ems="2" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/alpha_label"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/alpha" />
-
-                <SeekBar
-                    android:id="@+id/rangeA"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/anum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:ems="2" />
-            </TableRow>
-        </TableLayout>
+        <TextView
+            android:id="@+id/bg_img_remove"
+            style="@style/border_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/remove_bg_image"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/radios"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bg_img_divider" />
 
         <RadioGroup
             android:id="@+id/radios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp"
-            android:layoutDirection="rtl"
-            android:orientation="vertical"
-            android:textAlignment="textEnd">
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <RadioButton
                 android:id="@+id/fill"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="8dp"
                 android:text="@string/fill"
-                android:textAlignment="textEnd"
-                android:textSize="12sp" />
+                tools:textSize="12sp" />
 
             <RadioButton
                 android:id="@+id/cover"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="8dp"
                 android:text="@string/cover"
-                android:textAlignment="textEnd"
-                android:textSize="12sp" />
+                tools:textSize="12sp" />
 
             <RadioButton
                 android:id="@+id/contain"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="8dp"
                 android:text="@string/fit"
-                android:textAlignment="textEnd"
-                android:textSize="12sp" />
+                tools:textSize="12sp" />
         </RadioGroup>
 
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.3" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

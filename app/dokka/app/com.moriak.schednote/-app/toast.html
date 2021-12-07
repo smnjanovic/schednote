@@ -1,69 +1,28 @@
 <HTML>
 <HEAD>
-    <meta charset="UTF-8">
-    <title>App.toast - app</title>
-    <link href="../../../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>App.toast - app</title>
+<link rel="stylesheet" href="../../../style.css">
 </HEAD>
 <BODY>
-<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote</a>&nbsp;/&nbsp;<a
-        href="index.html">App</a>&nbsp;/&nbsp;<a href="./toast.html">toast</a><br/>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote</a>&nbsp;/&nbsp;<a href="index.html">App</a>&nbsp;/&nbsp;<a href="./toast.html">toast</a><br/>
 <br/>
 <h1>toast</h1>
-<a name="com.moriak.schednote.App.Companion$toast(kotlin.String, kotlin.Int, kotlin.Int)"></a>
-<code><span class="keyword">fun </span><span class="identifier">toast</span><span
-        class="symbol">(</span><span class="identifier"
-                                     id="com.moriak.schednote.App.Companion$toast(kotlin.String, kotlin.Int, kotlin.Int)/msg">msg</span><span
-        class="symbol">:</span>&nbsp;<a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span
-        class="identifier">String</span></a><span class="symbol">, </span><span class="identifier"
-                                                                                id="com.moriak.schednote.App.Companion$toast(kotlin.String, kotlin.Int, kotlin.Int)/gravity">gravity</span><span
-        class="symbol">:</span>&nbsp;<a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-        class="identifier">Int</span></a>&nbsp;<span
-        class="symbol">=</span>&nbsp;Gravity.BOTTOM<span class="symbol">, </span><span
-        class="identifier"
-        id="com.moriak.schednote.App.Companion$toast(kotlin.String, kotlin.Int, kotlin.Int)/duration">duration</span><span
-        class="symbol">:</span>&nbsp;<a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-        class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Toast.LENGTH_SHORT<span
-        class="symbol">)</span><span class="symbol">: </span><a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-        class="identifier">Unit</span></a></code>
+<a name="com.moriak.schednote.App.Companion$toast(kotlin.CharSequence, kotlin.Boolean)"></a>
+<code><span class="keyword">fun </span><span class="identifier">toast</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.App.Companion$toast(kotlin.CharSequence, kotlin.Boolean)/msg">msg</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.App.Companion$toast(kotlin.CharSequence, kotlin.Boolean)/longer">longer</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
 <p>Zobrazí toast</p>
 <h3>Parameters</h3>
 <p><a name="msg"></a>
-    <code>msg</code> - Textová správa</p>
-<p><a name="gravity"></a>
-    <code>gravity</code> - Výber umiestnenia Toastu</p>
-<p><a name="duration"></a>
-    <code>duration</code> - Trvanie zobrazovania Toastu</p>
-<a name="com.moriak.schednote.App.Companion$toast(kotlin.Int, kotlin.Int, kotlin.Int)"></a>
-<code><span class="keyword">fun </span><span class="identifier">toast</span><span
-        class="symbol">(</span><span class="identifier">@StringRes</span> <span class="identifier"
-                                                                                id="com.moriak.schednote.App.Companion$toast(kotlin.Int, kotlin.Int, kotlin.Int)/res">res</span><span
-        class="symbol">:</span>&nbsp;<a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-        class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier"
-                                                                             id="com.moriak.schednote.App.Companion$toast(kotlin.Int, kotlin.Int, kotlin.Int)/gravity">gravity</span><span
-        class="symbol">:</span>&nbsp;<a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-        class="identifier">Int</span></a>&nbsp;<span
-        class="symbol">=</span>&nbsp;Gravity.BOTTOM<span class="symbol">, </span><span
-        class="identifier"
-        id="com.moriak.schednote.App.Companion$toast(kotlin.Int, kotlin.Int, kotlin.Int)/duration">duration</span><span
-        class="symbol">:</span>&nbsp;<a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span
-        class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Toast.LENGTH_SHORT<span
-        class="symbol">)</span><span class="symbol">: </span><a
-        href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-        class="identifier">Unit</span></a></code>
+<code>msg</code> - Textová správa</p>
+<p><a name="longer"></a>
+<code>longer</code> - Trvanie zobrazovania Toastu. True = dlhsie</p>
+<a name="com.moriak.schednote.App.Companion$toast(kotlin.Int, kotlin.Boolean)"></a>
+<code><span class="keyword">fun </span><span class="identifier">toast</span><span class="symbol">(</span><span class="identifier">@StringRes</span> <span class="identifier" id="com.moriak.schednote.App.Companion$toast(kotlin.Int, kotlin.Boolean)/res">res</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.App.Companion$toast(kotlin.Int, kotlin.Boolean)/longer">longer</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
 <p>Zobrazí toast</p>
 <h3>Parameters</h3>
 <p><a name="res"></a>
-    <code>res</code> - Zdroj reťazca na zobrazenie</p>
-<p><a name="gravity"></a>
-    <code>gravity</code> - Výber umiestnenia Toastu</p>
-<p><a name="duration"></a>
-    <code>duration</code> - Trvanie zobrazovania Toastu</p>
+<code>res</code> - Zdroj reťazca na zobrazenie</p>
+<p><a name="longer"></a>
+<code>longer</code> - Trvanie zobrazovania Toastu. True = dlhsie</p>
 </BODY>
 </HTML>

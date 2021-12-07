@@ -1,20 +1,31 @@
 $dokka.format:html
 $dokka.linkExtension:html
-
+$dokka.location:com.moriak.schednote$dayMinutes#java.util.Calendarcom.moriak.schednote/java.util.-calendar/day-minutes.html
+$dokka.location:com.moriak.schednote$forMonth#java.util.Calendarcom.moriak.schednote/java.util.-calendar/for-month.html
+$dokka.location:com.moriak.schednote$forWeek#java.util.Calendarcom.moriak.schednote/java.util.-calendar/for-week.html
+$dokka.location:com.moriak.schednote$getNextDay(java.util.Calendar, com.moriak.schednote.enums.Day, com.moriak.schednote.enums.Regularity, com.moriak.schednote.enums.WorkWeek)com.moriak.schednote/java.util.-calendar/get-next-day.html
+$dokka.location:com.moriak.schednote$getNextDay(java.util.Calendar, com.moriak.schednote.enums.Day, com.moriak.schednote.enums.WorkWeek)com.moriak.schednote/java.util.-calendar/get-next-day.html
+$dokka.location:com.moriak.schednote$getNextTime(java.util.Calendar, com.moriak.schednote.enums.Day, com.moriak.schednote.enums.Regularity, com.moriak.schednote.enums.WorkWeek, kotlin.Int)com.moriak.schednote/java.util.-calendar/get-next-time.html
+$dokka.location:com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek)com.moriak.schednote/java.util.-calendar/get-regularity.html
+$dokka.location:com.moriak.schednote$getRegularity(java.util.Calendar, com.moriak.schednote.enums.WorkWeek, kotlin.Boolean)com.moriak.schednote/java.util.-calendar/get-regularity.html
+$dokka.location:com.moriak.schednote$nextMidnight#java.util.Calendarcom.moriak.schednote/java.util.-calendar/next-midnight.html
+$dokka.location:com.moriak.schednote$now#java.util.Calendarcom.moriak.schednote/java.util.-calendar/now.html
+$dokka.location:com.moriak.schednote$setClean(java.util.Calendar, kotlin.Int, kotlin.Int)com.moriak.schednote/java.util.-calendar/set-clean.html
+$dokka.location:com.moriak.schednote$today#java.util.Calendarcom.moriak.schednote/java.util.-calendar/today.html
+$dokka.location:com.moriak.schednote$tomorrow#java.util.Calendarcom.moriak.schednote/java.util.-calendar/tomorrow.html
 com.moriak.schednote
 com.moriak.schednote.activities
 com.moriak.schednote.adapters
-com.moriak.schednote.database
-com.moriak.schednote.database.data
-com.moriak.schednote.database.tables
-com.moriak.schednote.design
+com.moriak.schednote.contracts
+com.moriak.schednote.data
 com.moriak.schednote.dialogs
-com.moriak.schednote.events
+com.moriak.schednote.enums
+com.moriak.schednote.fragments
 com.moriak.schednote.fragments.of_alarm
 com.moriak.schednote.fragments.of_main
 com.moriak.schednote.fragments.of_schedule
-com.moriak.schednote.menu
+com.moriak.schednote.interfaces
 com.moriak.schednote.notifications
-com.moriak.schednote.other
-com.moriak.schednote.settings
+com.moriak.schednote.storage
+com.moriak.schednote.views
 com.moriak.schednote.widgets

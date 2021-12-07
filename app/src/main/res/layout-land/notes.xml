@@ -4,6 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.moriak.schednote.views.OptionStepper
+        android:id="@+id/note_groups"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/out_of_calendar"
         style="@style/border_button"
@@ -14,7 +24,7 @@
         android:drawableStart="@drawable/ic_date_range_black_24dp"
         android:gravity="center|start"
         android:padding="8dp"
-        android:text="@string/load_notes_from_calendar"
+        android:text="@string/notes_import"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/to_the_calendar" />
@@ -29,21 +39,10 @@
         android:drawableStart="@drawable/ic_date_range_black_24dp"
         android:gravity="center|start"
         android:padding="8dp"
-        android:text="@string/save_notes_to_calendar"
+        android:text="@string/notes_export"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_groups" />
-
-    <Spinner
-        android:id="@+id/note_groups"
-        style="@style/spinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/no_notes"
@@ -55,7 +54,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.moriak.schednote.design.RecyclerViewEmptySupport
+    <com.moriak.schednote.views.RecyclerViewEmptySupport
         android:id="@+id/note_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -79,7 +78,7 @@
         android:drawableStart="@drawable/ic_delete_black_24dp"
         android:drawableTint="@android:color/holo_red_dark"
         android:gravity="center|start"
-        android:text="@string/clear_all"
+        android:text="@string/remove_all"
         android:textColor="@android:color/holo_red_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -92,6 +91,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@
         android:id="@+id/alarms"
         android:enabled="true"
         android:icon="@drawable/ic_alarm_white24dp"
-        android:title="@string/reminders" />
+        android:title="@string/notifications" />
     <item
         android:id="@+id/semester"
         android:enabled="true"

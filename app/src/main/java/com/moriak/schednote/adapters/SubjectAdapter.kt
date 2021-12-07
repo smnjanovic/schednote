@@ -1,137 +1,67 @@
 package com.moriak.schednote.adapters
 
-import android.view.LayoutInflater
+import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.moriak.schednote.App
 import com.moriak.schednote.R
-import com.moriak.schednote.database.data.Subject
-import com.moriak.schednote.database.data.Subject.CREATOR.validAbb
-import com.moriak.schednote.database.data.Subject.CREATOR.validName
+import com.moriak.schednote.data.Subject
+import com.moriak.schednote.storage.SQLite
+import com.moriak.schednote.enums.TimeCategory
 import kotlinx.android.synthetic.main.subject.view.*
 
 /**
- * Adapter zobrazuje zoznam všetkých predmetov
+ * Adapter spravuje zoznam predmetov
  */
-class SubjectAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val items = App.data.subjects()
-
-    // udalost sa musi vykonať
-    private var showDialog = fun(_: Subject) = Unit
-
+class SubjectAdapter : CustomAdapter<Subject>(R.layout.subject) {
     /**
-     * Pred úpravou alebo vložením
-     * @param fn funkcia nastavuje skrytú funkciu, ktorá má byť zodpovedná za zobrazenie nového dialógu
+     * @property ACTION_EDIT Označenie pokusu o úpravu predmetu
+     * @property ACTION_DELETE Označenie pokusu o odstránenie predmetu
      */
-    fun setShowDialog(fn: (sub: Subject) -> Unit) {
-        showDialog = fn
+    companion object {
+        private const val SUB_ID = "SUB_ID"
+        private const val SUB_ABB = "SUB_ABB"
+        private const val SUB_NAME = "SUB_NAME"
+        const val ACTION_EDIT = 1998
+        const val ACTION_DELETE = 1999
     }
 
-    // bude pouzita metoda toast ak sa vyskytuju nejake chyby
-    private fun isValid(abb: String, name: String): Boolean = (validAbb(abb) ?: validName(name))
-        ?.also { App.toast(it) }?.let { false } ?: true
+    private val clickEvent = View.OnClickListener {
+        triggerItemAction((it.tag as SubjectHolder).adapterPosition, extras, when (it.id) {
+            R.id.si_edit -> ACTION_EDIT
+            R.id.si_delete -> ACTION_DELETE
+            else -> 0
+        })
+    }
 
-    /**
-     * Vložiť predmet
-     * @param abb Skratka
-     * @param name Celý názov
-     * @return true, ak vloženie prebehlo úspešne
-     */
-    fun insertItem(abb: String, name: String): Boolean {
-        if (!isValid(abb, name)) return false
-        if (App.data.subject(abb) != null) {
-            App.toast(R.string.subject_exists)
-            return false
-        }
-        val id: Long = App.data.addSubject(abb, name)
-        if (id == -1L) throw RuntimeException("Item could not be inserted!")
+    override fun compare(a: Subject, b: Subject): Int = a.abb.compareTo(b.abb)
 
-        items.add(App.data.subject(id)!!)
-        val oldPos: Int = items.lastIndex
-        notifyItemInserted(oldPos)
+    override fun instantiateViewHolder(v: View): CustomViewHolder = SubjectHolder(v)
 
-        val newPos = App.data.subjectIndex(id)
-        if (newPos != oldPos) {
-            items.add(newPos, items.removeAt(oldPos))
-            notifyItemMoved(oldPos, newPos)
-        }
-        return true
+    override fun bundleToItem(bundle: Bundle): Subject {
+        val id = bundle.get(SUB_ID) as Long? ?: throw Exception("Missing subject ID!")
+        val abb = bundle.getString(SUB_ABB) ?: throw Exception("Missing subject ABB!")
+        val name = bundle.getString(SUB_NAME) ?: throw Exception("Missing subject NAME!")
+        return Subject(id, abb, name)
+    }
+
+    override fun itemToBundle(item: Subject, bundle: Bundle) {
+        bundle.putLong(SUB_ID, item.id)
+        bundle.putString(SUB_ABB, item.abb)
+        bundle.putString(SUB_NAME, item.name)
     }
 
     /**
-     * Premenovanie predmetu
-     * @param id id cieľového predmetu
-     * @param abb nová skratka
-     * @param name nový názov
-     * @return true ak, bol predmet premenovaný úspešne
+     * Blok v tejto inštancii vizualizuje jednu položku zo zoznamu (predmet)
      */
-    fun updateItem(id: Long, abb: String, name: String): Boolean {
-        if (!isValid(abb, name)) return false
-
-        App.data.subject(abb)?.let { sub ->
-            if (sub.id != id) {
-                App.toast(R.string.subject_exists)
-                return false
-            }
-        }
-
-        val oldPos = App.data.subjectIndex(id)
-        val edit = App.data.editSubject(id, abb, name)
-        if (edit != 1) throw RuntimeException("There should be only one record updated!")
-        items[oldPos] = App.data.subject(id)!!
-        notifyItemChanged(oldPos)
-
-        val newPos = App.data.subjectIndex(id)
-        if (newPos != oldPos) {
-            items.add(newPos, items.removeAt(oldPos))
-            notifyItemMoved(oldPos, newPos)
-        }
-        return true
-    }
-
-    private fun deleteItem(pos: Int): Boolean {
-        if (pos !in items.indices) return false
-        val del = App.data.deleteSubject(items[pos].id)
-        if (del != 1) throw RuntimeException("There should have been just one record to remove!")
-        items.removeAt(pos)
-        notifyItemRemoved(pos)
-        return true
-    }
-
-    private val onUpdate = View.OnClickListener { (it.tag as SubjectHolder).item?.let(showDialog) }
-    private val onDelete =
-        View.OnClickListener { deleteItem((it.tag as SubjectHolder).adapterPosition) }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        SubjectHolder(LayoutInflater.from(parent.context).inflate(R.layout.subject, parent, false))
-
-    override fun getItemCount() = items.size
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as SubjectHolder).bind()
-
-    /**
-     * Zobrazenie skratky a celého názvu predmetu
-     */
-    inner class SubjectHolder(view: View) : RecyclerView.ViewHolder(view) {
-        /**
-         * Prístup k položke zoznamu ku ktorej je tento viewHolder naviazaný
-         */
-        val item get() = if (adapterPosition in items.indices) items[adapterPosition] else null
-
-        /**
-         * Vyskladanie viewHoldera
-         */
-        fun bind() {
-            itemView.abb_field.text = item?.abb
-            itemView.name_field.text = item?.name
-            itemView.sub_edit_btn.tag = this
-            itemView.sub_del_btn.tag = this
-            itemView.missed_notes.text = App.data.missedNotes(items[adapterPosition].id).toString()
-            itemView.incoming_notes.text =
-                App.data.incomingNotes(items[adapterPosition].id).toString()
-            itemView.sub_edit_btn.setOnClickListener(onUpdate)
-            itemView.sub_del_btn.setOnClickListener(onDelete)
+    inner class SubjectHolder(view: View) : CustomAdapter<Subject>.CustomViewHolder(view) {
+        override fun bind(pos: Int) {
+            itemView.si_abb.text = item?.abb
+            itemView.si_name.text = item?.name
+            itemView.si_missed_notes.text = SQLite.notes(TimeCategory.LATE, item!!).count().toString()
+            itemView.si_upcoming_notes.text = SQLite.notes(TimeCategory.UPCOMING, item!!).count().toString()
+            itemView.si_edit.tag = this
+            itemView.si_edit.setOnClickListener(clickEvent)
+            itemView.si_delete.tag = this
+            itemView.si_delete.setOnClickListener(clickEvent)
         }
     }
 }

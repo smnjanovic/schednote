@@ -1,100 +1,73 @@
 package com.moriak.schednote.adapters
 
-import android.view.LayoutInflater
+import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.moriak.schednote.App
+import com.moriak.schednote.storage.Prefs.Settings.earliestMinute
+import com.moriak.schednote.storage.Prefs.Settings.timeFormat
 import com.moriak.schednote.R
-import com.moriak.schednote.database.data.LessonTime
-import com.moriak.schednote.settings.LessonTimeFormat
+import com.moriak.schednote.data.LessonTime
 import kotlinx.android.synthetic.main.lesson_data.view.*
 
 /**
- * Adapter zobrazuje určitý počet hodín z ktorých je rozvrh zložený a
- * udáva od kedy do kedy prebieha daná hodina
- * Hodinu možno pridávať len na koniec, a to uvedením trvania samotnej hodiny a
- * trvania prestávky po nej
+ * Tento adaptér spravuje zoznam časových blokov rozvrhu.
  */
-class LessonTimeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val items = App.data.lessonTimes()
-    private lateinit var showDialog: (LessonTime) -> Unit
-
-    private var onUpdate = View.OnClickListener {
-        showDialog(items[(it.tag as LessonTimeHolder).adapterPosition])
+class LessonTimeAdapter : CustomAdapter<LessonTime>(R.layout.lesson_data) {
+    /**
+     * @property ACTION_EDIT Označenie pre pokus o zmenu trvania hodiny a prestávky
+     * @property ACTION_DELETE Označenie pre pokus o odstránenie časového bloku
+     */
+    companion object {
+        const val ACTION_EDIT = 1993
+        const val ACTION_DELETE = 1994
+        private const val ORDER = "LESSON_ORDER"
+        private const val L_DUR = "LESSON_DURATION"
+        private const val B_DUR = "BREAK_AFTER_LESSON"
     }
-    private var onDelete = View.OnClickListener {
-        val pos = (it.tag as LessonTimeHolder).adapterPosition
-        if (App.data.removeFromSchedule(items[pos].order) > 0) {
-            val oldSize = items.size
-            items.clear()
-            items.addAll(App.data.lessonTimes())
-            notifyItemRangeRemoved(pos, oldSize - items.size)
-        }
+
+    private val clickAction = View.OnClickListener {
+        val h = it.tag as LessonTimeHolder
+        triggerItemAction(h.adapterPosition, extras, when (it) {
+            h.itemView.les_time_edit -> ACTION_EDIT
+            h.itemView.les_time_delete -> ACTION_DELETE
+            else -> 0
+        })
+    }
+
+    override fun instantiateViewHolder(v: View): CustomViewHolder = LessonTimeHolder(v)
+
+    override fun bundleToItem(bundle: Bundle): LessonTime =
+        bundle.let { LessonTime(it.getInt(ORDER), it.getInt(L_DUR), it.getInt(B_DUR)) }
+
+    override fun itemToBundle(item: LessonTime, bundle: Bundle) {
+        bundle.putInt(ORDER, item.order)
+        bundle.putInt(L_DUR, item.lessonDuration)
+        bundle.putInt(B_DUR, item.breakDuration)
     }
 
     /**
-     * Touto funkciou nastavím ako sa má vytvoriť, zobraziť a správať nový dialóg
-     * @param fn Vstupom sú dáta o hodine, ktoré chcem upraviť
+     * Vypočet začiatku časového bloku.
+     * @param pos pozícia časového bloku
+     * @return začiatok časového bloku v dňových minútach
      */
-    fun setShowDialog(fn: (LessonTime) -> Unit) {
-        showDialog = fn
+    fun computeStart(pos: Int): Int {
+        var min = earliestMinute
+        for (i in 0 until pos) min += items[i].let { it.lessonDuration + it.breakDuration }
+        return min
     }
 
     /**
-     * Vložiť hodinu
-     * @param lesDur trvanie hodiny
-     * @param breakDur trvanie prestávky
+     * Objekt vizualizuje položku zoznamu (Časový blok rozvrhu).
      */
-    fun insert(lesDur: Int, breakDur: Int) {
-        val id = App.data.insertIntoSchedule(lesDur, breakDur)
-        if (id > -1) {
-            items.add(LessonTime(id, lesDur, breakDur))
-            notifyItemInserted(items.lastIndex)
-        } else App.toast(R.string.busy_day_error)
-    }
-
-    /**
-     * Upraviť hodinu
-     * @param lesDur zmena trvania hodiny
-     * @param breakDur zmena trvania prestávky
-     */
-    fun update(order: Int, lesDur: Int, breakDur: Int) {
-        val upd = App.data.updateLessonTime(order, lesDur, breakDur)
-        if (upd > 0) {
-            items[order - 1].lessonDuration = lesDur
-            items[order - 1].breakDuration = breakDur
-            notifyItemRangeChanged(order - 1, items.size - order + 1)
-        } else App.toast(R.string.busy_day_error)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        LessonTimeHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.lesson_data, parent, false)
-        )
-
-    override fun getItemCount() = items.size
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as LessonTimeHolder).bind()
-
-    inner class LessonTimeHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        /**
-         * Vyskladanie viewHoldera
-         */
-        fun bind() {
-            val item = items[adapterPosition]
-            itemView.order.text = item.order.toString()
-
-            itemView.start.text = LessonTimeFormat.START_TIME.startFormat(item.order)
-            itemView.end.text = LessonTimeFormat.START_TIME.endFormat(item.order)
-
+    inner class LessonTimeHolder(v: View): CustomViewHolder(v) {
+        override fun bind(pos: Int) {
+            val st = computeStart(pos)
+            itemView.les_time_order.text = item!!.order.toString()
+            itemView.les_time_start.text = timeFormat.getFormat(st)
+            itemView.les_time_end.text = timeFormat.getFormat(st + item!!.lessonDuration)
             itemView.les_time_edit.tag = this
             itemView.les_time_delete.tag = this
-
-            itemView.les_time_edit.setOnClickListener(onUpdate)
-            itemView.les_time_delete.setOnClickListener(onDelete)
+            itemView.les_time_edit.setOnClickListener(clickAction)
+            itemView.les_time_delete.setOnClickListener(clickAction)
         }
     }
 }

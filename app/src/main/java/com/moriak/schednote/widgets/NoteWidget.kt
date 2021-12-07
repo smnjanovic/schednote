@@ -3,7 +3,9 @@ package com.moriak.schednote.widgets
 import android.app.AlarmManager
 import android.app.AlarmManager.RTC_WAKEUP
 import android.app.PendingIntent
+import android.app.PendingIntent.getBroadcast
 import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetManager.*
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
@@ -13,61 +15,45 @@ import android.net.Uri
 import android.widget.RemoteViews
 import com.moriak.schednote.App
 import com.moriak.schednote.R
-import com.moriak.schednote.adapters.NoteWidgetService
-import com.moriak.schednote.database.data.Subject
-import com.moriak.schednote.other.Redirection
-import com.moriak.schednote.other.TimeCategory
-import com.moriak.schednote.settings.Prefs
+import com.moriak.schednote.data.Subject
+import com.moriak.schednote.enums.Redirection.Companion.EXTRA_NOTE_CATEGORY
+import com.moriak.schednote.enums.Redirection.Companion.EXTRA_NOTE_ID
+import com.moriak.schednote.enums.Redirection.NOTES
+import com.moriak.schednote.enums.TimeCategory
+import com.moriak.schednote.enums.TimeCategory.TODAY
+import com.moriak.schednote.interfaces.NoteCategory
+import com.moriak.schednote.nextMidnight
+import com.moriak.schednote.notifications.ReminderSetter.unsetNote
+import com.moriak.schednote.storage.Prefs.Widgets
+import com.moriak.schednote.storage.SQLite
+import com.moriak.schednote.widgets.NoteWidgetService.Companion.NOTE
+import java.util.*
 
 /**
- * Trieda spravuje widget so zoznamom úloh
+ * Widget tohoto typu zobrazuje zoznam úloh podľa nakonfigurovanej kategórie
  */
 class NoteWidget : AppWidgetProvider() {
-    /**
-     * @property REMOVE_NOTE Akcia pre intent, ktorý vymaže úlohu cez widget
-     */
     companion object {
-        const val REMOVE_NOTE = "NOTE_REMOVAL"
-        private const val ACTION_REMOVAL = "ACTION_REMOVAL"
+        private const val ITEM_ACTION = "ACTION_REMOVAL"
         private const val TARGET_CATEGORY = "TARGET_CATEGORY"
         private const val widgetUpdateRequest = -2000
 
-        private fun all(context: Context = App.ctx) = AppWidgetManager.getInstance(context)
+        private fun all(context: Context) = getInstance(context)
             .getAppWidgetIds(ComponentName(context, NoteWidget::class.java)) ?: intArrayOf()
+
+        private fun makeIntent(context: Context) =
+            Intent(ACTION_APPWIDGET_UPDATE, null, context, NoteWidget::class.java)
+            .putExtra(EXTRA_APPWIDGET_IDS, all(context))
 
         /**
          * Aktualizovať všetky widgety, ktoré sú k dispozícii
          *
          * @param context nepovinný údaj
          */
-        fun update(context: Context = App.ctx) = context.sendBroadcast(
-            Intent(App.ctx, NoteWidget::class.java)
-                .setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
-                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, all(context))
-        )
+        fun update(context: Context) = context.sendBroadcast(makeIntent(context))
 
-        private fun scheduledUpdate(context: Context = App.ctx): PendingIntent {
-            val intent = Intent(App.ctx, NoteWidget::class.java)
-                .setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
-                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, all(context))
-            return PendingIntent.getBroadcast(context, widgetUpdateRequest, intent, 0)
-        }
-
-        /**
-         * Nastavenie času nasledujúcej aktualizácie widgetov. Buď je to nasledujúca polnoc
-         * alebo počiatočný termín úlohy ktorej čas práve vypršal
-         *
-         * @param context nepovinný údaj
-         */
-        fun setNextUpdateTime(context: Context = App.ctx) {
-            val pendingIntent = scheduledUpdate(context)
-            val alarm = App.ctx.getSystemService(ALARM_SERVICE) as AlarmManager
-            val nextTime = App.data.scheduleNextWidgetUpdate()
-            alarm.setExact(RTC_WAKEUP, nextTime, pendingIntent)
-        }
-
-        private fun disableNextUpdateTime(context: Context = App.ctx) =
-            (context.getSystemService(ALARM_SERVICE) as AlarmManager).cancel(scheduledUpdate(context))
+        private fun updatePI(context: Context): PendingIntent =
+            getBroadcast(context, widgetUpdateRequest, makeIntent(context), 0)
 
         /**
          * Aktualizuje sa konkrétny widget
@@ -77,44 +63,45 @@ class NoteWidget : AppWidgetProvider() {
          * @param id ID widgetu, ktorý sa práve upravuje
          */
         fun updateAppWidget(context: Context, manager: AppWidgetManager, id: Int) {
-            val cat = Prefs.widgets.getNoteWidgetCategory(id)
+            val cat = NoteCategory[Widgets.getNoteWidgetCategory(id)]
             val catId = if (cat is Subject) cat.id else -(cat as TimeCategory).ordinal.toLong()
 
             val adapterIntent = Intent(context, NoteWidgetService::class.java)
-                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
+                .putExtra(EXTRA_APPWIDGET_ID, id)
                 .putExtra(TARGET_CATEGORY, catId)
                 .also { it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME)) }
 
-            val deleteIntent = PendingIntent.getBroadcast(
-                context, 0,
-                Intent(context, NoteWidget::class.java).setAction(ACTION_REMOVAL), 0
-            )
+            val itemAction = getBroadcast(context, 1,
+                Intent(ITEM_ACTION, Uri.parse("note_widget://$id"), context, NoteWidget::class.java)
+                    .putExtra(EXTRA_APPWIDGET_ID, id), 0)
+            val openPIntent = NOTES.prepare(context, 0, true) {
+                putLong(EXTRA_NOTE_CATEGORY, catId)
+            }
 
-            val openAppIntent = PendingIntent.getActivity(
-                context,
-                0,
-                Redirection.NOTES.makeIntent(context)
-                    .putExtra(Redirection.EXTRA_NOTE_CATEGORY, catId),
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
 
             val views = RemoteViews(context.packageName, R.layout.note_widget)
-            views.setTextViewText(
-                R.id.note_widget_title,
-                if (cat is Subject) cat.name else cat.toString()
-            )
-            views.setOnClickPendingIntent(R.id.note_widget_title, openAppIntent)
+            views.setTextViewText(R.id.note_widget_title, when (cat) {
+                is Subject -> cat.name
+                is TimeCategory -> context.getString(cat.res)
+                else -> ""
+            })
+            views.setOnClickPendingIntent(R.id.note_widget_title, openPIntent)
             views.setRemoteAdapter(R.id.widget_note_list, adapterIntent)
             views.setEmptyView(R.id.widget_note_list, R.id.widget_empty_msg)
-            views.setPendingIntentTemplate(R.id.widget_note_list, deleteIntent)
+            views.setPendingIntentTemplate(R.id.widget_note_list, itemAction)
             manager.updateAppWidget(id, views)
             manager.notifyAppWidgetViewDataChanged(id, R.id.widget_note_list)
         }
     }
 
+    /**
+     * Aktualizujú sa všetky widgety so zoznamami úloh a naplánuje sa ďaľšia aktualizácia
+     */
     override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
         for (id in ids) updateAppWidget(context, manager, id)
-        setNextUpdateTime(context)
+        val alarm = context.getSystemService(ALARM_SERVICE) as AlarmManager
+        val nextTime = SQLite.notes(TODAY).firstOrNull()?.deadline ?: Calendar.getInstance().nextMidnight
+        alarm.setExact(RTC_WAKEUP, nextTime, updatePI(context))
     }
 
     /**
@@ -123,23 +110,34 @@ class NoteWidget : AppWidgetProvider() {
      * @param appWidgetIds
      */
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-        for (appWidgetId in appWidgetIds)
-            Prefs.widgets.setNoteWidgetCategory(appWidgetId, null)
+        for (appWidgetId in appWidgetIds) Widgets.setNoteWidgetCategory(appWidgetId, null)
     }
 
     /**
      * Odstránením posledného widgetu odvolám naplánovanú aktualizáciu widgetov
      * @param context
      */
-    override fun onDisabled(context: Context?) {
+    override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        disableNextUpdateTime(context ?: App.ctx)
+        context.getSystemService(AlarmManager::class.java).cancel(updatePI(context))
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        when (intent?.action) {
-            ACTION_REMOVAL -> App.data.removeNote(intent.getLongExtra(REMOVE_NOTE, -1L))
-            else -> super.onReceive(context, intent)
+        context ?: return super.onReceive(context, intent)
+        if (intent?.action == ITEM_ACTION) {
+            val widget = intent.getIntExtra(EXTRA_APPWIDGET_ID, 0)
+            val itemAction = intent.getIntExtra(NoteWidgetService.NOTE_ACTION, 0)
+            val item = intent.getLongExtra(NOTE, -1L)
+            when (itemAction) {
+                NoteWidgetService.REMOVAL -> unsetNote(context, SQLite.note(item) ?: return)
+                NoteWidgetService.REDIRECTION -> NOTES.redirect(context, true) {
+                    putLong(EXTRA_NOTE_CATEGORY, Widgets.getNoteWidgetCategory(widget))
+                    putLong(EXTRA_NOTE_ID, item)
+                    App.log(get(EXTRA_NOTE_CATEGORY))
+                    App.log(get(EXTRA_NOTE_ID))
+                }
+            }
         }
+        else super.onReceive(context, intent)
     }
 }

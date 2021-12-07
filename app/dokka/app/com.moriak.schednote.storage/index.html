@@ -1,0 +1,101 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.moriak.schednote.storage - app</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">app</a>&nbsp;/&nbsp;<a href="./index.html">com.moriak.schednote.storage</a><br/>
+<br/>
+<h2>Package com.moriak.schednote.storage</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-lesson-data/index.html">LessonData</a></h4>
+</td>
+<td>
+<p>Tabuľka vyučovacích hodín</p>
+<code><span class="keyword">object </span><span class="identifier">LessonData</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-table/index.html"><span class="identifier">Table</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-lesson-types/index.html">LessonTypes</a></h4>
+</td>
+<td>
+<p>Tabuľka typov hodín</p>
+<code><span class="keyword">object </span><span class="identifier">LessonTypes</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-table/index.html"><span class="identifier">Table</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-notes/index.html">Notes</a></h4>
+</td>
+<td>
+<p>Tabuľka úloh</p>
+<code><span class="keyword">object </span><span class="identifier">Notes</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-table/index.html"><span class="identifier">Table</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-prefs/index.html">Prefs</a></h4>
+</td>
+<td>
+<p>Objekt <a href="-prefs/index.html">Prefs</a> zoskupuje objekty, ktoré pristupujú k pamäti <a href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>.
+Pri zápise a získavaní údajov sa nevyžaduje použitie kľúča a možno zapisovať
+a získavať objekty viacerých typov.</p>
+<code><span class="keyword">object </span><span class="identifier">Prefs</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-schedule/index.html">Schedule</a></h4>
+</td>
+<td>
+<p>Tabuľka vyučovacích hodín</p>
+<code><span class="keyword">object </span><span class="identifier">Schedule</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-table/index.html"><span class="identifier">Table</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-schedule-range/index.html">ScheduleRange</a></h4>
+</td>
+<td>
+<p>Tabuľka časového harmonogramu hodín</p>
+<code><span class="keyword">object </span><span class="identifier">ScheduleRange</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-table/index.html"><span class="identifier">Table</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-s-q-lite/index.html">SQLite</a></h4>
+</td>
+<td>
+<p>Trieda spravuje dáta z SQLite databázy.</p>
+<code><span class="keyword">object </span><span class="identifier">SQLite</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-s-q-lite-control/index.html"><span class="identifier">SQLiteControl</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-s-q-lite-control/index.html">SQLiteControl</a></h4>
+</td>
+<td>
+<p>Trieda slúži na čítanie a zápis dát. Ak abstraktná trieda poskytuje funkcie, ktoré zjednodušia zápis
+príkazov v potomkovi ktorý je určený len na výber a zápis konkrétnych dát z konkrétnych tabuliek</p>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">SQLiteControl</span></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-subjects/index.html">Subjects</a></h4>
+</td>
+<td>
+<p>Tabuľka predmetov</p>
+<code><span class="keyword">object </span><span class="identifier">Subjects</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-table/index.html"><span class="identifier">Table</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="-table/index.html">Table</a></h4>
+</td>
+<td>
+<p>Trieda tohto typu je reprezentantom tabuľky v SQLite. má za úlohu poznať názvy stĺpcov,
+vytvoriť danú tabuľku, pokiaľ neexistuje, príp. k nej pridať triggre.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">Table</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

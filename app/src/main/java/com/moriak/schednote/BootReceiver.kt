@@ -4,16 +4,17 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.moriak.schednote.settings.Prefs
+import com.moriak.schednote.notifications.AlarmClockSetter
+import com.moriak.schednote.notifications.ReminderSetter
 
 /**
  * Po reštarte zariadenia sú všetky upozornenia, ktoré táto aplikácia mala nastavené, zrušené.
- * Táto trieda je ich po reštarte obnoví, pokiaľ majú byť zapnuté
+ * Táto trieda ich po reštarte všetky obnoví
  */
 class BootReceiver : BroadcastReceiver() {
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
-        if (Prefs.notifications.alarmsEnabled) Prefs.notifications.reEnableAlarm()
-        App.data.enableNoteNotifications(Prefs.notifications.reminderEnabled)
+            AlarmClockSetter.setAlarms(context)
+            ReminderSetter.enableReminders(context, true)
     }
 }

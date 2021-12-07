@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -9,16 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:maxWidth="120dp"
         android:text="@string/order_of_date_month_year"
+        android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
+    <com.moriak.schednote.views.OptionStepper
         android:id="@+id/date_order_select"
-        style="@style/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="0dp"
@@ -31,16 +31,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:maxWidth="120dp"
         android:text="@string/separator"
+        android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_order_select" />
 
-    <Spinner
+    <com.moriak.schednote.views.OptionStepper
         android:id="@+id/date_separator_select"
-        style="@style/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,16 +51,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:maxWidth="120dp"
         android:text="@string/time_format"
+        android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_separator_select" />
 
-    <Spinner
+    <com.moriak.schednote.views.OptionStepper
         android:id="@+id/time_format_select"
-        style="@style/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

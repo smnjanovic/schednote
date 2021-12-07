@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AlarmTone - app</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote</a>&nbsp;/&nbsp;<a href="./index.html">AlarmTone</a><br/>
+<br/>
+<h1>AlarmTone</h1>
+<code><span class="keyword">class </span><span class="identifier">AlarmTone</span></code>
+<p>Inštancia tejto triedy uchováva ID, názov a URI, k zvukovému súboru.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="id.html">id</a></h4>
+</td>
+<td>
+<p>ID skladby uloženej v externej pamäti</p>
+<code><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="label.html">label</a></h4>
+</td>
+<td>
+<p>názov skladby</p>
+<code><span class="keyword">val </span><span class="identifier">label</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="uri.html">uri</a></h4>
+</td>
+<td>
+<p>Prístupové URI k skladbe</p>
+<code><span class="keyword">val </span><span class="identifier">uri</span><span class="symbol">: </span><a href="https://developer.android.com/reference/android/net/Uri.html"><span class="identifier">Uri</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="seek.html">seek</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">seek</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.AlarmTone.Companion$seek(android.net.Uri)/pUri">pUri</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/net/Uri.html"><span class="identifier">Uri</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">AlarmTone</span></a></code>
+<p>Načíta zoznam skladieb, ktoré možno nastaviť ako tón budenia</p>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">AlarmTone</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <span class="identifier">seek</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.AlarmTone.Companion$seek(com.moriak.schednote.AlarmTone.Companion.seek.T)/list">list</span><span class="symbol">:</span>&nbsp;<span class="identifier">T</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

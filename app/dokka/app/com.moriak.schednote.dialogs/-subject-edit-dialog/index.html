@@ -1,119 +1,77 @@
 <HTML>
 <HEAD>
-    <meta charset="UTF-8">
-    <title>SubjectEditDialog - app</title>
-    <link href="../../../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>SubjectEditDialog - app</title>
+<link rel="stylesheet" href="../../../style.css">
 </HEAD>
 <BODY>
-<a href="../../index.html">app</a>&nbsp;/&nbsp;<a
-        href="../index.html">com.moriak.schednote.dialogs</a>&nbsp;/&nbsp;<a href="./index.html">SubjectEditDialog</a><br/>
+<a href="../../index.html">app</a>&nbsp;/&nbsp;<a href="../index.html">com.moriak.schednote.dialogs</a>&nbsp;/&nbsp;<a href="./index.html">SubjectEditDialog</a><br/>
 <br/>
 <h1>SubjectEditDialog</h1>
-<code><span class="keyword">class </span><span
-        class="identifier">SubjectEditDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span
-        class="identifier">DialogFragment</span></code>
-<p>Dialóg je špecialne určený na úpravu a tvorbu Predmetov a následne aktualizovanie adaptéra, z
-    ktorého je predmet upravovaný.</p>
+<code><span class="keyword">class </span><span class="identifier">SubjectEditDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DialogFragment</span></code>
+<p>V tomto dialógovom fragmente sa menia údaje o predmete (skratka a názov).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-result-handler/index.html">ResultHandler</a></h4>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">ResultHandler</span></code></td>
+</tr>
+</tbody>
+</table>
 <h3>Constructors</h3>
 <table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="-init-.html">&lt;init&gt;</a></h4>
-        </td>
-        <td>
-            <p>Dialóg je špecialne určený na úpravu a tvorbu Predmetov a následne aktualizovanie
-                adaptéra, z ktorého je predmet upravovaný.</p>
-            <code><span class="identifier">SubjectEditDialog</span><span
-                    class="symbol">(</span><span class="symbol">)</span></code></td>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<td>
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>V tomto dialógovom fragmente sa menia údaje o predmete (skratka a názov).</p>
+<code><span class="identifier">SubjectEditDialog</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.dialogs.SubjectEditDialog$<init>(com.moriak.schednote.data.Subject, com.moriak.schednote.dialogs.SubjectEditDialog.ResultHandler)/subject">subject</span><span class="symbol">:</span>&nbsp;<a href="../../com.moriak.schednote.data/-subject/index.html"><span class="identifier">Subject</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.moriak.schednote.dialogs.SubjectEditDialog$<init>(com.moriak.schednote.data.Subject, com.moriak.schednote.dialogs.SubjectEditDialog.ResultHandler)/handler">handler</span><span class="symbol">:</span>&nbsp;<span class="identifier">ResultHandler</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="result-handler.html">resultHandler</a></h4>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">resultHandler</span><span class="symbol">: </span><span class="identifier">ResultHandler</span><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
 </table>
 <h3>Functions</h3>
 <table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="on-create-dialog.html">onCreateDialog</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">onCreateDialog</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.dialogs.SubjectEditDialog$onCreateDialog(android.os.Bundle)/saved">saved</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://developer.android.com/reference/android/os/Bundle.html"><span
-                    class="identifier">Bundle</span></a><span class="symbol">?</span><span
-                    class="symbol">)</span><span class="symbol">: </span><a
-                    href="https://developer.android.com/reference/android/app/AlertDialog.html"><span
-                    class="identifier">AlertDialog</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="on-save-instance-state.html">onSaveInstanceState</a></h4>
-        </td>
-        <td>
-            <code><span class="keyword">fun </span><span
-                    class="identifier">onSaveInstanceState</span><span class="symbol">(</span><span
-                    class="identifier"
-                    id="com.moriak.schednote.dialogs.SubjectEditDialog$onSaveInstanceState(android.os.Bundle)/outState">outState</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="https://developer.android.com/reference/android/os/Bundle.html"><span
-                    class="identifier">Bundle</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    <tr>
-        <td>
-            <h4><a href="set-adapter.html">setAdapter</a></h4>
-        </td>
-        <td>
-            <p>Nastavenie adaptéra, v ktorom sa zmena z dialógu aplikuje</p>
-            <code><span class="keyword">fun </span><span class="identifier">setAdapter</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.dialogs.SubjectEditDialog$setAdapter(com.moriak.schednote.adapters.SubjectAdapter)/pAdapter">pAdapter</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="../../com.moriak.schednote.adapters/-subject-adapter/index.html"><span
-                    class="identifier">SubjectAdapter</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a
-                    href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span
-                    class="identifier">Unit</span></a></code></td>
-    </tr>
-    </tbody>
-</table>
-<h3>Companion Object Functions</h3>
-<table>
-    <tbody>
-    <tr>
-        <td>
-            <h4><a href="new-instance.html">newInstance</a></h4>
-        </td>
-        <td>
-            <p>Vytvorenie dialógu, v ktorom dochádza k manipulácii s existujúcim predmetom alebo
-                tvorba nového predmetu.</p>
-            <code><span class="keyword">fun </span><span class="identifier">newInstance</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.dialogs.SubjectEditDialog.Companion$newInstance(com.moriak.schednote.database.data.Subject, com.moriak.schednote.adapters.SubjectAdapter)/sub">sub</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="../../com.moriak.schednote.database.data/-subject/index.html"><span
-                    class="identifier">Subject</span></a><span class="symbol">, </span><span
-                    class="identifier"
-                    id="com.moriak.schednote.dialogs.SubjectEditDialog.Companion$newInstance(com.moriak.schednote.database.data.Subject, com.moriak.schednote.adapters.SubjectAdapter)/adapter">adapter</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="../../com.moriak.schednote.adapters/-subject-adapter/index.html"><span
-                    class="identifier">SubjectAdapter</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a href="./index.html"><span class="identifier">SubjectEditDialog</span></a></code><br/>
-            <code><span class="keyword">fun </span><span class="identifier">newInstance</span><span
-                    class="symbol">(</span><span class="identifier"
-                                                 id="com.moriak.schednote.dialogs.SubjectEditDialog.Companion$newInstance(com.moriak.schednote.adapters.SubjectAdapter)/adapter">adapter</span><span
-                    class="symbol">:</span>&nbsp;<a
-                    href="../../com.moriak.schednote.adapters/-subject-adapter/index.html"><span
-                    class="identifier">SubjectAdapter</span></a><span class="symbol">)</span><span
-                    class="symbol">: </span><a href="./index.html"><span class="identifier">SubjectEditDialog</span></a></code>
-        </td>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<td>
+<h4><a href="on-create-dialog.html">onCreateDialog</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onCreateDialog</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.dialogs.SubjectEditDialog$onCreateDialog(android.os.Bundle)/saved">saved</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://developer.android.com/reference/android/app/AlertDialog.html"><span class="identifier">AlertDialog</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-save-instance-state.html">onSaveInstanceState</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onSaveInstanceState</span><span class="symbol">(</span><span class="identifier" id="com.moriak.schednote.dialogs.SubjectEditDialog$onSaveInstanceState(android.os.Bundle)/outState">outState</span><span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/os/Bundle.html"><span class="identifier">Bundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="on-start.html">onStart</a></h4>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onStart</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
 </table>
 </BODY>
 </HTML>

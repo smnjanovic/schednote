@@ -7,86 +7,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.DialogFragment
-import com.moriak.schednote.App
+import com.moriak.schednote.storage.Prefs.States.lastSetBreakDuration
+import com.moriak.schednote.storage.Prefs.States.lastSetLessonDuration
 import com.moriak.schednote.R
-import com.moriak.schednote.database.data.LessonTime
-import com.moriak.schednote.settings.Prefs
+import com.moriak.schednote.data.LessonTime
 import kotlinx.android.synthetic.main.lesson_duration_setter.view.*
 
 /**
- * Dialog nastavenia trvania hodiny a prestávky po nej.
+ * Dialógové okna nastavenia trvania hodiny a nasledujúcej prestávky.
  */
-class LessonDurationSetter : DialogFragment() {
-    companion object {
-        private const val ORDER = "ORDER"
-        private const val L_DUR = "L_DUR"
-        private const val B_DUR = "B_DUR"
-    }
+class LessonDurationSetter : DialogFragment {
+    private companion object { private const val STORAGE = "STORAGE" }
 
-    private lateinit var root: View
+    private var order: Int
+    private var lesDur: Int
+    private var breakDur: Int
+
     private var onConfirm: (Int, Int, Int) -> Unit = fun(_, _, _) = Unit
-    private val bundle = Bundle()
+    private lateinit var root: View
 
-    /**
-     * Nastavenie vybraných hodnôt
-     * @param order poradie hodiny [LessonTime]
-     * @param lDur trvanie hodiny [LessonTime]
-     * @param bDur trvanie prestávky po nej
-     */
-    fun setValues(order: Int, lDur: Int, bDur: Int) {
-        this.order = order
-        lesDur = lDur
-        breakDur = bDur
-    }
-
-    /**
-     * Nastavenie čo sa má stať po potvrdení vybraných hodnôt
-     * @param fn metóda, ktorá sa vykoná po potvrdení hodnôt
-     */
-    fun setOnConfirm(fn: (Int, Int, Int) -> Unit) {
-        onConfirm = fn
-    }
-
-    /**
-     * Nastavenie predvolených hodnôt. Dialóg vkladá ďaľšiu hodinu [LessonTime] do rozvrhu
-     */
-    fun setDefault() {
+    constructor() {
         order = -1
-        lesDur = Prefs.states.lastSetLessonDuration
-        breakDur = Prefs.states.lastSetBreakDuration
+        lesDur = lastSetLessonDuration
+        breakDur = lastSetBreakDuration
     }
 
-    private var order
-        get() = bundle.getInt(ORDER, -1)
-        set(value) = bundle.putInt(ORDER, value)
-    private var lesDur
-        get() = bundle.getInt(L_DUR, Prefs.states.lastSetLessonDuration)
-        set(value) = bundle.putInt(L_DUR, value)
-    private var breakDur
-        get() = bundle.getInt(B_DUR, Prefs.states.lastSetBreakDuration)
-        set(value) = bundle.putInt(B_DUR, value)
-
-    @SuppressLint("InflateParams")
-    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
-        activity ?: throw (RuntimeException("Activity was destroyed!"))
-        savedInstanceState?.let { bundle.putAll(it) }
-        return AlertDialog.Builder(activity)
-            .setView(buildView())
-            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm(order, lesDur, breakDur) }
-            .setNegativeButton(R.string.abort, fun(_: DialogInterface, _: Int) = Unit)
-            .create()
+    constructor(lt: LessonTime?) {
+        order = lt?.order ?: -1
+        lesDur = lt?.lessonDuration ?: lastSetLessonDuration
+        breakDur = lt?.breakDuration ?: lastSetBreakDuration
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putAll(bundle)
-    }
-
-    @SuppressLint("InflateParams")
     private fun buildView(): View {
+        @SuppressLint("InflateParams")
         root = LayoutInflater.from(context).inflate(R.layout.lesson_duration_setter, null, false)
-        root.label.text =
-            if (order == -1) App.str(R.string.new_lesson) else App.str(R.string.lesson) + " $order"
+        val labelRes = if (order == -1) R.string.new_lesson else R.string.lesson
+        @SuppressLint("SetTextI18n")
+        root.label.text = "${root.context.getString(labelRes)}${if (order == -1) "" else " $order"}"
 
         root.lesson_dur.minValue = 1
         root.lesson_dur.maxValue = 120
@@ -98,5 +55,29 @@ class LessonDurationSetter : DialogFragment() {
         root.break_dur.value = breakDur
         root.break_dur.setOnValueChangedListener { _, _, newVal -> breakDur = newVal }
         return root
+    }
+
+    /**
+     * Nastavenie čo sa má stať po potvrdení vybraných hodnôt
+     * @param fn metóda, ktorá sa vykoná po potvrdení hodnôt
+     */
+    fun setOnConfirm(fn: (Int, Int, Int) -> Unit) { onConfirm = fn }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
+        savedInstanceState?.getIntArray(STORAGE)?.let {
+            order = it[0]
+            lesDur = it[1]
+            breakDur = it[2]
+        }
+        return AlertDialog.Builder(activity)
+            .setView(buildView())
+            .setPositiveButton(R.string.confirm) { _, _ -> onConfirm(order, lesDur, breakDur) }
+            .setNegativeButton(R.string.abort, fun(_: DialogInterface, _: Int) = Unit)
+            .create()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putIntArray(STORAGE, intArrayOf(order, lesDur, breakDur))
     }
 }

@@ -1,560 +1,455 @@
 <HTML>
 <HEAD>
-    <meta charset="UTF-8">
-    <title>alltypes - app</title>
-    <link href="../../style.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>alltypes - app</title>
+<link rel="stylesheet" href="../../style.css">
 </HEAD>
 <BODY>
 <h3>All Types</h3>
 <table>
-    <tbody>
-    <tr>
-        <h5><a href="../com.moriak.schednote.adapters/-alarm-adapter/index.html">com.moriak.schednote.adapters.AlarmAdapter</a>
-        </h5>
-        <p>Adapter zobrazuje budíky pre daný pracovný týždeň či už v párnom, nepárnom alebo v každom
-            týždni
-            Na každý pracovný deň možno nastaviť iba 1 budík.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.menu/-alarm-category/index.html">com.moriak.schednote.menu.AlarmCategory</a>
-        </h5>
-        <p>pomocou <a
-                href="../com.moriak.schednote.menu/-alarm-category/index.html">AlarmCategory</a> je
-            možné vybrať si, či nastavovať notifikácie k úloham alebo budíky k rozvrhu</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.notifications/-alarm-clock-service/index.html">com.moriak.schednote.notifications.AlarmClockService</a>
-        </h5>
-        <p>Služba funguje ako budík, ktorý možno nastaviť len cez tlačidlá notifikácie. Trvá
-            maximálne
-            minútu, potom bude automaticky odložený o určitý čas na neskôr.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_alarm/-alarm-clock-setter/index.html">com.moriak.schednote.fragments.of_alarm.AlarmClockSetter</a>
-        </h5>
-        <p>V tomto fragmente sa nastavujú budíky. V adaptéri sa zobrazia budíky pre nastavený
-            pracovný deň
-            a ak je povolený 2-týždenný rozvrh dá sa prepínať medzi budíkmi párneho a nepárneho
-            týždňa</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_alarm/-alarm-display.html">com.moriak.schednote.fragments.of_alarm.AlarmDisplay</a>
-        </h5>
-        <p>Interface slúži len na odlíšenie sa od ostatných tried <a
-                href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html">SubActivity</a>,
-            ktoré nemajú s upozorneniami nič spoločné</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_main/-alarms-fragment/index.html">com.moriak.schednote.fragments.of_main.AlarmsFragment</a>
-        </h5>
-        <p>V tento fragment má vnorené ďalšie fragmenty súvisiace s upozorneniami (Budíky a
-            notifikácie)</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-alarm-tone/index.html">com.moriak.schednote.settings.AlarmTone</a>
-        </h5>
-        <p>Trieda uchováva a poskytuje informácie o skladbe uloženej v zariadení.
-            Existencia tohoto súboru sa overuje pri vzniku inštancie ale už nie počas jej
-            existencie</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.activities/-alarm-tone-activity/index.html">com.moriak.schednote.activities.AlarmToneActivity</a>
-        </h5>
-        <p>Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
-            Bez tohoto povolenia bude obmedzený výber tónov budenia.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote/-app/index.html">com.moriak.schednote.App</a></h5>
-        <p>Trieda aplikácie, má za úlohy zjednotušiť prístup k resourcom a kontextu odkiaľkoľvek a
-            poskytuje často žiadané hodnoty, aby sa zabránilo viacnásobnému písaniu rovnakého
-            kódu</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote/-boot-receiver/index.html">com.moriak.schednote.BootReceiver</a>
-        </h5>
-        <p>Po reštarte zariadenia sú všetky upozornenia, ktoré táto aplikácia mala nastavené,
-            zrušené.
-            Táto trieda je ich po reštarte obnoví, pokiaľ majú byť zapnuté</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.notifications/-clock-receiver/index.html">com.moriak.schednote.notifications.ClockReceiver</a>
-        </h5>
-        <p>Trieda slúži na nastavovanie budíkov a správanie sa notifikácie na popredí</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-color-group/index.html">com.moriak.schednote.settings.ColorGroup</a>
-        </h5>
-        <p>Pri nastavovaní dizajnu rozvrhu okrem buniek rôznych typov hodín možno upravovať farby aj
-            iných prvkov.
-            Inštancie tejto triedy budú využívané na prístup k zapamätaným farbám, ktoré nesúvisia s
-            typom hodín.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-colors/index.html">com.moriak.schednote.database.tables.Colors</a>
-        </h5>
-        <p>Tabuľka farieb k jednotlivým typom hodín</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.other/-command/index.html">com.moriak.schednote.other.Command</a>
-        </h5>
-        <p><a href="../com.moriak.schednote.other/-command/index.html">Command</a> predstavuje
-            množinu príkazov, ktoré možno vysloviť</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database/-database/index.html">com.moriak.schednote.database.Database</a>
-        </h5>
-        <p>Trieda manipuluje s databazou SQLite. (prijem, tvorba, aktualizacia a odstranenie
-            dat)</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-date-dialog/index.html">com.moriak.schednote.dialogs.DateDialog</a>
-        </h5>
-        <p>Trieda zobrazuje dialog na nastavenie dátumu. Pred zobrazením do nej možno vložiť
-            predpripravený dátum na úpravu</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-date-order/index.html">com.moriak.schednote.settings.DateOrder</a>
-        </h5>
-        <p>Poradie dňa mesiaca a roka v textovej reprezentácii dátumu</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-date-separator/index.html">com.moriak.schednote.settings.DateSeparator</a>
-        </h5>
-        <p>Oddeľovač dňa, mesiaca a roka v dátume v textovom formáte</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-date-time-dialog/index.html">com.moriak.schednote.dialogs.DateTimeDialog</a>
-        </h5>
-        <p>Dialóg nastavenia dátumu a času úlohy v adapteri.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-date-time-format-dialog/index.html">com.moriak.schednote.dialogs.DateTimeFormatDialog</a>
-        </h5>
-        <p>Dialóg nastavenia formátu dátumu a času</p>
-    </tr>
-    <tr>
-        <h5>
-            <a href="../com.moriak.schednote.other/-day/index.html">com.moriak.schednote.other.Day</a>
-        </h5>
-        <p>rad dní v týždni</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database/-d-b-control/index.html">com.moriak.schednote.database.DBControl</a>
-        </h5>
-        <p>Trieda slúži na čítanie a zápis dát. Ak abstraktná trieda poskytuje funkcie, ktoré
-            zjednodušia zápis
-            príkazov v potomkovi ktorý je určený len na výber a zápis konkrétnych dát z konkrétnych
-            tabuliek</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database/-d-b-help/index.html">com.moriak.schednote.database.DBHelp</a>
-        </h5>
-        <p>Trieda slúži na tvorbu a pripojenie sa k offline databáze</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_schedule/-design-editor/index.html">com.moriak.schednote.fragments.of_schedule.DesignEditor</a>
-        </h5>
-        <p>V tomto fragmente sa upravuje dizajn tabuľky rozvrhu a v ponuke je aj možnosť nastavenia
-            rozvrhu
-            s obrázkom ako pozadie. Ak pomery strán obrázku a zariadenia nie sú rovnaké, tak sú 3
-            spôsoby
-            zobrazenia obrázku na pozadí rozvrhu. Obrázok aj tabuľku možno posúvať a výsledný
-            obrázok sa dá nastaviť
-            ako pozadie</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-free/index.html">com.moriak.schednote.database.data.Free</a>
-        </h5>
-        <p>Udalosť rozvrhu <a
-                href="../com.moriak.schednote.database.data/-schedule-event/index.html">ScheduleEvent</a>
-            - čas, kedy má užívateľ voľno
-            Trieda má využitie pri vykreslení tabuľky</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-info-fragment/index.html">com.moriak.schednote.dialogs.InfoFragment</a>
-        </h5>
-        <p>Dialóg slúži na informovanie alebo poučenie užívateľa</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.design/-item-top-spacing/index.html">com.moriak.schednote.design.ItemTopSpacing</a>
-        </h5>
-        <p>Nastavenie veľkosti medzier medzi položkami v zozname</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-lesson/index.html">com.moriak.schednote.database.data.Lesson</a>
-        </h5>
-        <p>Hodina - udalosť rozvrhu <a
-                href="../com.moriak.schednote.database.data/-schedule-event/index.html">ScheduleEvent</a>,
-            pri ktorej sa zíde skupina ľudí v určitej miestnosti <a
-                    href="../com.moriak.schednote.database.data/-lesson/room.html">room</a>,
-            jej priebeh má nejakú formu <a
-                    href="../com.moriak.schednote.database.data/-lesson/type.html">type</a> a je
-            tematicky zameraná na jeden predmet <a
-                    href="../com.moriak.schednote.database.data/-lesson/sub.html">sub</a>.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-lesson-data/index.html">com.moriak.schednote.database.tables.LessonData</a>
-        </h5>
-        <p>Tabuľka vyučovacích hodín</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-lesson-duration-setter/index.html">com.moriak.schednote.dialogs.LessonDurationSetter</a>
-        </h5>
-        <p>Dialog nastavenia trvania hodiny a prestávky po nej.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-lesson-start-advance/index.html">com.moriak.schednote.dialogs.LessonStartAdvance</a>
-        </h5>
-        <p>Nastavenie časového predstihu budenia pred začiatkom vyučovania hodiny</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-lesson-time/index.html">com.moriak.schednote.database.data.LessonTime</a>
-        </h5>
-        <p>Trieda uchováva informácie o najmenšej jednotke rozvrhu: vyučovacej hodiny</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.adapters/-lesson-time-adapter/index.html">com.moriak.schednote.adapters.LessonTimeAdapter</a>
-        </h5>
-        <p>Adapter zobrazuje určitý počet hodín z ktorých je rozvrh zložený a
-            udáva od kedy do kedy prebieha daná hodina
-            Hodinu možno pridávať len na koniec, a to uvedením trvania samotnej hodiny a
-            trvania prestávky po nej</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-lesson-time-format/index.html">com.moriak.schednote.settings.LessonTimeFormat</a>
-        </h5>
-        <p>Trieda určuje ako sa budú jednotlivé hodiný prezentované.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_schedule/-lesson-times-list/index.html">com.moriak.schednote.fragments.of_schedule.LessonTimesList</a>
-        </h5>
-        <p>V tomto fragmente sa nastavujú otváracie hodiny.
-            Nastaví sa tu, od kedy rozvrh začína a pridávajú sa hodiny ako časové jednotky rozvrhu
-            <a href="../com.moriak.schednote.database.data/-lesson-time/index.html">LessonTime</a>.
-            Upravovanej hodina sa nastaví koľko trvá, a aká dlhá prestávka má byť po nej</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.design/-lesson-tools/index.html">com.moriak.schednote.design.LessonTools</a>
-        </h5>
-        <p>Trieda ponúka vykresľuje výber vlastností pre novo vznikajúce alebo upravované triedy.
-            Pokiaľ s rozvrhom ešte nie je možné pracovať z dôvodu chýbajúcich údajov, vykreslí sa
-            okno, v ktorom je užívateľ upozornený na to, čo mu chýba</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-lesson-type/index.html">com.moriak.schednote.database.data.LessonType</a>
-        </h5>
-        <p>Trieda uchováva dáta o type hodiny</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-lesson-types/index.html">com.moriak.schednote.database.tables.LessonTypes</a>
-        </h5>
-        <p>Tabuľka typov hodín</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.adapters/-lesson-types-adapter/index.html">com.moriak.schednote.adapters.LessonTypesAdapter</a>
-        </h5>
-        <p>Adapter umožňuje spravovať zoznam typov hodín.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_schedule/-lesson-types-list/index.html">com.moriak.schednote.fragments.of_schedule.LessonTypesList</a>
-        </h5>
-        <p>Fragment zobrazuje upraviteľný zoznam typov hodín, ktoré sú potrebné pre prácu s
-            rozvrhom</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.activities/-main-activity/index.html">com.moriak.schednote.activities.MainActivity</a>
-        </h5>
-        <p>Hlavná aktivita pozostáva z len menu, pomocou ktorého sa striedajú fragmenty, ktoré
-            načítavajú obsah
-            Fragmenty sú od seba nezávislé a môžu mať ďalšie vnorené fragmenty.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.events/-movement/index.html">com.moriak.schednote.events.Movement</a>
-        </h5>
-        <p>Trieda umoznuje presuvanie 2D objektov po obrazovke, kontroluje dodržanie hraníc
-            posunu po vertikálnej a horizontálnej osi</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-note/index.html">com.moriak.schednote.database.data.Note</a>
-        </h5>
-        <p>Trieda na uchovávanie dát o úlohach</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.adapters/-note-adapter/index.html">com.moriak.schednote.adapters.NoteAdapter</a>
-        </h5>
-        <p>V adaptéri zobrazujem mením a pridávam poznámky</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-note-category.html">com.moriak.schednote.database.data.NoteCategory</a>
-        </h5>
-        <p>Interface popisuje kategóriu podľa ktorej možno zobrazovať úlohy</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.notifications/-note-reminder/index.html">com.moriak.schednote.notifications.NoteReminder</a>
-        </h5>
-        <p>K úloham pripnutých k predmetom sa vzťahuju notifikácie na bežiace na pozadí</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-notes/index.html">com.moriak.schednote.database.tables.Notes</a>
-        </h5>
-        <p>Tabuľka úloh</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_main/-notes-fragment/index.html">com.moriak.schednote.fragments.of_main.NotesFragment</a>
-        </h5>
-        <p>Fragment načítava zoznam úloh podľa vybranej kategórie. Úlohy
-            je tu možné uložiť do kalendára a spätne ich z neho aj načítať</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.widgets/-note-widget/index.html">com.moriak.schednote.widgets.NoteWidget</a>
-        </h5>
-        <p>Trieda spravuje widget so zoznamom úloh</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.activities/-note-widget-config-activity/index.html">com.moriak.schednote.activities.NoteWidgetConfigActivity</a>
-        </h5>
-        <p>Aktivita slúži na nastavenie konfigurácie widgetu <a
-                href="../com.moriak.schednote.widgets/-note-widget/index.html">NoteWidget</a>.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.adapters/-note-widget-service/index.html">com.moriak.schednote.adapters.NoteWidgetService</a>
-        </h5>
-        <p>Trieda pristupuje k vzdialenemu Adapteru pod krycim nazvom RemoteViewsFactory</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.design/-palette/index.html">com.moriak.schednote.design.Palette</a>
-        </h5>
-        <p>Trieda slúži na dynamickú zmenu farieb a konverziu medzi farebnými modelmi</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.design/-palette-storage/index.html">com.moriak.schednote.design.PaletteStorage</a>
-        </h5>
-        <p>V tejto triede možno zjednodušene pristupovať k farbám alebo k zoznamu všetkých
-            farieb</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-prefs/index.html">com.moriak.schednote.settings.Prefs</a>
-        </h5>
-        <p>Objekt slúži na zjednodušenie zápisu a čítania dát zo súborov zdielaných preferencií <a
-                href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>.
-            Je tu niekoľko vnorených tried, pričom každá z nich reprezentuje jeden samostatný súbor
-            preferencií
-            s nejakými hodnotami. Vďaka getterom a setterom atribútov inštancií týchto tried si
-            nemusím pamätať
-            kľúč pod akým ukladám hodnoty a už nie som ani obmedzený na hodnoty primitívnych typov
-            alebo typu
-            String a StringSet.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.design/-recycler-view-empty-support/index.html">com.moriak.schednote.design.RecyclerViewEmptySupport</a>
-        </h5>
-        <p>Trieda rozširuje RecyclerView, ktorý narozdiel od ListView nedokáže nastaviť layout,
-            ktorý
-            by mohol byť zobrazený namiesto prázdneho zoznamu. Tu je tento problém vyriešený</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.other/-redirection/index.html">com.moriak.schednote.other.Redirection</a>
-        </h5>
-        <p><a href="../com.moriak.schednote.other/-redirection/index.html">Redirection</a> vytvára
-            intent použiteľný na presmerovávanie sa medzi aktivitami alebo prepínanie sa medzi
-            fragmentmi.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-regularity/index.html">com.moriak.schednote.settings.Regularity</a>
-        </h5>
-        <p>Táto trieda reprezentuje interval opakovania sa rozvrhu, ktorý môže byť týždenný alebo
-            2-týždenný.
-            Pri 2-týždennom rozvrhu sa určuje párnosť týždňa</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_alarm/-reminder-setter/index.html">com.moriak.schednote.fragments.of_alarm.ReminderSetter</a>
-        </h5>
-        <p>V tomto fragmente uživateľ nastavuje predstih upozornenia na úlohy, môže upozornenia
-            vypnúť aj zapnúť</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-schedule/index.html">com.moriak.schednote.database.tables.Schedule</a>
-        </h5>
-        <p>Tabuľka vyučovacích hodín</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.menu/-schedule-display/index.html">com.moriak.schednote.menu.ScheduleDisplay</a>
-        </h5>
-        <p>pomocou <a href="../com.moriak.schednote.menu/-schedule-display/index.html">ScheduleDisplay</a>
-            je možné vybrať si, či nastavovať notifikácie k úloham alebo budíky k rozvrhu</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_schedule/-schedule-editor/index.html">com.moriak.schednote.fragments.of_schedule.ScheduleEditor</a>
-        </h5>
-        <p>V tomto fragmente pridávam hodiny do rozvrhu, ktoré môže aj zmazať alebo upraviť.
-            Po každej zmene sa tabuľka s rozvrhom prekreslí</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-schedule-event/index.html">com.moriak.schednote.database.data.ScheduleEvent</a>
-        </h5>
-        <p>Rozvrhová udalosť reprezentuje vyhradený čas v rozvrhu.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_main/-schedule-fragment/index.html">com.moriak.schednote.fragments.of_main.ScheduleFragment</a>
-        </h5>
-        <p>Fragment má vnorené ďalšie fragmenty ktoré súvisia s rozvrhom. Vždy je zobrazený iba 1 z
-            nich</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.design/-schedule-illustrator/index.html">com.moriak.schednote.design.ScheduleIllustrator</a>
-        </h5>
-        <p>Trieda slúži na vykreslenie tabuľky s rozvrhom. Jej inštancia umožňuje meniť vzhľad tejto
-            triedy</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_schedule/-schedule-part.html">com.moriak.schednote.fragments.of_schedule.SchedulePart</a>
-        </h5>
-        <p>Interface slúži len na odlíšenie sa od ostatných tried <a
-                href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html">SubActivity</a>,
-            ktoré nemajú so zobrazením
-            alebo nastavením rozvrhu nič spoločné</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-schedule-range/index.html">com.moriak.schednote.database.tables.ScheduleRange</a>
-        </h5>
-        <p>Tabuľka časového harmonogramu hodín</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-schedule-start-setter/index.html">com.moriak.schednote.dialogs.ScheduleStartSetter</a>
-        </h5>
-        <p>Dialóg nastaví čas kedy študentom alebo žiakom začína nultá alebo prvá hodina</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.widgets/-schedule-widget/index.html">com.moriak.schednote.widgets.ScheduleWidget</a>
-        </h5>
-        <p>Trieda spravuje widgety, ktoré majú tú najjednoduchšiu úlohu. Zobraziť rozvrh.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_main/-semester-fragment/index.html">com.moriak.schednote.fragments.of_main.SemesterFragment</a>
-        </h5>
-        <p>Vo fragmente možno nastaviť dátum začiatku semestra a jeho trvanie. Ak semester práve
-            beží
-            program bude počítať koľký je semestrálny týžden a úloham bude možné nastaviť úlohy na
-            n-tý týždeň
-            bez znalosti presného dátumu</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.activities/-settings/index.html">com.moriak.schednote.activities.Settings</a>
-        </h5>
-        <p>V tejto aktivite si žiak alebo študent prispôsobuje nastavenia podľa potrieb</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.activities/-shake-compat-activity/index.html">com.moriak.schednote.activities.ShakeCompatActivity</a>
-        </h5>
-        <p>Aktivita s implementovanými senzormi pohybu. Každý potomok tejto aktivity po zatrasení
-            zobrazí dialóg, v ktorom bude možné zadať hlasovú inštrukciu. Dialóg bude poskytovať
-            možné inštrukcie
-            vo vybranom jazyku. Pre zobrazenie tohoto dialógu treba povoliť nahrávanie zvuku a v
-            nastaveniach povoliť
-            hlasové inštrukcie.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.events/-shake-sensor/index.html">com.moriak.schednote.events.ShakeSensor</a>
-        </h5>
-        <p>Trieda na zjednodušenie implementácie senzora na trasenie displeja</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_main/-sub-activity/index.html">com.moriak.schednote.fragments.of_main.SubActivity</a>
-        </h5>
-        <p>Fragment predstavuje vnorený obsah v aktivite alebo vo fragmente</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.menu/-sub-content/index.html">com.moriak.schednote.menu.SubContent</a>
-        </h5>
-        <p>Trieda reprezentuje položky hlavného menu. Možno na základe nich rozhodnúť ktorý fragment
-            treba zobraziť</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-subject/index.html">com.moriak.schednote.database.data.Subject</a>
-        </h5>
-        <p>Trieda uchováva dáta o jednom predmete</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.adapters/-subject-adapter/index.html">com.moriak.schednote.adapters.SubjectAdapter</a>
-        </h5>
-        <p>Adapter zobrazuje zoznam všetkých predmetov</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-subject-edit-dialog/index.html">com.moriak.schednote.dialogs.SubjectEditDialog</a>
-        </h5>
-        <p>Dialóg je špecialne určený na úpravu a tvorbu Predmetov a následne aktualizovanie
-            adaptéra, z ktorého je predmet upravovaný.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-subjects/index.html">com.moriak.schednote.database.tables.Subjects</a>
-        </h5>
-        <p>Tabuľka predmetov</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.fragments.of_main/-subjects-fragment/index.html">com.moriak.schednote.fragments.of_main.SubjectsFragment</a>
-        </h5>
-        <p>V tomto fragmente je načítaný abecedný zoznam všetkých predmetov ktoré v ňom
-            možno upravovať, odstrániť alebo pridať.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-table/index.html">com.moriak.schednote.database.tables.Table</a>
-        </h5>
-        <p>Reprezentácia SQLite TABLE. Potomkovia tejto triedy budú mať na starosti vytvorenie
-            tabuľky
-            a triggrov a odstránenie tabuľky.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.other/-time-category/index.html">com.moriak.schednote.other.TimeCategory</a>
-        </h5>
-        <p><a href="../com.moriak.schednote.other/-time-category/index.html">TimeCategory</a>
-            predstavuje niektoré prevažne časovo orientované kategórie úloh</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-time-dialog/index.html">com.moriak.schednote.dialogs.TimeDialog</a>
-        </h5>
-        <p>Trieda zobrazuje dialog na nastavenie dátumu. Pred zobrazením do nej možno vložiť
-            predpripravený dátum na úpravu</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-time-format/index.html">com.moriak.schednote.settings.TimeFormat</a>
-        </h5>
-        <p>Časové formáty nastavené v aplikácii</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.data/-time-table/index.html">com.moriak.schednote.database.data.TimeTable</a>
-        </h5>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database/-trigger/index.html">com.moriak.schednote.database.Trigger</a>
-        </h5>
-        <p>Trieda umožňuje vytvoriť trigger s unikátnym názvom pre udalosti reprezentované hodnotami
-            <a href="../com.moriak.schednote.database/-trigger/index.html">Trigger</a>.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.database.tables/-view/index.html">com.moriak.schednote.database.tables.View</a>
-        </h5>
-        <p>Trieda reprezentuje SQLite VIEW. Potomkovia tejto triedy budú mať na starosti
-            tvorbu pohľadov, trigrov a ich odstráňovanie</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.events/-voice/index.html">com.moriak.schednote.events.Voice</a>
-        </h5>
-        <p>Poslúchač hlasu reaguje na hlas a vykonáva rozpoznané pokyny</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.dialogs/-voice-recognition-dialog/index.html">com.moriak.schednote.dialogs.VoiceRecognitionDialog</a>
-        </h5>
-        <p>Dialóg umožňuje hlasovo zadávať príkazy. Možno v ňom nájsť aj nápovedu, aké príkazy
-            aplikácia pozná.</p>
-    </tr>
-    <tr>
-        <h5><a href="../com.moriak.schednote.settings/-work-week/index.html">com.moriak.schednote.settings.WorkWeek</a>
-        </h5>
-        <p>Reprezentuje pracovný týždeň. Nie všade sa pracuje alebo uči od pondelka do piatku.
-            Všetky možné pracovné dni sveta ktoré existujú možno nájsť tu:
-            https://en.wikipedia.org/wiki/Workweek_and_weekend</p>
-    </tr>
-    </tbody>
+<tbody>
+<tr>
+<h5><a href="../com.moriak.schednote.adapters/-alarm-adapter/index.html">com.moriak.schednote.adapters.AlarmAdapter</a></h5>
+<p>Adapter zobrazuje budíky pracovné dni v týždni. Na každý deň možno nastaviť max. 1 budík.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-alarm-category/index.html">com.moriak.schednote.enums.AlarmCategory</a></h5>
+<p>Inštancie tejto triedy reprezentujú obsah týkajúci sa oznámení.
+<a href="../com.moriak.schednote.enums/-alarm-category/-r-e-m-i-n-d-e-r.html">REMINDER</a> Položka sa sústreďuje na notifikácie k upozorneniam
+<a href="../com.moriak.schednote.enums/-alarm-category/-a-l-a-r-m.html">ALARM</a> Položka sa sústreďuje na budíky</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.dialogs/-alarm-clock-advance/index.html">com.moriak.schednote.dialogs.AlarmClockAdvance</a></h5>
+<p>Nastavenie časového predstihu budenia pred začiatkom vyučovania</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-alarm-clock-bit/index.html">com.moriak.schednote.enums.AlarmClockBit</a></h5>
+<p>Inštancie tejto triedy reprezentujú jednotlivé budíky.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_alarm/-alarm-clock-list/index.html">com.moriak.schednote.fragments.of_alarm.AlarmClockList</a></h5>
+<p>V tomto fragmente sa nastavujú budíky. V adaptéri sa zobrazia budíky pre nastavený pracovný deň
+a ak je povolený 2-týždenný rozvrh dá sa prepínať medzi budíkmi párneho a nepárneho týždňa</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.notifications/-alarm-clock-receiver/index.html">com.moriak.schednote.notifications.AlarmClockReceiver</a></h5>
+<p>Objekt prijme správu o budíku, na základe ktorej budík nastaví, zastaví, odloží alebo naň upozorní.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.notifications/-alarm-clock-ring-tone/index.html">com.moriak.schednote.notifications.AlarmClockRingTone</a></h5>
+<p>Prehráva zvuk na pozadí počas budenia</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.notifications/-alarm-clock-setter/index.html">com.moriak.schednote.notifications.AlarmClockSetter</a></h5>
+<p><a href="../com.moriak.schednote.notifications/-alarm-clock-setter/index.html">AlarmClockSetter</a> slúži ako organizátor budíkov.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote/-alarm-tone/index.html">com.moriak.schednote.AlarmTone</a></h5>
+<p>Inštancia tejto triedy uchováva ID, názov a URI, k zvukovému súboru.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.activities/-alarm-tone-activity/index.html">com.moriak.schednote.activities.AlarmToneActivity</a></h5>
+<p>Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
+Bez tohoto povolenia bude obmedzený výber tónov budenia.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.adapters/-alarm-tone-adapter/index.html">com.moriak.schednote.adapters.AlarmToneAdapter</a></h5>
+<p>Adaptér zobrazuje zoznam tónov budenia</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote/-app/index.html">com.moriak.schednote.App</a></h5>
+<p>Trieda aplikácie, má za úlohy zjednotušiť prístup k resourcom a kontextu odkiaľkoľvek a
+poskytuje často žiadané hodnoty, aby sa zabránilo viacnásobnému písaniu rovnakého kódu</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote/-boot-receiver/index.html">com.moriak.schednote.BootReceiver</a></h5>
+<p>Po reštarte zariadenia sú všetky upozornenia, ktoré táto aplikácia mala nastavené, zrušené.
+Táto trieda ich po reštarte všetky obnoví</p>
+</tr>
+<tr>
+ (extensions in package com.moriak.schednote)
+<h5><a href="../com.moriak.schednote/java.util.-calendar/index.html">java.util.Calendar</a></h5>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-color-group/index.html">com.moriak.schednote.enums.ColorGroup</a></h5>
+<p>Pri nastavovaní dizajnu rozvrhu okrem buniek rôznych typov hodín možno upravovať farby aj iných prvkov.
+<a href="../com.moriak.schednote.enums/-color-group/-b-a-c-k-g-r-o-u-n-d.html">BACKGROUND</a> pozadie plátna
+<a href="../com.moriak.schednote.enums/-color-group/-h-e-a-d-e-r.html">HEADER</a> hlavička tabuľky rozvrhu
+<a href="../com.moriak.schednote.enums/-color-group/-f-r-e-e.html">FREE</a> bloky voľného času v rozvrhu</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-command/index.html">com.moriak.schednote.enums.Command</a></h5>
+<p><a href="../com.moriak.schednote.enums/-command/index.html">Command</a> predstavuje množinu príkazov, ktoré možno vysloviť</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.adapters/-custom-adapter/index.html">com.moriak.schednote.adapters.CustomAdapter</a></h5>
+<p>Rozšírený <a href="#">RecyclerView.Adapter</a>, so zoradenými obnoviteľnými prvkami.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.views/-custom-view/index.html">com.moriak.schednote.views.CustomView</a></h5>
+<p>Trieda poskytuje často používané metódy vo vlastných vyrobených widgetoch <a href="https://developer.android.com/reference/android/view/View.html">View</a>.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-date-format/index.html">com.moriak.schednote.enums.DateFormat</a></h5>
+<p>Formát dátumu</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.dialogs/-date-time-dialog/index.html">com.moriak.schednote.dialogs.DateTimeDialog</a></h5>
+<p>Dialóg nastavenia dátumu a času. Počas semestrálneho obdobia možno dátum
+nastaviť aj relatívne zadaním semestrálneho týždňa a pracovného dňa.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.dialogs/-date-time-format-dialog/index.html">com.moriak.schednote.dialogs.DateTimeFormatDialog</a></h5>
+<p>Dialógové okno umožňuje nastaviť formát dátumu a času</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-day/index.html">com.moriak.schednote.enums.Day</a></h5>
+<p>Dni v týždni
+<a href="../com.moriak.schednote.enums/-day/-m-o-n.html">MON</a> pondelok
+<a href="../com.moriak.schednote.enums/-day/-t-u-e.html">TUE</a> utorok
+<a href="../com.moriak.schednote.enums/-day/-w-e-d.html">WED</a> streda
+<a href="../com.moriak.schednote.enums/-day/-t-h-u.html">THU</a> štvrtok
+<a href="../com.moriak.schednote.enums/-day/-f-r-i.html">FRI</a> piatok
+<a href="../com.moriak.schednote.enums/-day/-s-a-t.html">SAT</a> sobota
+<a href="../com.moriak.schednote.enums/-day/-s-u-n.html">SUN</a> nedeľa</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_schedule/-design-editor/index.html">com.moriak.schednote.fragments.of_schedule.DesignEditor</a></h5>
+<p>Fragment ponúka možnosť nastaviť rozvrh ako tapetu. Pred tým však sprístupní náhľad, ako to bude
+vyzerať a poskytne možnosť nastaviť si vlastné farby, príp. zvoliť obrázok na pozadie rozvrhu
+ktorý možno na plátno rozložiť 3 rôznymi spôsobmi a nastaviť rotáciu
+na 4 možné uhly (0°, 90°, 180°, 270°).</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments/-extended-sub-activity/index.html">com.moriak.schednote.fragments.ExtendedSubActivity</a></h5>
+<p>Fragmenty tohto typu majú vnorené obsahy v podobe ďaľších fragmentov,
+z ktorých môže byť súčasne zobrazený iba jeden.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.interfaces/-i-color-group/index.html">com.moriak.schednote.interfaces.IColorGroup</a></h5>
+<p>Dizajn rozvrhu sa skladá z niekoľkých zoskupených častí, ktoré majú spoločné sfarbenie</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.dialogs/-info-dialog/index.html">com.moriak.schednote.dialogs.InfoDialog</a></h5>
+<p>Dialóg slúži na informovanie alebo poučenie užívateľa</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.interfaces/-i-sub-content/index.html">com.moriak.schednote.interfaces.ISubContent</a></h5>
+<p>Objekty tohto typu reprezentujú vnorené obsahy k nadradenému obsahu. Musia byť typu <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a>.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote/-item-top-spacing/index.html">com.moriak.schednote.ItemTopSpacing</a></h5>
+<p>Nastavenie veľkosti medzier medzi položkami v zozname</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.data/-lesson/index.html">com.moriak.schednote.data.Lesson</a></h5>
+<p>V <a href="../com.moriak.schednote.data/-lesson/reg.html">reg</a> týždni, dňa <a href="../com.moriak.schednote.data/-lesson/day.html">day</a> sa v čase <a href="../com.moriak.schednote.data/-lesson/time.html">time</a> vyučuje
+predmet <a href="../com.moriak.schednote.data/-lesson/sub.html">sub</a> v miestnosti <a href="../com.moriak.schednote.data/-lesson/room.html">room</a> vo forme <a href="../com.moriak.schednote.data/-lesson/type.html">type</a>.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-lesson-data/index.html">com.moriak.schednote.storage.LessonData</a></h5>
+<p>Tabuľka vyučovacích hodín</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.dialogs/-lesson-duration-setter/index.html">com.moriak.schednote.dialogs.LessonDurationSetter</a></h5>
+<p>Dialógové okna nastavenia trvania hodiny a nasledujúcej prestávky.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.data/-lesson-time/index.html">com.moriak.schednote.data.LessonTime</a></h5>
+<p>Trieda uchováva informácie o najmenšej jednotke rozvrhu: vyučovacej hodiny</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.adapters/-lesson-time-adapter/index.html">com.moriak.schednote.adapters.LessonTimeAdapter</a></h5>
+<p>Tento adaptér spravuje zoznam časových blokov rozvrhu.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-lesson-time-format/index.html">com.moriak.schednote.enums.LessonTimeFormat</a></h5>
+<p>Trieda určuje ako sa budú jednotlivé časové bloky prezentované.
+<a href="../com.moriak.schednote.enums/-lesson-time-format/-o-r-d-e-r_-f-r-o-m_0/index.html">ORDER_FROM_0</a> Poradové číslo od 0.
+<a href="../com.moriak.schednote.enums/-lesson-time-format/-o-r-d-e-r_-f-r-o-m_1/index.html">ORDER_FROM_1</a> Poradové číslo od 1.
+<a href="../com.moriak.schednote.enums/-lesson-time-format/-s-t-a-r-t_-t-i-m-e/index.html">START_TIME</a> Uvedenie času začiatia časového bloku</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_schedule/-lesson-time-list/index.html">com.moriak.schednote.fragments.of_schedule.LessonTimeList</a></h5>
+<p>Fragment obsahuje zoznam a správu časových blokov vyučovacieho času.
+Tu používateľ nastaví začiatok rozvrhu a následne trvanie jednotlivých
+hodín a prestávok po nich v minútach</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.data/-lesson-type/index.html">com.moriak.schednote.data.LessonType</a></h5>
+<p>Trieda uchováva dáta o type hodiny</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.adapters/-lesson-type-adapter/index.html">com.moriak.schednote.adapters.LessonTypeAdapter</a></h5>
+<p>Adaptér spravuje zoznam kategórii vyučovacích hodín.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_schedule/-lesson-type-list/index.html">com.moriak.schednote.fragments.of_schedule.LessonTypeList</a></h5>
+<p>Fragment obsahuje abecedný zoznam a správu kategórií vyučovaných hodín.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-lesson-types/index.html">com.moriak.schednote.storage.LessonTypes</a></h5>
+<p>Tabuľka typov hodín</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments/-list-sub-activity/index.html">com.moriak.schednote.fragments.ListSubActivity</a></h5>
+<p>Fragmenty tohto typu obsahujú blok <a href="../com.moriak.schednote.views/-recycler-view-empty-support/index.html">RecyclerViewEmptySupport</a>.
+Obsah, pozícia scroll a iné dáta z bloku <a href="../com.moriak.schednote.views/-recycler-view-empty-support/index.html">RecyclerViewEmptySupport</a>,
+budú po otočení automaticky obnovené.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.activities/-lock-screen-alarm-activity/index.html">com.moriak.schednote.activities.LockScreenAlarmActivity</a></h5>
+<p>Aktivita zobrazí budík s ponukou  zastaviť ho alebo odložiť o pár minúť</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.activities/-main-activity/index.html">com.moriak.schednote.activities.MainActivity</a></h5>
+<p>Hlavná aktivita pozostáva z len menu, pomocou ktorého sa striedajú fragmenty, ktoré načítavajú obsah
+Fragmenty sú od seba nezávislé a môžu mať ďalšie vnorené fragmenty.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.data/-note/index.html">com.moriak.schednote.data.Note</a></h5>
+<p>Trieda na uchovávanie dát o úlohach</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.adapters/-note-adapter/index.html">com.moriak.schednote.adapters.NoteAdapter</a></h5>
+<p>Adapter spravuje zoznam úloh</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.interfaces/-note-category/index.html">com.moriak.schednote.interfaces.NoteCategory</a></h5>
+<p>Objekty tohto typu budú slúžiť na označenie kategórie zoznamu úloh</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_main/-note-list/index.html">com.moriak.schednote.fragments.of_main.NoteList</a></h5>
+<p>Fragment zobrazí zoznam úloh vyhovujúcich danej kategórií a umožní tento zoznam spravovať.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-notes/index.html">com.moriak.schednote.storage.Notes</a></h5>
+<p>Tabuľka úloh</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.widgets/-note-widget/index.html">com.moriak.schednote.widgets.NoteWidget</a></h5>
+<p>Widget tohoto typu zobrazuje zoznam úloh podľa nakonfigurovanej kategórie</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.activities/-note-widget-config-activity/index.html">com.moriak.schednote.activities.NoteWidgetConfigActivity</a></h5>
+<p>Aktivita slúži na nastavenie konfigurácie vznikajúceho widgetu <a href="../com.moriak.schednote.widgets/-note-widget/index.html">NoteWidget</a>.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.widgets/-note-widget-service/index.html">com.moriak.schednote.widgets.NoteWidgetService</a></h5>
+<p>Trieda pristupuje k vzdialenému Adaptéru <a href="../com.moriak.schednote.widgets/-note-widget-service/-note-widget-factory/index.html">NoteWidgetFactory</a>.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.notifications/-notification-handler/index.html">com.moriak.schednote.notifications.NotificationHandler</a></h5>
+<p>Úlohou objektu <a href="../com.moriak.schednote.notifications/-notification-handler/index.html">NotificationHandler</a> je spravovať všetky oznámenia.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_main/-notification-settings/index.html">com.moriak.schednote.fragments.of_main.NotificationSettings</a></h5>
+<p>Fragment má v sebe vnorené fragmenty súvisiace s upozorneniami</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.views/-option-stepper/index.html">com.moriak.schednote.views.OptionStepper</a></h5>
+<p>Okno, v ktorom užívateľ vyberá spomedzi niekoľkých volieb. Zvolená voľba sa mu zobrazí ako text.
+Voľba môže byť objekt akéhokoľvek typu. Voľba je reprezentovaná textom, ktorý je výsledkom
+funkcie <a href="#">toString</a> alebo textom vo formáte nastavenom v objekte <a href="../com.moriak.schednote.views/-option-stepper/-format/index.html">Format</a>.
+Objekty na popredí možno meniť v rade za sebou jednym z dvoch smerov</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote/-palette/index.html">com.moriak.schednote.Palette</a></h5>
+<p>Trieda slúži na dynamickú zmenu farieb a konverziu medzi farebnými modelmi</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.contracts/-permission-contract/index.html">com.moriak.schednote.contracts.PermissionContract</a></h5>
+<p>Kontrakt na získanie množiny povolení od používateľa.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-permission-handler/index.html">com.moriak.schednote.enums.PermissionHandler</a></h5>
+<p>Táto trieda poskytuje množinu povolení a informáciu pre používateľa o tom, prečo toto povolenie aplikácia potrebuje
+<a href="../com.moriak.schednote.enums/-permission-handler/-i-m-a-g-e_-a-c-c-e-s-s.html">IMAGE_ACCESS</a> - žiada o prístup k fotkám.
+<a href="../com.moriak.schednote.enums/-permission-handler/-a-u-d-i-o_-a-c-c-e-s-s.html">AUDIO_ACCESS</a> - žiada o prístup k hudbe.
+<a href="../com.moriak.schednote.enums/-permission-handler/-v-o-i-c-e_-r-e-c-o-r-d.html">VOICE_RECORD</a> - žiada o povolenie nahrávania hlasu
+<a href="../com.moriak.schednote.enums/-permission-handler/-c-a-l-e-n-d-a-r.html">CALENDAR</a> - žiada o povolenie čítania a zápisu do kalendára</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.contracts/-pick-contract/index.html">com.moriak.schednote.contracts.PickContract</a></h5>
+<p>Kontrakt na získanie mediálneho súboru (obrázok, video, audio, ...)</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-prefs/index.html">com.moriak.schednote.storage.Prefs</a></h5>
+<p>Objekt <a href="../com.moriak.schednote.storage/-prefs/index.html">Prefs</a> zoskupuje objekty, ktoré pristupujú k pamäti <a href="https://developer.android.com/reference/android/content/SharedPreferences.html">SharedPreferences</a>.
+Pri zápise a získavaní údajov sa nevyžaduje použitie kľúča a možno zapisovať
+a získavať objekty viacerých typov.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.views/-range-view/index.html">com.moriak.schednote.views.RangeView</a></h5>
+<p>Tento blok zobrazuje posuvník, na ktorom možno nastaviť celočíselný rozsah.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.views/-recycler-view-empty-support/index.html">com.moriak.schednote.views.RecyclerViewEmptySupport</a></h5>
+<p>Trieda rozširuje RecyclerView, ktorý narozdiel od ListView nedokáže nastaviť layout, ktorý
+by mohol byť zobrazený namiesto prázdneho zoznamu. Tu je tento problém vyriešený</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-redirection/index.html">com.moriak.schednote.enums.Redirection</a></h5>
+<p>Inštancie tejto triedy zobrazujú alebo umožňujú zobrazenie danej časti aplikácie.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-regularity/index.html">com.moriak.schednote.enums.Regularity</a></h5>
+<p>2-týždenný rozvrh sa delí na párny a nepárny týždeň. Niektoré hodiny
+sú len v párnom <a href="../com.moriak.schednote.enums/-regularity/-e-v-e-n.html">EVEN</a> týždni, niektoré len v nepárnom <a href="../com.moriak.schednote.enums/-regularity/-o-d-d.html">ODD</a> týždni,
+iné zas v každom týždni <a href="../com.moriak.schednote.enums/-regularity/-e-v-e-r-y.html">EVERY</a>.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.notifications/-reminder-receiver/index.html">com.moriak.schednote.notifications.ReminderReceiver</a></h5>
+<p>Objekt prijíma správy o blížiacich sa termínoch úloh a posiela upozornia užívateľovi</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.notifications/-reminder-setter/index.html">com.moriak.schednote.notifications.ReminderSetter</a></h5>
+<p><a href="../com.moriak.schednote.notifications/-reminder-setter/index.html">ReminderSetter</a> slúži ako organizátor úloh.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_alarm/-reminder-settings/index.html">com.moriak.schednote.fragments.of_alarm.ReminderSettings</a></h5>
+<p>V tomto fragmente uživateľ vypne / zapne oznámenia úloh a môže určiť
+v akom časovom predstihu (v minútach) sa budú zjavovať.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-schedule/index.html">com.moriak.schednote.storage.Schedule</a></h5>
+<p>Tabuľka vyučovacích hodín</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_main/-schedule-content/index.html">com.moriak.schednote.fragments.of_main.ScheduleContent</a></h5>
+<p>Fragment má v sebe vnorené fragmenty súvisiace s rozvrhom.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-schedule-display/index.html">com.moriak.schednote.enums.ScheduleDisplay</a></h5>
+<p>Inštancie tejto triedy predstavujú obsah týkajúci sa rozvrhu.
+<a href="../com.moriak.schednote.enums/-schedule-display/-d-e-s-i-g-n.html">DESIGN</a> Položka sa sústreďuje na úpravy dizajnu rozvrrhu
+<a href="../com.moriak.schednote.enums/-schedule-display/-l-e-s-s-o-n_-s-c-h-e-d-u-l-e.html">LESSON_SCHEDULE</a> Položka sa sústreďuje na náhľad a zmeny v rozvrhu
+<a href="../com.moriak.schednote.enums/-schedule-display/-t-i-m-e_-s-c-h-e-d-u-l-e.html">TIME_SCHEDULE</a> Položka sa sústreďuje hodiny ako najmenšie časové jednotky rozvrhu
+<a href="../com.moriak.schednote.enums/-schedule-display/-l-e-s-s-o-n_-t-y-p-e-s.html">LESSON_TYPES</a> Položka sa sústreďuje na zobrazenie a manipuláciu s typmi hodín</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_schedule/-schedule-editor/index.html">com.moriak.schednote.fragments.of_schedule.ScheduleEditor</a></h5>
+<p>Fragment umožňuje modifikovať rozvrh hodín. Musia k tomu však nejaké dáta už existovať.
+Inak sa zobrazia odkazy na fragmenty, v ktorých tie dáta možno vytvoriť.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-schedule-range/index.html">com.moriak.schednote.storage.ScheduleRange</a></h5>
+<p>Tabuľka časového harmonogramu hodín</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.views/-schedule-view/index.html">com.moriak.schednote.views.ScheduleView</a></h5>
+<p>Objekt <a href="../com.moriak.schednote.views/-schedule-view/index.html">ScheduleView</a> je súčasťou Layoutu. Má za úlohu kresliť rozvrh hodín.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.widgets/-schedule-widget/index.html">com.moriak.schednote.widgets.ScheduleWidget</a></h5>
+<p>Úlohou tohto typu widgetu je zobraziť rozvrh.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_main/-semester-settings/index.html">com.moriak.schednote.fragments.of_main.SemesterSettings</a></h5>
+<p>Vo fragmente možno nastaviť dátum začiatku semestra a jeho trvanie. Ak semester práve beží
+program bude počítať koľký je semestrálny týžden a úloham bude možné nastaviť úlohy na n-tý týždeň
+bez znalosti presného dátumu</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.activities/-settings/index.html">com.moriak.schednote.activities.Settings</a></h5>
+<p>V tejto aktivite si užívateľ prispôsobuje nastavenia aplikácie podľa potrieb</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.activities/-shake-compat-activity/index.html">com.moriak.schednote.activities.ShakeCompatActivity</a></h5>
+<p>Aktivita tohto typu po zatrasení zobrazí dialógové okno, v ktorom bude ponúkaná možnosť
+zadať hlasovú inštrukciu. Užívateľ si môže v ňom zobraziť, aké inštrukcie môže aplikácii zadávať.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-s-q-lite/index.html">com.moriak.schednote.storage.SQLite</a></h5>
+<p>Trieda spravuje dáta z SQLite databázy.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-s-q-lite-control/index.html">com.moriak.schednote.storage.SQLiteControl</a></h5>
+<p>Trieda slúži na čítanie a zápis dát. Ak abstraktná trieda poskytuje funkcie, ktoré zjednodušia zápis
+príkazov v potomkovi ktorý je určený len na výber a zápis konkrétnych dát z konkrétnych tabuliek</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments/-sub-activity/index.html">com.moriak.schednote.fragments.SubActivity</a></h5>
+<p>Fragment tohto typu je podobsahom aktivity alebo iného fragmentu</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-sub-content/index.html">com.moriak.schednote.enums.SubContent</a></h5>
+<p>Inštancie trieda reprezentujú jednotlivé položky hlavného menu.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.data/-subject/index.html">com.moriak.schednote.data.Subject</a></h5>
+<p>Trieda uchováva dáta o predmete.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.adapters/-subject-adapter/index.html">com.moriak.schednote.adapters.SubjectAdapter</a></h5>
+<p>Adapter spravuje zoznam predmetov</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.dialogs/-subject-edit-dialog/index.html">com.moriak.schednote.dialogs.SubjectEditDialog</a></h5>
+<p>V tomto dialógovom fragmente sa menia údaje o predmete (skratka a názov).</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.fragments.of_main/-subject-list/index.html">com.moriak.schednote.fragments.of_main.SubjectList</a></h5>
+<p>Tento fragment obsahuje abecedný zoznam a správu predmetov.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-subjects/index.html">com.moriak.schednote.storage.Subjects</a></h5>
+<p>Tabuľka predmetov</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.storage/-table/index.html">com.moriak.schednote.storage.Table</a></h5>
+<p>Trieda tohto typu je reprezentantom tabuľky v SQLite. má za úlohu poznať názvy stĺpcov,
+vytvoriť danú tabuľku, pokiaľ neexistuje, príp. k nej pridať triggre.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote/-text-cursor-tracer/index.html">com.moriak.schednote.TextCursorTracer</a></h5>
+<p>Objekt pozoruje zmeny užívateľom upraviteľného textového poľa vrátane zmien kurzora</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-time-category/index.html">com.moriak.schednote.enums.TimeCategory</a></h5>
+<p>Kategória, podľa ktorej sa filtruje zoznam úloh
+<a href="../com.moriak.schednote.enums/-time-category/-a-l-l.html">ALL</a> všetky úlohy
+<a href="../com.moriak.schednote.enums/-time-category/-t-i-m-e-l-e-s-s.html">TIMELESS</a> úlohy bez termínu
+<a href="../com.moriak.schednote.enums/-time-category/-l-a-t-e.html">LATE</a> oneskorené / staré úlohy
+<a href="../com.moriak.schednote.enums/-time-category/-u-p-c-o-m-i-n-g.html">UPCOMING</a> nadchádzajúce úlohy
+<a href="../com.moriak.schednote.enums/-time-category/-t-o-d-a-y.html">TODAY</a> dnešné úlohy
+<a href="../com.moriak.schednote.enums/-time-category/-t-o-m-o-r-r-o-w.html">TOMORROW</a> úlohy na zajtra
+<a href="../com.moriak.schednote.enums/-time-category/-i-n_-w-e-e-k.html">IN_WEEK</a> úlohy na nasledujúcich 7 dní.
+<a href="../com.moriak.schednote.enums/-time-category/-i-n_-m-o-n-t-h.html">IN_MONTH</a> úlohy na nasledujúcich 28-31 dní</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-time-format/index.html">com.moriak.schednote.enums.TimeFormat</a></h5>
+<p>Formát času
+<a href="../com.moriak.schednote.enums/-time-format/-h12/index.html">H12</a> 12 hodinový formát času
+<a href="../com.moriak.schednote.enums/-time-format/-h24/index.html">H24</a> 24 hodinový formát času</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-trigger/index.html">com.moriak.schednote.enums.Trigger</a></h5>
+<p>Trieda umožňuje vytvoriť 1 - 3 triggre s unikátnym názvom a spoločným algoritmom.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.dialogs/-voice-recognition-dialog/index.html">com.moriak.schednote.dialogs.VoiceRecognitionDialog</a></h5>
+<p>Dialóg umožňuje hlasovo zadávať príkazy. Možno v ňom nájsť aj nápovedu, aké príkazy
+aplikácia pozná.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.views/-wallpaper-view/index.html">com.moriak.schednote.views.WallpaperView</a></h5>
+<p>Úlohou tohto bloku je poskytnúť náhľad, ako bude vyzerať tapeta v mobilnom zariadení, pokiaľ
+sa ju užívateľ rozhodne nastaviť.</p>
+</tr>
+<tr>
+<h5><a href="../com.moriak.schednote.enums/-work-week/index.html">com.moriak.schednote.enums.WorkWeek</a></h5>
+<p>Reprezentuje pracovný týždeň. Nie všade sa pracuje alebo uči od pondelka do piatku.
+Všetky možné pracovné dni sveta ktoré existujú možno nájsť tu:
+https://en.wikipedia.org/wiki/Workweek_and_weekend.
+<a href="../com.moriak.schednote.enums/-work-week/-s-a-t_-w-e-d.html">SAT_WED</a> sobota - streda
+<a href="../com.moriak.schednote.enums/-work-week/-s-a-t_-t-h-u.html">SAT_THU</a> sobota - štvrtok
+<a href="../com.moriak.schednote.enums/-work-week/-s-u-n_-w-e-d.html">SUN_WED</a> nedeľa - streda
+<a href="../com.moriak.schednote.enums/-work-week/-m-o-n_-t-h-u.html">MON_THU</a> pondelok - štvrtok
+<a href="../com.moriak.schednote.enums/-work-week/-m-o-n_-f-r-i.html">MON_FRI</a> pondelok - piatok
+<a href="../com.moriak.schednote.enums/-work-week/-m-o-n_-s-a-t.html">MON_SAT</a> pondelok - sobota</p>
+</tr>
+</tbody>
 </table>
 </BODY>
 </HTML>

@@ -1,29 +1,13 @@
 <resources>
-    <string name="app_name">SchedNote</string>
-    <!-- errors -->
+    <string name="app_name">Schednote</string>
     <string name="subject_exists">Subject with this abbreviation already exists</string>
-    <string name="subject_required_data_missing">Fill in the abbreviation and full name of the subject!</string>
-    <string name="subject_abb_missing">Fill in the abbreviation!</string>
-    <string name="subject_abb_too_long">Abbreviation is too long!</string>
-    <string name="subject_abb_format_warning">Illegal format of the abbreviation!</string>
     <string name="note_no_description">Missing note description!</string>
     <string name="note_description_length_exceeded">Description is too long</string>
-    <string name="note_invalid_format">Illegal note description format</string>
-    <string name="schedule_unmodifiable_order">Lesson order is immutable!</string>
-    <string name="schedule_out_of_range">Out of schedule range!</string>
-    <string name="read_only_id">Table ID is immutable!</string>
-    <string name="fill_type_name">Each lesson type must be unique!</string>
-    <string name="lesson_type_update_error">Renaming of the lesson was canceled due to illegal name format!</string>
-    <string name="lesson_type_insert_error">Inserting of the lesson was canceled due to illegal name format!</string>
+    <string name="invalid_format">Invalid format!</string>
     <string name="lesson_type_exists">Lesson type already exists</string>
-    <string name="lesson_type_unknown_error">Unexpected error occurred while inserting item!</string>
-    <string name="lesson_unmodifiable">Schedule can\'t be modified yet!</string>
     <string name="subject_required">There must be at least one subject!</string>
     <string name="lesson_type_required">There must be at least one lesson type!  (e.g. presentation, course, practise, etc.)</string>
-    <string name="lesson_editor_accessible">Schedule is now modifiable!</string>
-    <string name="busy_day_error">Lesson is too long!</string>
     <string name="schedule_unset">No lessons!</string>
-    <!-- actions -->
     <string name="edits">Edits</string>
     <string name="back">Back</string>
     <string name="delete">Delete</string>
@@ -31,14 +15,9 @@
     <string name="confirm">Confirm</string>
     <string name="add">Add</string>
     <string name="to_empty">Empty</string>
-    <string name="edit_work_week">Change work week</string>
-    <!-- menu tabs -->
     <string name="lesson_schedule">Schedule</string>
     <string name="subjects">Subjects</string>
     <string name="notes">Notes</string>
-    <string name="style">Style</string>
-    <string name="preview">Preview</string>
-    <!-- week related -->
     <string name="work_week">Work week</string>
     <string name="day">Day</string>
     <string name="time">Time</string>
@@ -49,16 +28,13 @@
     <string name="fri">Friday</string>
     <string name="sat">Saturday</string>
     <string name="sun">Sunday</string>
-    <string name="regularity">Regularity</string>
     <string name="every_week">Every week</string>
     <string name="even_week">Even week</string>
     <string name="odd_week">Odd week</string>
-    <!-- subject related -->
     <string name="subject">Subject</string>
     <string name="no_subjects">No subjects!</string>
     <string name="subject_abb">Abbreviation</string>
     <string name="subject_name">Full name</string>
-    <!-- lesson and schedule related -->
     <string name="minute_abbreviation">min</string>
     <string name="schedule_start">Schedule start</string>
     <string name="edit_schedule_start">Edit schedule start</string>
@@ -68,7 +44,7 @@
     <string name="lesson_type">Lesson type</string>
     <string name="new_lesson">New lesson</string>
     <string name="lesson">Lesson</string>
-    <string name="free">Free</string>
+    <string name="free_time">Free</string>
     <string name="room">Room</string>
     <string name="remove_bg_image">Remove background image</string>
     <string name="set_bg_image">Set background image</string>
@@ -80,19 +56,12 @@
     <string name="fill">Fill</string>
     <string name="fit">Fit</string>
     <string name="cover">Cover</string>
-    <string name="previous_color">Previous color</string>
-    <string name="next_color">Next color</string>
-    <string name="bg_image">Background image</string>
     <string name="header">Table head</string>
     <string name="background">Background</string>
     <string name="wallpaper_set_success">Wallpaper has been changed!</string>
     <string name="permission_denied">Permission denied!</string>
-    <string name="no_image_present">No image available!</string>
-    <string name="error_loading_image">Loading of the image failed due to denial of the storage access permission!</string>
+    <string name="error_loading_image">Failed to load an image!</string>
     <string name="no_notes">No notes</string>
-    <string name="change_subject">Change subject</string>
-    <string name="set_date">Set date</string>
-    <string name="unset_date">Unset date</string>
     <string name="save">Save</string>
     <string name="all">All</string>
     <string name="timeless">Timeless</string>
@@ -103,15 +72,14 @@
     <string name="outcast_note">The note is no longer part of this category!</string>
     <string name="date">Date</string>
     <string name="time_out">Time out!</string>
-    <string name="previous_subject">Previous subject</string>
-    <string name="next_subject">Next subject</string>
-    <string name="clear_all">clear_all</string>
+    <string name="remove_all">Remove all</string>
     <string name="design">Design</string>
+    <string name="notifications">Notifications</string>
     <string name="reminders">Reminders</string>
     <string name="alarms">Alarm clocks</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
-    <string name="alarm_advance">Alarm advance</string>
+    <string name="reminder_advance">Reminder advance</string>
     <string name="days">Days</string>
     <string name="semester">Semester</string>
     <string name="week_count">Week count</string>
@@ -135,7 +103,6 @@
     <string name="time_format_12">12 hours</string>
     <string name="time_format_24">24 hours</string>
     <string name="schedule_emptied">Schedule emptied</string>
-    <string name="time_cleared">Time cleared</string>
     <string name="lesson_removed">Lesson removed</string>
     <string name="lesson_updated">Lesson changed</string>
     <string name="lesson_inserted">Lesson inserted</string>
@@ -150,15 +117,12 @@
     <string name="snooze">Snooze</string>
     <string name="alarm_tone">Alarm clock tone</string>
     <string name="default_">Default</string>
-    <string name="set_default_alarm_tone">Set default alarm tone</string>
     <string name="alarm_snooze">Alarm Clock snooze</string>
-    <string name="lesson_edit_aborted">Lesson deselected</string>
     <string name="timetable">Timetable</string>
-    <string name="invalid_widget">Invalid widget</string>
     <string name="play_ringtone">Play tone</string>
     <string name="settings">Settings</string>
     <string name="audio_file_removed_or_moved">Audio file has been moved or removed!</string>
-    <string name="voice_err_unavailable">Shake sensor unavailable</string>
+    <string name="voice_err_unavailable">Voice recognition unavailable</string>
     <string name="cmd_unique_time_schedule">Lessons</string>
     <string name="cmd_unique_lesson_types">Lesson types</string>
     <string name="cmd_unique_lesson_schedule">Schedule</string>
@@ -171,6 +135,7 @@
     <string name="cmd_unique_alarm_clock">Alarm clocks</string>
     <string name="cmd_unique_semester">Semester</string>
     <string name="cmd_unique_settings">Settings</string>
+    <string name="cmd_unique_lesson_type">[Lesson type]</string>
     <string name="cmd_unique_alarm_tone">Alarm tone</string>
     <string name="cmd_unique_clean_up">Clean up</string>
     <string name="cmd_desc_lesson_types">To view the lesson types.</string>
@@ -202,8 +167,6 @@
     <string name="collapse">Collapse</string>
     <string name="info">Info</string>
     <string name="microphone">Microphone</string>
-    <string name="music_stopped">Music stopped</string>
-    <string name="cmd_unique_lesson_type">[Lesson type]</string>
     <string name="enable_voice_commands">Allow voice instructions</string>
     <string name="info_subjects">Here is an alphabetical list of all subjects. The first number indicates the number of tasks not completed in time, and the second indicates the number of upcoming tasks.</string>
     <string name="info_lesson_schedule">To modify schedule.</string>
@@ -215,25 +178,41 @@
     <string name="info_lesson_types">There must be at least 1 lesson type to be able to modify timetable.</string>
     <string name="info_design">You can customize timetable colors, background color and background image. Image and table are draggable and the result picture can be set as wallpaper.</string>
     <string name="info_audio_tunes">Shaking the device will stop playing the alarm tune.</string>
-    <string name="read_storage_permission_for_music">Without storage access permission there\'s no way to access music files.</string>
-    <string name="read_storage_permission_for_gallery">Without storage access permission there\'s no way to access gallery.</string>
+    <string name="rationale_access_music"><b>Media access permission</b> needs to be granted to be able to set custom alarm tone!</string>
+    <string name="rationale_access_images"><b>Media access permission</b> needs to be granted to be able to use images in this app!</string>
+    <string name="rationale_record_audio"><b>Voice recording permission</b> needs to be granted to be able to voice control the App!</string>
+    <string name="rationale_calendar"><b>Permission to access and write to calendar</b> needs to be granted to be able to synchronize notes with calendar!</string>
     <string name="access_music">Load music</string>
     <string name="lessons_required">There are no lessons!</string>
-    <string name="lesson_type_exceeded">Lesson type count reached the maximum!</string>
-    <string name="no_lesson_types">No lesson types</string>
     <string name="edit">Edit</string>
     <string name="insert">Insert</string>
-    <string name="clear">Clear</string>
+    <string name="free">Free</string>
     <string name="cmd_desc_time_schedule">To view the lesson time.</string>
     <string name="cmd_desc_notes">To view all notes</string>
     <string name="voice_err_permissions">Voice recognition permission denied</string>
     <string name="cmd_desc_lesson_type">Every lesson type has assigned a color that is applied to the timetable.</string>
-    <string name="before_set_as_wallpaper">You\'re about to set this frame as wallpaper. Do you wish to continue?</string>
-
     <string name="notes_sent_to_calendar">Notes have been successfully delivered to your calendar.</string>
-    <string name="save_notes_to_calendar">Store the notes in the calendar</string>
-    <string name="load_notes_from_calendar">Load notes from calendar</string>
+    <string name="notes_export">Export to calendar</string>
+    <string name="notes_import">Import from calendar</string>
     <string name="notes_received_from_calendar">Notes have been loaded from your calendar.</string>
     <string name="no_editable_calendar_available">No editable calendar available!</string>
-    <string name="schedule_cleared">Lesson cleared</string>
+    <string name="schedule_freed">Schedule time freed</string>
+    <string name="note_without_subject_link">The note must be linked to a subject!</string>
+    <string name="lesson_type_invalid_name">Invalid name for lesson type!</string>
+    <string name="lesson_time_limit_exceeded">Total duration of lessons and breaks crossed its limit!</string>
+    <string name="set_colors">Set colors</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="in_month">This month</string>
+    <string name="permission_grant">Grant</string>
+    <string name="permission_deny">Deny</string>
+    <string name="set_as_alarm_tone">Set as alarm tone</string>
+    <string name="permission_granted">Permission granted!</string>
+    <string name="rotate_left">Rotate left</string>
+    <string name="rotate_right">Rotate right</string>
+    <string name="menu" translatable="false">Menu</string>
+    <string name="set_as_wallpaper_on_home_screen">Home screen</string>
+    <string name="set_as_wallpaper_on_lock_screen">Lock screen</string>
+    <string name="set_as_wallpaper_completely">Completely</string>
+    <string name="custom_ringtone">Custom ringtone</string>
+    <string name="cant_set_exact_alarm">You must grant the app permission to schedule exact alarms if you wish to receive notification or be woken up!</string>
 </resources>
