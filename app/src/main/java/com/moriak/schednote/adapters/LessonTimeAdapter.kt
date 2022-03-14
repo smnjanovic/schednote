@@ -6,6 +6,7 @@ import com.moriak.schednote.storage.Prefs.Settings.earliestMinute
 import com.moriak.schednote.storage.Prefs.Settings.timeFormat
 import com.moriak.schednote.R
 import com.moriak.schednote.data.LessonTime
+import kotlinx.android.synthetic.main.edit_tools.view.*
 import kotlinx.android.synthetic.main.lesson_data.view.*
 
 /**
@@ -27,8 +28,8 @@ class LessonTimeAdapter : CustomAdapter<LessonTime>(R.layout.lesson_data) {
     private val clickAction = View.OnClickListener {
         val h = it.tag as LessonTimeHolder
         triggerItemAction(h.adapterPosition, extras, when (it) {
-            h.itemView.les_time_edit -> ACTION_EDIT
-            h.itemView.les_time_delete -> ACTION_DELETE
+            h.itemView.edit -> ACTION_EDIT
+            h.itemView.delete -> ACTION_DELETE
             else -> 0
         })
     }
@@ -64,10 +65,12 @@ class LessonTimeAdapter : CustomAdapter<LessonTime>(R.layout.lesson_data) {
             itemView.les_time_order.text = item!!.order.toString()
             itemView.les_time_start.text = timeFormat.getFormat(st)
             itemView.les_time_end.text = timeFormat.getFormat(st + item!!.lessonDuration)
-            itemView.les_time_edit.tag = this
-            itemView.les_time_delete.tag = this
-            itemView.les_time_edit.setOnClickListener(clickAction)
-            itemView.les_time_delete.setOnClickListener(clickAction)
+            itemView.save.visibility = View.GONE
+            itemView.cancel.visibility = View.GONE
+            itemView.edit.tag = this
+            itemView.delete.tag = this
+            itemView.edit.setOnClickListener(clickAction)
+            itemView.delete.setOnClickListener(clickAction)
         }
     }
 }

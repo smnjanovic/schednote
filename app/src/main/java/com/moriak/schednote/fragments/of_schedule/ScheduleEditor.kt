@@ -30,8 +30,12 @@ import com.moriak.schednote.views.OptionStepper
 import com.moriak.schednote.views.RangeView
 import com.moriak.schednote.views.ScheduleView
 import com.moriak.schednote.widgets.ScheduleWidget
+import kotlinx.android.synthetic.main.sch_requirements_not_met.*
+import kotlinx.android.synthetic.main.sch_schedule_editor.*
+import kotlinx.android.synthetic.main.sch_schedule_editor.view.*
+import kotlinx.android.synthetic.main.sch_schedule_view.*
+import kotlinx.android.synthetic.main.sch_schedule_view.view.*
 import kotlinx.android.synthetic.main.schedule_editor.*
-import kotlinx.android.synthetic.main.schedule_editor.view.*
 import java.util.*
 
 /**

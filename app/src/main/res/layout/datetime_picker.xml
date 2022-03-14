@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -18,7 +19,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/date"
             android:src="@drawable/ic_date_range_black_40dp"
-            android:tint="@color/colorPrimaryDark" />
+            app:tint="@color/colorPrimaryDark" />
 
         <ImageView
             android:id="@+id/semester_btn"
@@ -28,7 +29,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/time"
             android:src="@drawable/ic_semester_40dp"
-            android:tint="@color/colorPrimaryDark" />
+            app:tint="@color/colorPrimaryDark" />
 
         <ImageView
             android:id="@+id/time_btn"
@@ -38,7 +39,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/time"
             android:src="@drawable/ic_schedule_black_40dp"
-            android:tint="@color/colorPrimaryDark" />
+            app:tint="@color/colorPrimaryDark" />
 
     </LinearLayout>
 

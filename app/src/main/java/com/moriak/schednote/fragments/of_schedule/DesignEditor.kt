@@ -46,6 +46,8 @@ import com.moriak.schednote.views.WallpaperView.ImageFit.*
 import com.moriak.schednote.widgets.ScheduleWidget
 import kotlinx.android.synthetic.main.style_layout.*
 import kotlinx.android.synthetic.main.style_layout.view.*
+import kotlinx.android.synthetic.main.wpp_color_editor.*
+import kotlinx.android.synthetic.main.wpp_image_editor.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.Main
@@ -300,7 +302,7 @@ class DesignEditor : SubActivity() {
         setUpState(savedInstanceState)
         loadSchedule(screen_view)
         setUpEvents()
-        Redirection.detectRedirection(activity?.intent)?.let { r ->
+        Redirection.detectRedirection(activity?.intent)?.let { _ ->
             val index = colorTypes.indexOfFirst {
                 it.id == activity?.intent?.extras?.getInt(Redirection.EXTRA_DESIGN_COLOR_GROUP)
             }

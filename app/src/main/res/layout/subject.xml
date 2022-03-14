@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sub_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:padding="4dp">
 
     <TextView
@@ -12,11 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="3"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/si_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/si_name"
-        tools:ignore="SmallSp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/si_name"
@@ -24,10 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/si_edit"
-        app:layout_constraintEnd_toStartOf="@+id/si_missed_notes"
-        app:layout_constraintStart_toEndOf="@+id/si_abb"
-        app:layout_constraintTop_toTopOf="@+id/si_edit" />
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/si_missed_notes"
@@ -37,10 +31,7 @@
         android:alpha="0.65"
         android:textAlignment="textEnd"
         android:textColor="@android:color/holo_red_dark"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/si_note_splitter"
-        app:layout_constraintEnd_toStartOf="@+id/si_note_splitter"
-        app:layout_constraintTop_toTopOf="@+id/si_note_splitter" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/si_note_splitter"
@@ -52,9 +43,6 @@
         android:textAlignment="center"
         android:textColor="@color/textColor"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/si_edit"
-        app:layout_constraintEnd_toStartOf="@+id/si_upcoming_notes"
-        app:layout_constraintTop_toTopOf="@+id/si_edit"
         tools:ignore="HardcodedText" />
 
     <TextView
@@ -64,50 +52,26 @@
         android:layout_marginEnd="8dp"
         android:alpha="0.65"
         android:textColor="@color/textColor"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/si_missed_notes"
-        app:layout_constraintEnd_toStartOf="@+id/note_icon"
-        app:layout_constraintTop_toTopOf="@+id/si_missed_notes"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageButton
-        android:id="@+id/si_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="@string/edit"
-        android:tint="#FFD600"
-        app:layout_constraintBottom_toBottomOf="@+id/si_delete"
-        app:layout_constraintEnd_toStartOf="@+id/si_delete"
-        app:layout_constraintTop_toTopOf="@+id/si_delete"
-        app:srcCompat="@drawable/ic_edit_black_24dp" />
-
-    <ImageButton
-        android:id="@+id/si_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="@string/delete"
-        android:tint="@android:color/holo_red_dark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_delete_black_24dp" />
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/note_icon"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:alpha="0.65"
         android:contentDescription="@string/notes"
-        android:tint="@color/textColor"
-        app:layout_constraintBottom_toBottomOf="@+id/si_edit"
-        app:layout_constraintEnd_toStartOf="@+id/si_edit"
-        app:layout_constraintTop_toTopOf="@+id/si_edit"
-        app:srcCompat="?attr/actionModePasteDrawable" />
+        app:tint="@color/textColor" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/si_tools"
+            layout="@layout/edit_tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+</LinearLayout>

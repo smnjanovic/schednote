@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B792E1"
+    android:visibility="visible"
+    app:layout_constraintBottom_toTopOf="@+id/bg_img_box"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <ImageView
+        android:id="@+id/palette_close"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="4dp"
+        android:background="#00000000"
+        android:contentDescription="@string/hide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close_black_24dp"
+        app:tint="#5C348C" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_span="3">
+
+                <com.moriak.schednote.views.OptionStepper
+                    android:id="@+id/palette_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:arrowBackground="#4FFF"
+                    app:arrowColor="#5C348C"
+                    app:arrowStroke="3dp" />
+            </FrameLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/palette_h_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/hue"
+                android:textAlignment="textEnd" />
+
+            <SeekBar
+                android:id="@+id/palette_h_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:max="359"
+                android:minWidth="160dp" />
+
+            <TextView
+                android:id="@+id/palette_h_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/palette_s_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/saturation"
+                android:textAlignment="textEnd" />
+
+            <SeekBar
+                android:id="@+id/palette_s_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="160dp" />
+
+            <TextView
+                android:id="@+id/palette_s_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/palette_l_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/luminance"
+                android:textAlignment="textEnd" />
+
+            <SeekBar
+                android:id="@+id/palette_l_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="160dp" />
+
+            <TextView
+                android:id="@+id/palette_l_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/palette_a_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@string/alpha"
+                android:textAlignment="textEnd" />
+
+            <SeekBar
+                android:id="@+id/palette_a_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="160dp" />
+
+            <TextView
+                android:id="@+id/palette_a_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2" />
+        </TableRow>
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

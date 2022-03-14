@@ -12,6 +12,7 @@ import com.moriak.schednote.data.Note
 import com.moriak.schednote.data.Subject
 import com.moriak.schednote.storage.Prefs.Settings.dateFormat
 import com.moriak.schednote.storage.Prefs.Settings.timeFormat
+import kotlinx.android.synthetic.main.edit_tools.view.*
 import kotlinx.android.synthetic.main.note_item.view.*
 
 /**
@@ -55,10 +56,10 @@ class NoteAdapter: CustomAdapter<Note?>(R.layout.note_item) {
         triggerItemAction((it.tag as NoteHolder).adapterPosition, extras, when(it.id) {
             R.id.ni_select_date -> ACTION_SELECT_DEADLINE
             R.id.ni_select_sub -> ACTION_SELECT_SUBJECT
-            R.id.ni_edit_start -> ACTION_EDIT_START
-            R.id.ni_edit_stop -> ACTION_EDIT_STOP
-            R.id.ni_save -> ACTION_EDIT_SAVE
-            R.id.ni_delete -> ACTION_DELETE
+            R.id.edit -> ACTION_EDIT_START
+            R.id.cancel -> ACTION_EDIT_STOP
+            R.id.save -> ACTION_EDIT_SAVE
+            R.id.delete -> ACTION_DELETE
             else -> 0
         })
     }
@@ -148,31 +149,31 @@ class NoteAdapter: CustomAdapter<Note?>(R.layout.note_item) {
             itemView.ni_editable.visibility = if (editing) VISIBLE else GONE
             itemView.ni_select_date.visibility = if (editing) VISIBLE else GONE
             itemView.ni_select_sub.visibility = if (editing) VISIBLE else GONE
-            itemView.ni_edit_stop.visibility = if (editing) VISIBLE else GONE
-            itemView.ni_save.visibility = if (editing) VISIBLE else GONE
+            itemView.cancel.visibility = if (editing) VISIBLE else GONE
+            itemView.save.visibility = if (editing) VISIBLE else GONE
             itemView.ni_readable.visibility = if (editing) GONE else VISIBLE
-            itemView.ni_edit_start.visibility = if (editing) GONE else VISIBLE
-            itemView.ni_delete.visibility = if (editing) GONE else VISIBLE
+            itemView.edit.visibility = if (editing) GONE else VISIBLE
+            itemView.delete.visibility = if (editing) GONE else VISIBLE
 
             //značky
             itemView.ni_editable.tag = this
             itemView.ni_select_date.tag = this
             itemView.ni_select_sub.tag = this
-            itemView.ni_edit_stop.tag = this
-            itemView.ni_save.tag = this
+            itemView.cancel.tag = this
+            itemView.save.tag = this
             itemView.ni_readable.tag = this
-            itemView.ni_edit_start.tag = this
-            itemView.ni_delete.tag = this
+            itemView.edit.tag = this
+            itemView.delete.tag = this
 
             //udalosti
             itemView.ni_editable.addTextChangedListener(onRewrite)
             itemView.ni_select_date.setOnClickListener(clickAction)
             itemView.ni_select_sub.setOnClickListener(clickAction)
-            itemView.ni_edit_stop.setOnClickListener(clickAction)
-            itemView.ni_save.setOnClickListener(clickAction)
+            itemView.cancel.setOnClickListener(clickAction)
+            itemView.save.setOnClickListener(clickAction)
             itemView.ni_readable.setOnClickListener(clickAction)
-            itemView.ni_edit_start.setOnClickListener(clickAction)
-            itemView.ni_delete.setOnClickListener(clickAction)
+            itemView.edit.setOnClickListener(clickAction)
+            itemView.delete.setOnClickListener(clickAction)
 
             itemView.ni_sub.text = if (editing) extras.getString(SUB_ABB) else item?.sub?.abb
             val deadline = if (editing) extras.get(WHEN) as Long? else item?.deadline

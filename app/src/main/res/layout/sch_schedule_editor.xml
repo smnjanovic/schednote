@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/sch_when_btn"
+        style="@style/border_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:contentDescription="@string/time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_schedule_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/sch_what_btn"
+        style="@style/border_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/lesson"
+        app:layout_constraintBottom_toBottomOf="@+id/sch_when_btn"
+        app:layout_constraintStart_toEndOf="@+id/sch_when_btn"
+        app:layout_constraintTop_toTopOf="@+id/sch_when_btn"
+        app:srcCompat="@drawable/ic_books" />
+
+    <LinearLayout
+        android:id="@+id/sch_when"
+        style="@style/border_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/lesson_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sch_when_btn"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.moriak.schednote.views.OptionStepper
+            android:id="@+id/regularity_choice"
+            app:arrowStroke="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:arrowBackground="@color/pale"
+            app:arrowColor="@color/juicy" />
+
+        <com.moriak.schednote.views.OptionStepper
+            android:id="@+id/day_choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:arrowBackground="@color/pale"
+            app:arrowColor="@color/juicy"
+            app:arrowStroke="3dp" />
+
+        <TextView
+            android:id="@+id/time_reader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <com.moriak.schednote.views.RangeView
+            android:id="@+id/time_choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sch_what"
+        style="@style/border_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/lesson_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sch_what_btn"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.moriak.schednote.views.OptionStepper
+            android:id="@+id/lesson_type_choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:arrowBackground="@color/pale"
+            app:arrowColor="@color/juicy"
+            app:arrowStroke="3dp" />
+
+        <com.moriak.schednote.views.OptionStepper
+            android:id="@+id/subject_choice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:arrowBackground="@color/pale"
+            app:arrowColor="@color/juicy"
+            app:arrowStroke="3dp" />
+
+        <EditText
+            android:id="@+id/room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/room"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lesson_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/ll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/confirm"
+            style="@style/border_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:minHeight="20dp"
+            android:text="@string/add" />
+
+        <Button
+            android:id="@+id/abort_or_free"
+            style="@style/border_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:minHeight="20dp"
+            android:text="@string/free" />
+
+        <Button
+            android:id="@+id/delete_or_empty_out"
+            style="@style/border_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:minHeight="20dp"
+            android:text="@string/to_empty" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

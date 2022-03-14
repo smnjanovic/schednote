@@ -20,8 +20,8 @@ object LessonTypes : Table() {
     $TYPE INTEGER PRIMARY KEY,
     $TYPE_NAME VARCHAR(24) NOT NULL UNIQUE CHECK(
         LENGTH($TYPE_NAME) BETWEEN 1 AND 24
-        AND $TYPE_NAME GLOB '[a-zA-ZÀ-ž]*'
-        AND $TYPE_NAME NOT GLOB '*[^a-zA-ZÀ-ž ]*'
+        AND $TYPE_NAME GLOB '[a-zA-ZÀ-ž0-9]*'
+        AND $TYPE_NAME NOT GLOB '*[^a-zA-ZÀ-ž0-9 ]*'
     ),
     $COLOR INTEGER NOT NULL DEFAULT(random() & 0xFFFFFFFF | 0xB2000000)
 );"""

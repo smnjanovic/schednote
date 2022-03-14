@@ -140,7 +140,7 @@ class AlarmToneActivity : ShakeCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_alarm_tune)
+        setContentView(R.layout.activity_alarm_tone)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         adapter = AlarmToneAdapter()
         adapter.onItemAction(this::toneAction)

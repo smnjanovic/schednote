@@ -215,4 +215,5 @@
     <string name="set_as_wallpaper_completely">Completely</string>
     <string name="custom_ringtone">Custom ringtone</string>
     <string name="cant_set_exact_alarm">You must grant the app permission to schedule exact alarms if you wish to receive notification or be woken up!</string>
+    <string name="hide">Hide</string>
 </resources>

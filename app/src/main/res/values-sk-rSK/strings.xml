@@ -221,4 +221,5 @@
     <string name="notifications">Upozornenia</string>
     <string name="custom_ringtone">Vlastný tón budenia</string>
     <string name="cant_set_exact_alarm">Ak chcete dostávať upozornenia alebo byť prebudení, musíte aplikácii povoliť plánovať dochvíľne upozornenia.</string>
+    <string name="hide">Skryť</string>
 </resources>

@@ -9,6 +9,7 @@ import com.moriak.schednote.Palette
 import com.moriak.schednote.R
 import com.moriak.schednote.TextCursorTracer
 import com.moriak.schednote.data.LessonType
+import kotlinx.android.synthetic.main.edit_tools.view.*
 import kotlinx.android.synthetic.main.lesson_type_data.view.*
 
 
@@ -41,9 +42,9 @@ class LessonTypeAdapter : CustomAdapter<LessonType?>(R.layout.lesson_type_data) 
     private val clickAction = View.OnClickListener {
         val h = it.tag as LessonTypesHolder
         triggerItemAction(h.adapterPosition, extras, when (it.id) {
-            R.id.lt_readable, R.id.lt_edit -> ACTION_EDIT
-            R.id.lt_save -> ACTION_SAVE
-            R.id.lt_delete -> ACTION_DELETE
+            R.id.lt_readable, R.id.edit -> ACTION_EDIT
+            R.id.save -> ACTION_SAVE
+            R.id.delete -> ACTION_DELETE
             else -> 0
         })
     }
@@ -95,15 +96,15 @@ class LessonTypeAdapter : CustomAdapter<LessonType?>(R.layout.lesson_type_data) 
             itemView.line.background.setTint(palette.color)
             itemView.lt_readable.setTextColor(palette.contrast)
             itemView.lt_editable.setTextColor(palette.contrast)
-            itemView.lt_edit.drawable.setTint(palette.contrast)
-            itemView.lt_save.drawable.setTint(palette.contrast)
-            itemView.lt_delete.drawable.setTint(palette.contrast)
+            itemView.edit.drawable.setTint(palette.contrast)
+            itemView.save.drawable.setTint(palette.contrast)
+            itemView.delete.drawable.setTint(palette.contrast)
 
             val editing = extras.getInt(ID, -1) == (item?.id ?: -1)
             itemView.lt_readable.visibility = if (editing) GONE else VISIBLE
             itemView.lt_editable.visibility = if (editing) VISIBLE else GONE
-            itemView.lt_edit.visibility = if (editing) GONE else VISIBLE
-            itemView.lt_save.visibility = if (editing) VISIBLE else GONE
+            itemView.edit.visibility = if (editing) GONE else VISIBLE
+            itemView.save.visibility = if (editing) VISIBLE else GONE
             itemView.lt_editable.addTextChangedListener(onRewrite)
             if (editing) {
                 val st = extras.getInt(CURSOR_START)
@@ -113,13 +114,14 @@ class LessonTypeAdapter : CustomAdapter<LessonType?>(R.layout.lesson_type_data) 
                 itemView.lt_editable.requestFocus()
             } else itemView.lt_readable.text = item?.name
             itemView.lt_readable.tag = this
-            itemView.lt_edit.tag = this
-            itemView.lt_save. tag = this
-            itemView.lt_delete.tag = this
+            itemView.cancel.visibility = GONE
+            itemView.edit.tag = this
+            itemView.save. tag = this
+            itemView.delete.tag = this
             itemView.lt_readable.setOnClickListener(clickAction)
-            itemView.lt_edit.setOnClickListener(clickAction)
-            itemView.lt_save.setOnClickListener(clickAction)
-            itemView.lt_delete.setOnClickListener(clickAction)
+            itemView.edit.setOnClickListener(clickAction)
+            itemView.save.setOnClickListener(clickAction)
+            itemView.delete.setOnClickListener(clickAction)
         }
     }
 }

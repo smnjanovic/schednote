@@ -17,9 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_audiotrack_black_24dp"
+            app:drawableStartCompat="@drawable/ic_audiotrack_black_24dp"
             android:drawablePadding="4dp"
-            android:drawableTint="@color/colorPrimaryDark"
+            app:drawableTint="@color/colorPrimaryDark"
             android:gravity="center|start" />
 
         <ImageButton
@@ -27,35 +27,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#0FFF"
-            android:tint="#16B11D"
             app:srcCompat="@android:drawable/ic_media_play"
-            android:contentDescription="@string/play_ringtone" />
+            android:contentDescription="@string/play_ringtone"
+            app:tint="#16B11D" />
 
         <ImageButton
             android:id="@+id/ac_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#0FFF"
-            android:tint="#FFAB00"
             app:srcCompat="@android:drawable/ic_media_pause"
-            android:contentDescription="@string/stop" />
+            android:contentDescription="@string/stop"
+            app:tint="#FFAB00" />
 
         <ImageButton
             android:id="@+id/ac_choose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#0FFF"
-            android:tint="#DDD"
             app:srcCompat="@drawable/ic_done_black_36dp"
-            android:contentDescription="@string/set_as_alarm_tone" />
+            android:contentDescription="@string/set_as_alarm_tone"
+            app:tint="#DDD" />
 
         <ImageButton
             android:id="@+id/ac_chosen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#0FFF"
-            android:tint="#16B11D"
             app:srcCompat="@drawable/ic_done_black_36dp"
-            android:contentDescription="@string/alarm_tone"/>
+            android:contentDescription="@string/alarm_tone"
+            app:tint="#16B11D" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

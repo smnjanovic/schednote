@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/drawable/ic_alarm_white24dp.xml" value="0.121" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/drawable/ic_settings_white_24dp.xml" value="0.121" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/alarm_setter.xml" value="0.1" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/datetime_picker.xml" value="0.1" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/lesson_time_scheduler.xml" value="0.2" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/notes.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/reminder_setter.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/sch_requirements_met.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/schedule_editor.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout-land/style_layout.xml" value="0.264" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/activity_active_alarm.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/activity_alarm_tune.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/activity_main.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/activity_settings.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/alarm_setter.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/alarm_tone_item.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/alarms.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/color_editor.xml" value="0.264" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/date_time_format.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/datetime_picker.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/day_alarm.xml" value="0.152" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/delete_only_note.xml" value="0.264" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/edit_tools.xml" value="0.6" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/lesson_data.xml" value="0.6" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/lesson_duration_setter.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/lesson_time_scheduler.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/lesson_type_data.xml" value="0.4" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/lesson_types.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/list_layout.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/minute_advance.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/note_item.xml" value="0.2" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/note_widget.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/note_widget_configure.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/notes.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/reminder_setter.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/sch_requirements_met.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/sch_requirements_not_met.xml" value="0.2" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/sch_schedule_editor.xml" value="0.264" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/sch_schedule_view.xml" value="0.2" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/schedule.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/schedule_editor.xml" value="0.264" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/schedule_widget.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/semester.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/style_layout.xml" value="0.2" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/sub_edit.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/subject.xml" value="0.536" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/voice.xml" value="0.264" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/wpp_image_editor.xml" value="0.264" />
+        <entry key="..\:/Users/Spravca/AndroidStudioProjects/schednote/app/src/main/res/layout/wpp_img_editor.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

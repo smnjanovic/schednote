@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/border_button"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F39292"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="8dp"
+    tools:layout_editor_absoluteY="8dp">
+
+    <TextView
+        android:id="@+id/rnm_lesson_times_required"
+        style="@style/error_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lessons_required" />
+
+    <TextView
+        android:id="@+id/rnm_lesson_types_required"
+        style="@style/error_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lesson_type_required" />
+
+    <TextView
+        android:id="@+id/rnm_subjects_required"
+        style="@style/error_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/subject_required" />
+</LinearLayout>

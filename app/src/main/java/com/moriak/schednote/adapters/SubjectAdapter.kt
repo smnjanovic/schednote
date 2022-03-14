@@ -6,6 +6,7 @@ import com.moriak.schednote.R
 import com.moriak.schednote.data.Subject
 import com.moriak.schednote.storage.SQLite
 import com.moriak.schednote.enums.TimeCategory
+import kotlinx.android.synthetic.main.edit_tools.view.*
 import kotlinx.android.synthetic.main.subject.view.*
 
 /**
@@ -26,8 +27,8 @@ class SubjectAdapter : CustomAdapter<Subject>(R.layout.subject) {
 
     private val clickEvent = View.OnClickListener {
         triggerItemAction((it.tag as SubjectHolder).adapterPosition, extras, when (it.id) {
-            R.id.si_edit -> ACTION_EDIT
-            R.id.si_delete -> ACTION_DELETE
+            R.id.edit -> ACTION_EDIT
+            R.id.delete -> ACTION_DELETE
             else -> 0
         })
     }
@@ -58,10 +59,12 @@ class SubjectAdapter : CustomAdapter<Subject>(R.layout.subject) {
             itemView.si_name.text = item?.name
             itemView.si_missed_notes.text = SQLite.notes(TimeCategory.LATE, item!!).count().toString()
             itemView.si_upcoming_notes.text = SQLite.notes(TimeCategory.UPCOMING, item!!).count().toString()
-            itemView.si_edit.tag = this
-            itemView.si_edit.setOnClickListener(clickEvent)
-            itemView.si_delete.tag = this
-            itemView.si_delete.setOnClickListener(clickEvent)
+            itemView.save.visibility = View.GONE
+            itemView.cancel.visibility = View.GONE
+            itemView.edit.tag = this
+            itemView.edit.setOnClickListener(clickEvent)
+            itemView.delete.tag = this
+            itemView.delete.setOnClickListener(clickEvent)
         }
     }
 }

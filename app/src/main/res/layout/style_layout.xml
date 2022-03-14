@@ -58,18 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_image_black_24dp" />
 
-    <ImageButton
-        android:id="@+id/wallpaper"
-        style="@style/border_button"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/set_as_wallpaper"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_phone_android_black_24dp" />
-
     <ImageView
         android:id="@+id/bg_rotate_left"
         style="@style/border_button"
@@ -95,6 +83,18 @@
         android:contentDescription="@string/rotate_right"/>
 
     <ImageButton
+        android:id="@+id/wallpaper"
+        style="@style/border_button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/set_as_wallpaper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_phone_android_black_24dp" />
+
+    <ImageButton
         android:id="@+id/palette_open"
         style="@style/border_button"
         android:layout_width="36dp"
@@ -106,255 +106,49 @@
         app:layout_constraintBottom_toTopOf="@+id/palette_box"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:id="@+id/palette_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#B792E1"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bg_img_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/palette_close"
-            style="@style/juicy_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="end"
-            android:layout_margin="4dp"
-            android:text="×"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/palette_divider"
-            tools:ignore="HardcodedText" />
-
-        <com.moriak.schednote.views.OptionStepper
-            android:id="@+id/palette_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:arrowBackground="#4FFF"
-            app:arrowColor="#5C348C"
-            app:arrowStroke="3dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/palette_h_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hue"
-            android:textAlignment="textEnd"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_h_range"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_h_range" />
-
-        <SeekBar
-            android:id="@+id/palette_h_range"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:max="359"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_h_number"
-            app:layout_constraintEnd_toEndOf="@+id/palette_s_range"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_h_number" />
-
-        <TextView
-            android:id="@+id/palette_h_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:ems="2"
-            app:layout_constraintEnd_toEndOf="@+id/palette_a_number"
-            app:layout_constraintTop_toBottomOf="@+id/palette_category" />
-
-        <TextView
-            android:id="@+id/palette_s_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/saturation"
-            android:textAlignment="textEnd"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_s_range"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_s_range" />
-
-        <SeekBar
-            android:id="@+id/palette_s_range"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_s_number"
-            app:layout_constraintEnd_toEndOf="@+id/palette_a_range"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_s_number" />
-
-        <TextView
-            android:id="@+id/palette_s_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="2"
-            app:layout_constraintEnd_toEndOf="@+id/palette_a_number"
-            app:layout_constraintTop_toBottomOf="@+id/palette_h_number" />
-
-        <TextView
-            android:id="@+id/palette_l_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/luminance"
-            android:textAlignment="textEnd"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_l_range"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_l_range" />
-
-        <SeekBar
-            android:id="@+id/palette_l_range"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_l_number"
-            app:layout_constraintEnd_toEndOf="@+id/palette_a_range"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_l_number" />
-
-        <TextView
-            android:id="@+id/palette_l_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="2"
-            app:layout_constraintEnd_toEndOf="@+id/palette_a_number"
-            app:layout_constraintTop_toBottomOf="@+id/palette_s_number" />
-
-        <TextView
-            android:id="@+id/palette_a_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/alpha"
-            android:textAlignment="textEnd"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_a_range"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_a_range" />
-
-        <SeekBar
-            android:id="@+id/palette_a_range"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/palette_a_number"
-            app:layout_constraintEnd_toStartOf="@+id/palette_a_number"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/palette_a_number" />
-
-        <TextView
-            android:id="@+id/palette_a_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            android:ems="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/palette_l_number" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="91dp" />
+        <include
+            android:id="@+id/in_palette"
+            layout="@layout/wpp_color_editor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <View
             android:id="@+id/palette_divider"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="#5C348C"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="#5C348C" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/bg_img_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#C1DCF8"
-        android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <include
+            android:id="@+id/in_bg_img"
+            layout="@layout/wpp_image_editor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <View
             android:id="@+id/bg_img_divider"
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="?android:attr/listDivider"
-            tools:background="#2E577E" />
+            android:background="?android:attr/listDivider" />
 
-        <Button
-            android:id="@+id/bg_img_close"
-            style="@style/juicy_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="end"
-            android:layout_margin="4dp"
-            android:text="×"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/bg_img_set"
-            style="@style/border_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="@string/set_bg_image"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/bg_img_remove"
-            style="@style/border_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="@string/remove_bg_image"
-            android:textAlignment="center" />
-
-        <RadioGroup
-            android:id="@+id/radios"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp">
-
-            <RadioButton
-                android:id="@+id/fill"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/fill"
-                tools:textSize="12sp" />
-
-            <RadioButton
-                android:id="@+id/cover"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/cover"
-                tools:textSize="12sp" />
-
-            <RadioButton
-                android:id="@+id/contain"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/fit"
-                tools:textSize="12sp" />
-        </RadioGroup>
-    </LinearLayout>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
