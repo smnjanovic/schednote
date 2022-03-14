@@ -144,6 +144,7 @@ class ScheduleEditor : SubActivity() {
 
                     if (regularityBelongs(reg)) free(day, time)
                     SQLite.clearSchedule(day, time, reg)
+                    ScheduleWidget.update(v.context)
                     App.toast(R.string.schedule_freed)
                 }
                 else editing = null
@@ -153,6 +154,7 @@ class ScheduleEditor : SubActivity() {
                     if (regularityBelongs(editing!!.reg)) free(editing!!.day, editing!!.time)
                     SQLite.clearSchedule(editing!!.day, editing!!.time, editing!!.reg)
                     App.toast(R.string.lesson_removed)
+                    ScheduleWidget.update(v.context)
                     editing = null
                 }
                 else {

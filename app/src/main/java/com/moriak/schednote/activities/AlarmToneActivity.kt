@@ -25,7 +25,7 @@ import com.moriak.schednote.dialogs.InfoDialog
 import com.moriak.schednote.enums.PermissionHandler.AUDIO_ACCESS
 import com.moriak.schednote.storage.Prefs
 import com.moriak.schednote.storage.Prefs.Settings.alarmTone
-import kotlinx.android.synthetic.main.activity_alarm_tune.*
+import kotlinx.android.synthetic.main.activity_alarm_tone.*
 
 /**
  * Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
