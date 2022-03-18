@@ -10,7 +10,6 @@ import com.moriak.schednote.interfaces.NoteCategory
 import com.moriak.schednote.notifications.AlarmClockSetter
 import com.moriak.schednote.storage.SQLite
 import com.moriak.schednote.widgets.NoteWidget
-import java.util.*
 
 /**
  * [Command] predstavuje množinu príkazov, ktoré možno vysloviť
@@ -72,7 +71,7 @@ enum class Command(val redirection: Redirection?, @StringRes val cmdRes: Int, @S
     };
 
     companion object {
-        private fun said(value: String) = value.trim().toLowerCase(Locale.ROOT)
+        private fun said(value: String) = value.trim().lowercase()
         /**
          * Identifikuje príkaz na základe počutého výrazu
          * @param str Počutý výraz

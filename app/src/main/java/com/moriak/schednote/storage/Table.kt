@@ -8,9 +8,7 @@ import java.util.*
  * vytvoriť danú tabuľku, pokiaľ neexistuje, príp. k nej pridať triggre.
  */
 abstract class Table {
-    private val table = javaClass.simpleName
-        .replace("(.)([A-Z])".toRegex(), "$1_$2")
-        .toLowerCase(Locale.ROOT)
+    private val table = javaClass.simpleName.replace("(.)([A-Z])".toRegex(), "$1_$2").lowercase()
 
     /**
      * @return Názov tabuľky

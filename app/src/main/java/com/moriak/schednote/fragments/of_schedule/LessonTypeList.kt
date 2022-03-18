@@ -53,10 +53,9 @@ class LessonTypeList : ListSubActivity<LessonType?>(R.layout.lesson_types, R.id.
         else if (state == SUCCESS && SQLite.renameLessonType(id, name) != 1)
             throw Exception("Failed to rename lesson type!")
 
-        return SaveResult(state, LessonType(id, when(name.length) {
-            0, 1 -> name.toUpperCase(Locale.ROOT)
-            else -> name.substring(0, 1).toUpperCase(Locale.ROOT) +
-                    name.substring(1).toLowerCase(Locale.ROOT)
+        return SaveResult(state, LessonType(id, when (name.length) {
+            0, 1 -> name.uppercase()
+            else -> name.substring(0, 1).uppercase() + name.substring(1).lowercase()
         }, color ?: Palette()), isNew)
     }
 

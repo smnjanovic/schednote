@@ -54,7 +54,7 @@ object SQLite : SQLiteControl() {
      */
     fun subject(abb: String): Subject? {
         val sql = "SELECT $SUB_ID, $ABB, $SUB_NAME FROM $Subjects WHERE $ABB LIKE ?"
-        return one(sql, abb.trim().toUpperCase(Locale.ROOT)) {
+        return one(sql, abb.trim().uppercase()) {
             Subject(getLong(0), getString(1), getString(2))
         }
     }

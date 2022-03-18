@@ -1,5 +1,6 @@
 package com.moriak.schednote.storage
 
+import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.net.Uri
@@ -114,19 +115,20 @@ object Prefs {
          * sa zhoduje s číslom získaným z [SharedPreferences], pod nejakým kľúčom.
          */
         private val enumMap: Map<String, Array<out Enum<*>>> = mapOf(
-            AlarmCategory::class.java.canonicalName to AlarmCategory.values(),
-            DateFormat::class.java.canonicalName to DateFormat.values(),
-            LessonTimeFormat::class.java.canonicalName to LessonTimeFormat.values(),
-            ScheduleDisplay::class.java.canonicalName to ScheduleDisplay.values(),
-            SubContent::class.java.canonicalName to SubContent.values(),
-            TimeFormat::class.java.canonicalName to TimeFormat.values(),
-            WorkWeek::class.java.canonicalName to WorkWeek.values(),
-            ImageFit::class.java.canonicalName to ImageFit.values(),
-            ImageAngle::class.java.canonicalName to ImageAngle.values()
+            AlarmCategory::class.java.canonicalName!! to AlarmCategory.values(),
+            DateFormat::class.java.canonicalName!! to DateFormat.values(),
+            LessonTimeFormat::class.java.canonicalName!! to LessonTimeFormat.values(),
+            ScheduleDisplay::class.java.canonicalName!! to ScheduleDisplay.values(),
+            SubContent::class.java.canonicalName!! to SubContent.values(),
+            TimeFormat::class.java.canonicalName!! to TimeFormat.values(),
+            WorkWeek::class.java.canonicalName!! to WorkWeek.values(),
+            ImageFit::class.java.canonicalName!! to ImageFit.values(),
+            ImageAngle::class.java.canonicalName!! to ImageAngle.values()
         )
         private val sp get() = App.ctx.getSharedPreferences(javaClass.canonicalName, MODE_PRIVATE)
 
         protected fun <T> restore(fn: SharedPreferences.() -> T): T = sp.fn()
+        @SuppressLint("CommitPrefEdits")
         protected fun store(fn: SharedPreferences.Editor.() -> SharedPreferences.Editor) = sp.edit().fn().apply()
 
         /**
