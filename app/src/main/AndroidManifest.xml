@@ -34,7 +34,8 @@
 
         <receiver
             android:name=".BootReceiver"
-            android:directBootAware="true">
+            android:directBootAware="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -45,7 +46,8 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".widgets.NoteWidget">
+        <receiver android:name=".widgets.NoteWidget"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -55,7 +57,8 @@
                 android:resource="@xml/note_widget_info" />
         </receiver>
 
-        <receiver android:name=".widgets.ScheduleWidget">
+        <receiver android:name=".widgets.ScheduleWidget"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -90,7 +93,8 @@
 
         <activity
             android:name=".activities.NoteWidgetConfigActivity"
-            android:label="@string/notes">
+            android:label="@string/notes"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -101,7 +105,8 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:clearTaskOnLaunch="true">
+            android:clearTaskOnLaunch="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

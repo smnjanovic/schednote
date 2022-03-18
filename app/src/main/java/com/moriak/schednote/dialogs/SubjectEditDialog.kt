@@ -60,7 +60,7 @@ class SubjectEditDialog(subject: Subject? = null, handler: ResultHandler? = null
 
     private val abbWatcher = object : TextCursorTracer(ABB_REGEX) {
         override fun onCursorChanged(range: IntRange) { selectionRange = range }
-        override fun afterValidTextChange(s: Editable) { abb = "$s".toUpperCase(Locale.ROOT) }
+        override fun afterValidTextChange(s: Editable) { abb = "$s".uppercase() }
         override fun afterInvalidTextChange(s: Editable) {
             if (s.isEmpty()) afterValidTextChange(s) else s.delete(st, en)
         }
@@ -70,11 +70,10 @@ class SubjectEditDialog(subject: Subject? = null, handler: ResultHandler? = null
         private val helpRgx = "^([^a-zA-ZÀ-ž0-9]*)(.{0,48}).*$".toRegex()
         override fun onCursorChanged(range: IntRange) { selectionRange = range }
         override fun afterValidTextChange(s: Editable) {
-            val l = Locale.ROOT
             val t = s.toString()
             name = when (t.length) {
-                0, 1 -> t.toUpperCase(l)
-                else -> t.substring(0, 1).toUpperCase(l) + t.substring(1).toLowerCase(l)
+                0, 1 -> t.uppercase()
+                else -> t.substring(0, 1).uppercase() + t.substring(1).lowercase()
             }
         }
         override fun afterInvalidTextChange(s: Editable) {

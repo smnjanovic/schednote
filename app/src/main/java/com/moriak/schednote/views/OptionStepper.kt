@@ -40,56 +40,52 @@ class OptionStepper : CustomView {
         private lateinit var longClickTimeOut: Runner
 
         override fun onTouch(v: View?, evt: MotionEvent?): Boolean {
-            evt!!
-            v as OptionStepper
-            if (!this::longClickTimeOut.isInitialized) longClickTimeOut = Runner(v, this)
-
-            when {
-                evt.action == MotionEvent.ACTION_DOWN -> {
-                    if (!v.isPressed) {
-                        v.isPressed = true
-                        direction = when {
-                            evt.x <= v.arrowWidth * 2 -> -1
-                            evt.x >= v.width - v.arrowWidth * 2 -> 1
-                            else -> 0
+            synchronized(v as OptionStepper) {
+                if (!this::longClickTimeOut.isInitialized) longClickTimeOut = Runner(v, this)
+                when (evt?.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        if (!v.isPressed) {
+                            v.isPressed = true
+                            // zistenie, ci uzivatel tukol na sipku, a ak ano, tak na ktoru
+                            direction = v.checkStepDirection(evt.x, evt.y)
+                            if (direction == 0) handler.postDelayed(longClickTimeOut, 2 * longClick)
                         }
-                        if (direction == 0)
-                            handler.postDelayed(longClickTimeOut, 2 * longClick)
-                    }
-                    v.invalidate()
-                }
-                v.isPressed && evt.action == MotionEvent.ACTION_UP -> {
-                    handler.removeCallbacks(longClickTimeOut)
-                    v.isPressed = false
-                    v.index += direction
-                    if (direction == 0) when (true) {
-                        evt.eventTime - evt.downTime > longClick -> v.performLongClick()
-                        v.hasOnClickListeners() -> v.performClick()
-                        v.options?.let { it.size > 2 } -> AlertDialog.Builder(v.context)
-                            .setItems(v.options!!.indices.map { v.getText(it) }
-                                .toTypedArray()) { _, which ->
-                                v.index = which
-                                v.onChange?.onChange(v, v.option)
-                            }
-                            .show()
-                    } else if (direction < 0 && evt.x <= v.arrowWidth
-                        || direction > 0 && evt.x >= v.width - v.arrowWidth) {
-                        v.onChange?.onChange(v, if (v.index != -1) v.options!![v.index] else null)
-                    }
-                    direction = 0
-                    v.invalidate()
-                }
-                evt.action == MotionEvent.ACTION_MOVE -> {
-                    val oldDir = direction
-                    direction = when {
-                        evt.x <= v.arrowWidth -> -1
-                        evt.x >= v.width - v.arrowWidth -> 1
-                        else -> 0
-                    }
-                    if (oldDir != direction) {
                         v.invalidate()
-                        v.isPressed = false
-                        handler.removeCallbacks(longClickTimeOut)
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        // ked sa pouzivatel presunie do inej casti bloku, nestane sa nic
+                        val oldDir = direction
+                        direction = v.checkStepDirection(evt.x, evt.y)
+                        if (oldDir != direction) {
+                            v.invalidate()
+                            v.isPressed = false
+                            handler.removeCallbacks(longClickTimeOut)
+                        }
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        if (v.isPressed) {
+                            handler.removeCallbacks(longClickTimeOut)
+                            v.isPressed = false
+                            v.index += direction
+                            when {
+                                direction == 0 -> when {
+                                    evt.eventTime - evt.downTime > longClick -> v.performLongClick()
+                                    v.hasOnClickListeners() -> v.performClick()
+                                    v.options?.let { it.size > 2 } == true -> AlertDialog.Builder(v.context)
+                                        .setItems(v.options!!.indices.map { v.getText(it) }
+                                            .toTypedArray()) { _, which ->
+                                            v.index = which
+                                            v.onChange?.onChange(v, v.option)
+                                        }
+                                        .show()
+                                }
+                                direction < 0 && evt.x <= v.arrowWidth
+                                        || direction > 0 && evt.x >= v.width - v.arrowWidth ->
+                                    v.onChange?.onChange(v, if (v.index != -1) v.options!![v.index] else null)
+                            }
+                            direction = 0
+                            v.invalidate()
+                        }
                     }
                 }
             }
@@ -163,7 +159,12 @@ class OptionStepper : CustomView {
     val option get() = if (index != -1) options!![index] else null
     var index: Int = -1; set(value) {
         val count = options?.count() ?: 0
-        field = if (count > 0) value % count + (if (value < 0) count else 0) else -1
+        field = when {
+            count in 0..1 -> options?.lastIndex ?: -1
+            value < 0 -> value % count + count
+            value >= count -> value % count
+            else -> value
+        }
         invalidate()
     }
     val text: String get() = getText(index)
@@ -177,6 +178,15 @@ class OptionStepper : CustomView {
         arrowPaint.strokeJoin = Paint.Join.ROUND
         txtPaint.isAntiAlias = true
         arrowPaint.isAntiAlias = true
+    }
+
+    private fun checkStepDirection(x: Float, y: Float): Int = when (y.toInt()) {
+        !in 0 .. height -> 0
+        else -> when (x.toInt()) {
+            in 0 .. arrowWidth * 2 -> -1
+            in width - arrowWidth * 2 .. width -> 1
+            else -> 0
+        }
     }
 
     private fun getText(pos: Int): String {
@@ -274,21 +284,24 @@ class OptionStepper : CustomView {
         rect.left = width - arrowWidth
         canvas.drawRect(rect, arrowBgPaint)
 
-        // sipky
-        val verticalPadding = (height - arrowWidth) / 2
-        val arrowHeadX = dp(5F)
-        val arrowButtX = dp(12F)
-        val arrowHeadY = verticalPadding + dp(8F)
-        val arrowButtY1 = verticalPadding + dp(2F)
-        val arrowButtY2 = height - verticalPadding - dp(2F)
-        path.reset()
-        path.moveTo(arrowButtX, arrowButtY1)
-        path.lineTo(arrowHeadX, arrowHeadY)
-        path.lineTo(arrowButtX, arrowButtY2)
-        path.moveTo(width - arrowButtX, arrowButtY1)
-        path.lineTo(width - arrowHeadX, arrowHeadY)
-        path.lineTo(width - arrowButtX, arrowButtY2)
-        canvas.drawPath(path, arrowPaint)
+        // sipky - viditelne iba, ak je na vyber viacero hodnot
+        val count = options?.count() ?: 0
+        if (count > 1) {
+            val verticalPadding = (height - arrowWidth) / 2
+            val arrowHeadX = dp(5F)
+            val arrowButtX = dp(12F)
+            val arrowHeadY = verticalPadding + dp(8F)
+            val arrowButtY1 = verticalPadding + dp(2F)
+            val arrowButtY2 = height - verticalPadding - dp(2F)
+            path.reset()
+            path.moveTo(arrowButtX, arrowButtY1)
+            path.lineTo(arrowHeadX, arrowHeadY)
+            path.lineTo(arrowButtX, arrowButtY2)
+            path.moveTo(width - arrowButtX, arrowButtY1)
+            path.lineTo(width - arrowHeadX, arrowHeadY)
+            path.lineTo(width - arrowButtX, arrowButtY2)
+            canvas.drawPath(path, arrowPaint)
+        }
 
         txtPaint.getTextBounds(text, 0, text.length, rect)
         val txtY = height - (height - rect.height()) / 2F

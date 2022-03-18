@@ -2,22 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'org.jetbrains.dokka'
 
 android {
     compileSdkVersion 31
-    buildToolsVersion '30.0.2'
-
-    dokka {
-        outputFormat = 'html'
-        outputDirectory = "$projectDir/dokka"
-
-        configuration {
-            skipDeprecated = true
-            reportUndocumented = true
-            skipEmptyPackages = true
-        }
-    }
+    buildToolsVersion '31.0.0'
 
     defaultConfig {
         applicationId "com.moriak.schednote"
@@ -49,26 +37,18 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.activity:activity:1.4.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.core:core-ktx:1.7.0'
-    // pre uspesny nahlad obsahu tohto bloku v editore
-    //implementation "androidx.constraintlayout:constraintlayout:1.0.2"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.2"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.5.0'
 
     //korutiny
     def coroutinesVersion = "1.2.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
-}
-
-// workaround: create DocsByDokka
-task DocsByDokka(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "html"
-    outputDirectory = "$projectDir/dokka"
 }
