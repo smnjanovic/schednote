@@ -122,16 +122,22 @@ object SQLite : SQLiteControl() {
      * @return vráti čas začiatku prvej vyučovacej hodiny v minútach meraných od počiatku rozvrhu
      * @see Regularity
      */
-    fun firstLessonStart(day: Day, regularity: Regularity): Int? {
-        val reg = when (regularity) {
-            Regularity.EVEN -> "$REG != 1"
-            Regularity.ODD -> "$REG != 0"
-            Regularity.EVERY -> "$REG = 2"
+    fun firstLessonStart(day: Day, regularity: Regularity): Int? = one("""
+        SELECT MIN(l.start)
+        FROM (
+            SELECT r1.$LES_NO, COALESCE(SUM(r2.$LESSON_DUR + r2.$BREAK_DUR), 0) AS start
+            FROM $ScheduleRange r1 LEFT JOIN $ScheduleRange r2 ON r1.$LES_NO > r2.$LES_NO
+            GROUP BY r1.$LES_NO
+        ) l JOIN $Schedule s ON s.$LES_NO = l.$LES_NO
+        WHERE s.$DAY = ${day.value} AND s.$REG ${
+            when (regularity) {
+                Regularity.EVEN -> "!= 1"
+                Regularity.ODD -> "!= 0"
+                Regularity.EVERY -> "= 2"
+            }
         }
-        val order = "SELECT MIN($LES_NO) FROM $Schedule WHERE $DAY = ${day.value} AND $reg"
-        val start = "SELECT SUM($LESSON_DUR + $BREAK_DUR) FROM $ScheduleRange WHERE $LES_NO < ($order)"
-        return one(start) { getIntOrNull(0) }
-    }
+        GROUP BY s.$DAY
+    """) { getIntOrNull(0) }
 
     /**
      * Prevedie rozsah poradí hodín do rozsahu minút začiatku prvej a konca druhej hodiny [LessonTime] meraných od počiatku rozvrhu
