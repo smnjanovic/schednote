@@ -9,8 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import com.moriak.schednote.R
+import com.moriak.schednote.databinding.ActivityActiveAlarmBinding
 import com.moriak.schednote.enums.AlarmClockBit
 import com.moriak.schednote.enums.Redirection
 import com.moriak.schednote.notifications.AlarmClockSetter
@@ -19,20 +18,19 @@ import com.moriak.schednote.notifications.NotificationHandler.AlarmClock.dismiss
 import com.moriak.schednote.notifications.NotificationHandler.AlarmClock.snooze
 import com.moriak.schednote.notifications.NotificationHandler.AlarmClock.stop
 import com.moriak.schednote.storage.Prefs.Settings.timeFormat
-import kotlinx.android.synthetic.main.activity_active_alarm.*
 import android.view.WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON as SCR_LOCK
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON as SCR_ON
 
 /**
  * Aktivita zobrazí budík s ponukou  zastaviť ho alebo odložiť o pár minúť
  */
-class LockScreenAlarmActivity : AppCompatActivity() {
+class LockScreenAlarmActivity : CustomBoundActivity<ActivityActiveAlarmBinding>() {
     companion object { var active: Boolean = false }
     private var bit: AlarmClockBit? = null
     private val onClick = View.OnClickListener { v ->
         bit?.let {
-            if (v == ac_snooze_img) snooze(this, it)
-            else if (v == ac_stop_img) stop(this, it)
+            if (v.id == binding.acSnoozeImg.id) snooze(this, it)
+            else if (v.id == binding.acStopImg.id) stop(this, it)
             bit = null
         }
         leave()
@@ -71,15 +69,14 @@ class LockScreenAlarmActivity : AppCompatActivity() {
             shine(true)
             supportActionBar?.hide()
             actionBar?.hide()
-            setContentView(R.layout.activity_active_alarm)
-            ac_snooze_img.setOnClickListener(onClick)
-            ac_stop_img.setOnClickListener(onClick)
+            binding.acSnoozeImg.setOnClickListener(onClick)
+            binding.acStopImg.setOnClickListener(onClick)
             intentAction(intent)
             handler.postDelayed({ leave() }, 55000)
             bit?.let { bit ->
-                ac_reg.text = bit.reg.toString()
-                ac_day.text = bit.day.toString()
-                ac_time.text = timeFormat.getFormat(AlarmClockSetter.getAlarm(bit.day, bit.reg))
+                binding.acReg.text = bit.reg.toString()
+                binding.acDay.text = bit.day.toString()
+                binding.acTime.text = timeFormat.getFormat(AlarmClockSetter.getAlarm(bit.day, bit.reg))
                 dismiss(this, bit)
             } ?: leave()
         }
@@ -93,4 +90,6 @@ class LockScreenAlarmActivity : AppCompatActivity() {
         bit?.let { snooze(this, it) }
         bit = null
     }
+
+    override fun onCreateBinding() = ActivityActiveAlarmBinding.inflate(layoutInflater)
 }

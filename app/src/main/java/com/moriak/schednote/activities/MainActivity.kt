@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.moriak.schednote.App
 import com.moriak.schednote.R
+import com.moriak.schednote.databinding.ActivityMainBinding
 import com.moriak.schednote.dialogs.InfoDialog
 import com.moriak.schednote.enums.AlarmCategory
 import com.moriak.schednote.enums.Redirection
@@ -19,13 +20,12 @@ import com.moriak.schednote.fragments.of_main.SubjectList
 import com.moriak.schednote.storage.Prefs
 import com.moriak.schednote.storage.SQLite
 import com.moriak.schednote.widgets.NoteWidget
-import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * Hlavná aktivita pozostáva z len menu, pomocou ktorého sa striedajú fragmenty, ktoré načítavajú obsah
  * Fragmenty sú od seba nezávislé a môžu mať ďalšie vnorené fragmenty.
  */
-class MainActivity : ShakeCompatActivity() {
+class MainActivity : ShakeCompatActivity<ActivityMainBinding>() {
     private companion object {
         private const val SUB_ACTIVITY = "SUB_ACTIVITY"
         private const val INFO = "INFO"
@@ -61,31 +61,32 @@ class MainActivity : ShakeCompatActivity() {
     }
 
     private fun setMenuVisible(visible: Boolean) {
-        leftMenu?.visibility = if (visible) VISIBLE else GONE
-        leftMenuShutter?.visibility = if (visible) VISIBLE else GONE
+        binding.leftMenu?.visibility = if (visible) VISIBLE else GONE
+        binding.leftMenuShutter?.visibility = if (visible) VISIBLE else GONE
     }
+
+    override fun onCreateBinding() = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(SubContent.layout)
 
         isRestoring = savedInstanceState != null
 
         val choiceFn = fun (m: MenuItem) = true.also {
             if (!isRestoring) setSubContent(SubContent.values.find { it.button == m.itemId } as SubContent)
-            leftMenu?.let { setMenuVisible(false) }
+            binding.leftMenu?.let { setMenuVisible(false) }
         }
 
-        bottomMenu?.setOnItemSelectedListener(choiceFn)
-        leftMenu?.setNavigationItemSelectedListener(choiceFn)
+        binding.bottomMenu?.setOnItemSelectedListener(choiceFn)
+        binding.leftMenu?.setNavigationItemSelectedListener(choiceFn)
 
         val content = intentAction(intent)
-        bottomMenu?.selectedItemId = content.button
-        if (leftMenu != null) {
-            leftMenu!!.setCheckedItem(content.button)
+        binding.bottomMenu?.selectedItemId = content.button
+        if (binding.leftMenu != null) {
+            binding.leftMenu!!.setCheckedItem(content.button)
             if (savedInstanceState == null) setSubContent(content)
-            leftMenuShutter!!.setOnClickListener { setMenuVisible(false) }
-            leftMenuOpenner!!.setOnClickListener { setMenuVisible(true) }
+            binding.leftMenuShutter!!.setOnClickListener { setMenuVisible(false) }
+            binding.leftMenuOpenner!!.setOnClickListener { setMenuVisible(true) }
         }
         isRestoring = false
     }
@@ -124,11 +125,11 @@ class MainActivity : ShakeCompatActivity() {
     }.let(::InfoDialog).show(supportFragmentManager, INFO)
 
     private fun forceMenuChoice(content: SubContent) {
-        leftMenu?.let {
+        binding.leftMenu?.let {
             it.setCheckedItem(content.button)
             setSubContent(content)
         }
-        bottomMenu?.selectedItemId = content.button
+        binding.bottomMenu?.selectedItemId = content.button
     }
 
     private fun getFragment() = supportFragmentManager.findFragmentByTag(SUB_ACTIVITY) as SubActivity?

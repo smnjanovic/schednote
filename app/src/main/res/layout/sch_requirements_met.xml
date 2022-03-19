@@ -4,29 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <include
+        android:id="@+id/schedule_preview"
+        layout="@layout/sch_schedule_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" />
 
-        <include
-            android:id="@+id/sch_editor"
-            layout="@layout/sch_schedule_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
-
-    <FrameLayout
+    <include
+        android:id="@+id/schedule_editor"
+        layout="@layout/sch_schedule_editor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp">
+        android:layout_height="match_parent" />
 
-        <include
-            android:id="@+id/sch_preview"
-            layout="@layout/sch_schedule_editor"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
 </LinearLayout>

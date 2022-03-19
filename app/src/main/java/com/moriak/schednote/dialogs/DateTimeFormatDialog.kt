@@ -1,25 +1,20 @@
 package com.moriak.schednote.dialogs
 
-import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
-import com.moriak.schednote.storage.Prefs.Settings.dateFormat
-import com.moriak.schednote.storage.Prefs.Settings.timeFormat
 import com.moriak.schednote.R
+import com.moriak.schednote.databinding.DateTimeFormatBinding
 import com.moriak.schednote.enums.DateFormat
 import com.moriak.schednote.enums.TimeFormat
+import com.moriak.schednote.storage.Prefs.Settings.dateFormat
+import com.moriak.schednote.storage.Prefs.Settings.timeFormat
 import com.moriak.schednote.views.OptionStepper
-import kotlinx.android.synthetic.main.date_time_format.view.*
 
 /**
  * Dialógové okno umožňuje nastaviť formát dátumu a času
  */
-class DateTimeFormatDialog : DialogFragment() {
+class DateTimeFormatDialog : CustomBoundDialog<DateTimeFormatBinding>() {
     private companion object { private const val STORED = "OPTIONS_INDEXES" }
     private class Format(private val context: Context): OptionStepper.Format {
         override fun getItemDescription(item: Any?): String = when (item) {
@@ -29,33 +24,18 @@ class DateTimeFormatDialog : DialogFragment() {
             else -> ""
         }
     }
-    private lateinit var root: View
+
+    override val negativeButton = ActionButton(R.string.abort) {}
+    override val positiveButton = ActionButton(R.string.confirm) {
+        val d = DateFormat.values().find {
+            it.order == binding.dateOrderSelect.option &&
+                    it.split == binding.dateSeparatorSelect.option
+        }!!
+        val t = binding.timeFormatSelect.option as TimeFormat
+        confirm(d, t)
+    }
     private lateinit var format: Format
     private var confirm = fun(_: DateFormat, _: TimeFormat) = Unit
-
-    private fun inflate(layout: Int, root: ViewGroup? = null) = LayoutInflater
-        .from(requireContext()).inflate(layout, root, false)
-
-    private fun buildView(savedInstanceState: Bundle?): View {
-        root = inflate(R.layout.date_time_format)
-        root.date_order_select.setOptions(DateFormat.Order.values())
-        root.date_separator_select.setOptions(DateFormat.Split.values())
-        root.time_format_select.setOptions(TimeFormat.values())
-        savedInstanceState?.getIntArray(STORED)?.let {
-            root.date_order_select.index = it[0]
-            root.date_separator_select.index = it[1]
-            root.time_format_select.index = it[2]
-        } ?: let {
-            root.date_order_select.index = dateFormat.order.ordinal
-            root.date_separator_select.index = dateFormat.split.ordinal
-            root.time_format_select.index = timeFormat.ordinal
-        }
-        format = Format(root.context)
-        root.date_order_select.setFormat(format)
-        root.date_separator_select.setFormat(format)
-        root.time_format_select.setFormat(format)
-        return root
-    }
 
     /**
      * Nastaví, čo sa má stať, keď potvrdím zmeny
@@ -65,28 +45,33 @@ class DateTimeFormatDialog : DialogFragment() {
      */
     fun setOnConfirm(fn: (DateFormat, TimeFormat) -> Unit) { confirm = fn }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog
-            .Builder(requireContext())
-            .setView(buildView(savedInstanceState))
-            .setPositiveButton(R.string.confirm, fun(_, _) {
-                val d = DateFormat.values().find {
-                    it.order == root.date_order_select.option &&
-                            it.split == root.date_separator_select.option
-                }!!
-                val t = root.time_format_select.option as TimeFormat
-                confirm(d, t)
-            })
-            .setNegativeButton(R.string.abort, fun(_, _) = Unit)
-            .create()
+    override fun setupBinding(inflater: LayoutInflater) = DateTimeFormatBinding.inflate(inflater)
+
+    override fun setupContent(saved: Bundle?) {
+        binding.dateOrderSelect.setOptions(DateFormat.Order.values())
+        binding.dateSeparatorSelect.setOptions(DateFormat.Split.values())
+        binding.timeFormatSelect.setOptions(TimeFormat.values())
+        saved?.getIntArray(STORED)?.let {
+            binding.dateOrderSelect.index = it[0]
+            binding.dateSeparatorSelect.index = it[1]
+            binding.timeFormatSelect.index = it[2]
+        } ?: let {
+            binding.dateOrderSelect.index = dateFormat.order.ordinal
+            binding.dateSeparatorSelect.index = dateFormat.split.ordinal
+            binding.timeFormatSelect.index = timeFormat.ordinal
+        }
+        format = Format(binding.root.context)
+        binding.dateOrderSelect.setFormat(format)
+        binding.dateSeparatorSelect.setFormat(format)
+        binding.timeFormatSelect.setFormat(format)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val intArr = intArrayOf(
-            root.date_order_select.index,
-            root.date_separator_select.index,
-            root.time_format_select.index
+            binding.dateOrderSelect.index,
+            binding.dateSeparatorSelect.index,
+            binding.timeFormatSelect.index
         )
         outState.putIntArray(STORED, intArr)
     }

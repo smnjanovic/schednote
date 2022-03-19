@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
 import com.moriak.schednote.R
+import com.moriak.schednote.databinding.ActivitySettingsBinding
 import com.moriak.schednote.dialogs.DateTimeFormatDialog
 import com.moriak.schednote.enums.DateFormat
 import com.moriak.schednote.enums.LessonTimeFormat
@@ -21,7 +22,7 @@ import java.lang.System.currentTimeMillis as now
 /**
  * V tejto aktivite si užívateľ prispôsobuje nastavenia aplikácie podľa potrieb
  */
-class Settings : ShakeCompatActivity() {
+class Settings : ShakeCompatActivity<ActivitySettingsBinding>() {
     companion object {
         private const val DATE_TIME_FORMAT = "DATE_TIME_FORMAT"
         var changed: Boolean = false
@@ -103,9 +104,10 @@ class Settings : ShakeCompatActivity() {
         return true
     }
 
+    override fun onCreateBinding() = ActivitySettingsBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // nastavit data

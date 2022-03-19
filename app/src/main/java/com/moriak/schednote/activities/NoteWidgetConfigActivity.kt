@@ -1,7 +1,6 @@
 package com.moriak.schednote.activities
 
 import android.R.layout.simple_list_item_1
-import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID
@@ -9,7 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import com.moriak.schednote.R
+import com.moriak.schednote.databinding.NoteWidgetConfigureBinding
 import com.moriak.schednote.enums.TimeCategory
 import com.moriak.schednote.interfaces.NoteCategory
 import com.moriak.schednote.storage.Prefs.Widgets.setNoteWidgetCategory
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.note_widget_configure.*
 /**
  * Aktivita slúži na nastavenie konfigurácie vznikajúceho widgetu [NoteWidget].
  */
-class NoteWidgetConfigActivity : Activity() {
+class NoteWidgetConfigActivity : CustomBoundActivity<NoteWidgetConfigureBinding>() {
     private data class Item(val cat: NoteCategory, val description: String) {
         override fun toString(): String = description
     }
@@ -34,12 +33,13 @@ class NoteWidgetConfigActivity : Activity() {
         finish()
     }
 
-    public override fun onCreate(icicle: Bundle?) {
-        super.onCreate(icicle)
+    override fun onCreateBinding() = NoteWidgetConfigureBinding.inflate(layoutInflater)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         setResult(RESULT_CANCELED)
         appWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID)
         if (appWidgetId == INVALID_APPWIDGET_ID) return finish()
-        setContentView(R.layout.note_widget_configure)
+        super.onCreate(savedInstanceState)
 
         val items = ArrayList<Item>()
         items.addAll(TimeCategory.values().map { Item(it, getString(it.res)) })

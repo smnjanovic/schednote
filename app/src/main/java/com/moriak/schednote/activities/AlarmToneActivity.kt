@@ -21,17 +21,17 @@ import com.moriak.schednote.adapters.AlarmToneAdapter.Companion.ACTION_SET_PLAY_
 import com.moriak.schednote.adapters.AlarmToneAdapter.Companion.PLAYING
 import com.moriak.schednote.contracts.PermissionContract
 import com.moriak.schednote.contracts.PickContract
+import com.moriak.schednote.databinding.ActivityAlarmToneBinding
 import com.moriak.schednote.dialogs.InfoDialog
 import com.moriak.schednote.enums.PermissionHandler.AUDIO_ACCESS
 import com.moriak.schednote.storage.Prefs
 import com.moriak.schednote.storage.Prefs.Settings.alarmTone
-import kotlinx.android.synthetic.main.activity_alarm_tone.*
 
 /**
  * Aktivita slúži na výber tónu budenia. Užívateľ je v nej žiadaný o prístup k súborom.
  * Bez tohoto povolenia bude obmedzený výber tónov budenia.
  */
-class AlarmToneActivity : ShakeCompatActivity() {
+class AlarmToneActivity : ShakeCompatActivity<ActivityAlarmToneBinding>() {
     private companion object {
         private const val INFO = "INFO"
         private const val LLM = "LLM"
@@ -138,9 +138,10 @@ class AlarmToneActivity : ShakeCompatActivity() {
         return true
     }
 
+    override fun onCreateBinding() = ActivityAlarmToneBinding.inflate(layoutInflater)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_alarm_tone)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         adapter = AlarmToneAdapter()
         adapter.onItemAction(this::toneAction)
@@ -148,20 +149,20 @@ class AlarmToneActivity : ShakeCompatActivity() {
         val ringtone = alarmTone
         if (tunes.indexOfFirst { it.uri == ringtone.uri } == -1) tunes.add(ringtone)
         adapter.putItems(tunes)
-        alarm_tone_list.adapter = adapter
-        alarm_tone_list.layoutManager = LinearLayoutManager(this).also {
+        binding.alarmToneList.adapter = adapter
+        binding.alarmToneList.layoutManager = LinearLayoutManager(this).also {
             if (savedInstanceState != null)
                 it.onRestoreInstanceState(savedInstanceState.getParcelable(LLM))
         }
         val space = 4 * resources.displayMetrics.densityDpi / DENSITY_DEFAULT
-        alarm_tone_list.addItemDecoration(ItemTopSpacing(space))
+        binding.alarmToneList.addItemDecoration(ItemTopSpacing(space))
 
         if (Prefs.FirstVisit.alarmTune) inform()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(LLM, alarm_tone_list.layoutManager?.onSaveInstanceState())
+        outState.putParcelable(LLM, binding.alarmToneList.layoutManager?.onSaveInstanceState())
     }
 
     /**

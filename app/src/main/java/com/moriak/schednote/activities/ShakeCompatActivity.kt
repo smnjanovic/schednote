@@ -7,20 +7,20 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.hardware.SensorManager.SENSOR_DELAY_NORMAL
 import android.speech.SpeechRecognizer.isRecognitionAvailable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import androidx.viewbinding.ViewBinding
 import com.moriak.schednote.App
-import com.moriak.schednote.storage.Prefs.Settings.shakeEventEnabled
 import com.moriak.schednote.R
 import com.moriak.schednote.contracts.PermissionContract
 import com.moriak.schednote.dialogs.VoiceRecognitionDialog
 import com.moriak.schednote.enums.PermissionHandler
+import com.moriak.schednote.storage.Prefs.Settings.shakeEventEnabled
 
 /**
  * Aktivita tohto typu po zatrasení zobrazí dialógové okno, v ktorom bude ponúkaná možnosť
  * zadať hlasovú inštrukciu. Užívateľ si môže v ňom zobraziť, aké inštrukcie môže aplikácii zadávať.
  */
-abstract class ShakeCompatActivity : AppCompatActivity() {
+abstract class ShakeCompatActivity<T: ViewBinding> : CustomBoundActivity<T>() {
     private companion object { private const val VOICE_FRAGMENT = "VOICE_FRAGMENT" }
 
     private inner class ShakeSensor(private val sensorManager: SensorManager) : SensorEventListener {
