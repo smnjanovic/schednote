@@ -267,6 +267,7 @@ class NoteList : ListSubActivity<Note?, NoteAdapter, NotesBinding>(4) {
                     if (pos > -1) binding.noteList.scrollToPosition(pos)
                 }
             }
+            activity?.intent?.data = null
             activity?.intent = null
         }
         else {

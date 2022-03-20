@@ -74,7 +74,7 @@ class NoteWidget : AppWidgetProvider() {
             val itemAction = getBroadcast(context, 1,
                 Intent(ITEM_ACTION, Uri.parse("note_widget://$id"), context, NoteWidget::class.java)
                     .putExtra(EXTRA_APPWIDGET_ID, id), 0)
-            val openPIntent = NOTES.prepare(context, 0, true) {
+            val openPIntent = NOTES.prepare(context, 0, true, Uri.parse("category:/$catId")) {
                 putLong(EXTRA_NOTE_CATEGORY, catId)
             }
 

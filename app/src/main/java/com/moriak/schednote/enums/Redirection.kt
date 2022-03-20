@@ -1,10 +1,12 @@
 package com.moriak.schednote.enums
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import com.moriak.schednote.activities.AlarmToneActivity
 import com.moriak.schednote.activities.MainActivity
@@ -67,9 +69,16 @@ enum class Redirection(
 
     /**
      * Vytvorí pending intent schopný, ktorý je schopný spustiť aktivitu
+     *
+     * @param context
+     * @param code Kód pending intentu
+     * @param uri Dáta pre intent
+     * @param launch Ak je účelom spustiť aplikáciu, keď je zavretá, nastaviť na true inak false.
+     * @param putExtras Metóda v ktorej sa dopĺňajú doplnkové dáta
      */
-    fun prepare(context: Context, code: Int, launch: Boolean, putExtras: (Bundle.()->Unit)? = null): PendingIntent {
-        val intent = Intent(action, null, context, activity).addFlags(when (launch) {
+    @SuppressLint("UnspecifiedImmutableFlag")
+    fun prepare(context: Context, code: Int, launch: Boolean, uri: Uri? = null, putExtras: (Bundle.()->Unit)? = null): PendingIntent {
+        val intent = Intent(action, uri, context, activity).addFlags(when (launch) {
             true -> Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             false -> Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         })
@@ -77,6 +86,13 @@ enum class Redirection(
         return PendingIntent.getActivity(context, code, intent, FLAG_UPDATE_CURRENT)
     }
 
+    /**
+     * Okamžite zobrazí daný obsah aplikácie
+     *
+     * @param context
+     * @param launch Ak je účelom spustiť aplikáciu, keď je zavretá, nastaviť na true inak false.
+     * @param putExtras Metóda v ktorej sa dopĺňajú doplnkové dáta
+     */
     fun redirect(context: Context, launch: Boolean, putExtras: (Bundle.()->Unit)? = null) =
-        prepare(context, 0, launch, putExtras).send()
+        prepare(context, 0, launch, null, putExtras).send()
 }
