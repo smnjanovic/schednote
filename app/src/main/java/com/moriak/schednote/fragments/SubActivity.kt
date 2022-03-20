@@ -1,14 +1,25 @@
 package com.moriak.schednote.fragments
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.viewbinding.ViewBinding
 import com.moriak.schednote.activities.MainActivity
 
 /**
  * Fragment tohto typu je podobsahom aktivity alebo iného fragmentu
  */
-abstract class SubActivity : Fragment() {
+abstract class SubActivity<B: ViewBinding> : Fragment() {
+
+    private var _binding: B? = null
+    protected val binding: B get() = _binding!!
+    protected val isBound: Boolean get() = _binding == null
+
     /**
      * Zobrazenie obsahu dialógoveho fragmentu [dialog], ak ešte zobrazený nie je
      * @param tag Kľúč, pod ktorým fragment možno nájsť.
@@ -31,8 +42,26 @@ abstract class SubActivity : Fragment() {
      */
     open fun removeAllSubFragments() = Unit
 
+    protected abstract fun makeBinder(inflater: LayoutInflater, container: ViewGroup?): B
+
+    final override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = makeBinder(inflater, container).let {
+        _binding = it
+        it.root
+    }
+
+    @CallSuper
     override fun onResume() {
         super.onResume()
         if (activity is MainActivity) (activity as MainActivity).introduce()
+    }
+
+    @CallSuper
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

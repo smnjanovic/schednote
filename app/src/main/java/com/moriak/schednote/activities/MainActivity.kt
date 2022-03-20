@@ -132,7 +132,7 @@ class MainActivity : ShakeCompatActivity<ActivityMainBinding>() {
         binding.bottomMenu?.selectedItemId = content.button
     }
 
-    private fun getFragment() = supportFragmentManager.findFragmentByTag(SUB_ACTIVITY) as SubActivity?
+    private fun getFragment() = supportFragmentManager.findFragmentByTag(SUB_ACTIVITY) as SubActivity<*>?
 
     private fun setSubContent(subContent: SubContent) {
         getFragment()?.removeAllSubFragments()

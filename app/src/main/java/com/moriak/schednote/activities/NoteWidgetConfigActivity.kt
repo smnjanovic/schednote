@@ -15,7 +15,6 @@ import com.moriak.schednote.storage.Prefs.Widgets.setNoteWidgetCategory
 import com.moriak.schednote.storage.SQLite
 import com.moriak.schednote.widgets.NoteWidget
 import com.moriak.schednote.widgets.NoteWidget.Companion.updateAppWidget
-import kotlinx.android.synthetic.main.note_widget_configure.*
 
 /**
  * Aktivita slúži na nastavenie konfigurácie vznikajúceho widgetu [NoteWidget].
@@ -27,7 +26,7 @@ class NoteWidgetConfigActivity : CustomBoundActivity<NoteWidgetConfigureBinding>
 
     private var appWidgetId = INVALID_APPWIDGET_ID
     private var confirm = View.OnClickListener {
-        setNoteWidgetCategory(appWidgetId, (category_choice.selectedItem as Item).cat.id)
+        setNoteWidgetCategory(appWidgetId, (binding.categoryChoice.selectedItem as Item).cat.id)
         updateAppWidget(this, AppWidgetManager.getInstance(this), appWidgetId)
         setResult(RESULT_OK, Intent().putExtra(EXTRA_APPWIDGET_ID, appWidgetId))
         finish()
@@ -44,7 +43,7 @@ class NoteWidgetConfigActivity : CustomBoundActivity<NoteWidgetConfigureBinding>
         val items = ArrayList<Item>()
         items.addAll(TimeCategory.values().map { Item(it, getString(it.res)) })
         items.addAll(SQLite.subjects().map { Item(it, it.toString()) })
-        category_choice.adapter = ArrayAdapter(this, simple_list_item_1, items)
-        category_confirm.setOnClickListener(confirm)
+        binding.categoryChoice.adapter = ArrayAdapter(this, simple_list_item_1, items)
+        binding.categoryConfirm.setOnClickListener(confirm)
     }
 }

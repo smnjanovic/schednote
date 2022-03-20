@@ -9,19 +9,22 @@
         android:id="@+id/requirements_met"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            android:id="@+id/schedule_preview"
-            layout="@layout/sch_schedule_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        android:baselineAligned="true"
+        android:orientation="horizontal">
 
         <include
             android:id="@+id/schedule_editor"
             layout="@layout/sch_schedule_editor"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/schedule_preview"
+            layout="@layout/sch_schedule_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

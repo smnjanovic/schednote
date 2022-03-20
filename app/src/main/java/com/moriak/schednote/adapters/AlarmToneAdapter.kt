@@ -1,16 +1,19 @@
 package com.moriak.schednote.adapters
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.AlarmTone
 import com.moriak.schednote.R
+import com.moriak.schednote.databinding.AlarmToneItemBinding
 import com.moriak.schednote.storage.Prefs.Settings.alarmTone
-import kotlinx.android.synthetic.main.alarm_tone_item.view.*
 
 /**
  * Adaptér zobrazuje zoznam tónov budenia
  */
-class AlarmToneAdapter: CustomAdapter<AlarmTone>(R.layout.alarm_tone_item) {
+class AlarmToneAdapter: CustomAdapter<AlarmTone, AlarmToneItemBinding>() {
     /**
      * @property PLAYING Kľúč pod ktorým je uložené ID skladby, ktorá práve hrá
      * @property ACTION_PLAY Označenie pre pokus o prehratie skladby
@@ -38,7 +41,8 @@ class AlarmToneAdapter: CustomAdapter<AlarmTone>(R.layout.alarm_tone_item) {
         })
     }
 
-    override fun instantiateViewHolder(v: View): CustomViewHolder = AlarmToneHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        AlarmToneHolder(AlarmToneItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun bundleToItem(bundle: Bundle): AlarmTone = throw Exception("Unimplemented!!!")
     override fun itemToBundle(item: AlarmTone, bundle: Bundle) { throw Exception("Unimplemented!!!") }
@@ -52,26 +56,26 @@ class AlarmToneAdapter: CustomAdapter<AlarmTone>(R.layout.alarm_tone_item) {
     /**
      * Objekt vizualizuje položku zoznamu (tón budenia)
      */
-    inner class AlarmToneHolder(view: View): CustomViewHolder(view) {
+    inner class AlarmToneHolder(b: AlarmToneItemBinding): CustomViewHolder(b) {
         override fun bind(pos: Int) {
             val isPlaying: Boolean = extras.getString(PLAYING) == item?.uri?.toString()
             val isChosen: Boolean = item?.uri == alarmTone.uri
 
-            itemView.ac_play.visibility = if (isPlaying) View.GONE else View.VISIBLE
-            itemView.ac_pause.visibility = if (isPlaying) View.VISIBLE else View.GONE
-            itemView.ac_choose.visibility = if (isChosen) View.GONE else View.VISIBLE
-            itemView.ac_chosen.visibility = if (isChosen) View.VISIBLE else View.GONE
-            itemView.ac_title.text = item?.label
+            binding.acPlay.visibility = if (isPlaying) View.GONE else View.VISIBLE
+            binding.acPause.visibility = if (isPlaying) View.VISIBLE else View.GONE
+            binding.acChoose.visibility = if (isChosen) View.GONE else View.VISIBLE
+            binding.acChosen.visibility = if (isChosen) View.VISIBLE else View.GONE
+            binding.acTitle.text = item?.label
 
-            itemView.ac_play.tag = this
-            itemView.ac_pause.tag = this
-            itemView.ac_choose.tag = this
-            itemView.ac_title.tag = this
+            binding.acPlay.tag = this
+            binding.acPause.tag = this
+            binding.acChoose.tag = this
+            binding.acTitle.tag = this
 
-            itemView.ac_play.setOnClickListener(clickEvent)
-            itemView.ac_pause.setOnClickListener(clickEvent)
-            itemView.ac_choose.setOnClickListener(clickEvent)
-            itemView.ac_title.setOnClickListener(clickEvent)
+            binding.acPlay.setOnClickListener(clickEvent)
+            binding.acPause.setOnClickListener(clickEvent)
+            binding.acChoose.setOnClickListener(clickEvent)
+            binding.acTitle.setOnClickListener(clickEvent)
         }
     }
 }

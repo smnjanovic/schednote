@@ -3,22 +3,24 @@ package com.moriak.schednote.adapters
 import android.os.Bundle
 import android.text.Editable
 import android.text.Selection
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.R
 import com.moriak.schednote.TextCursorTracer
 import com.moriak.schednote.data.Note
 import com.moriak.schednote.data.Subject
+import com.moriak.schednote.databinding.NoteItemBinding
 import com.moriak.schednote.storage.Prefs.Settings.dateFormat
 import com.moriak.schednote.storage.Prefs.Settings.timeFormat
-import kotlinx.android.synthetic.main.edit_tools.view.*
-import kotlinx.android.synthetic.main.note_item.view.*
 
 /**
  * Adapter spravuje zoznam úloh
  */
-class NoteAdapter: CustomAdapter<Note?>(R.layout.note_item) {
+class NoteAdapter: CustomAdapter<Note?, NoteItemBinding>() {
     /**
      * @property ID kľúč pre uchovanie ID upravovanej úlohy
      * @property SUB_ID kľúč pre uchovanie ID predmetu, ku ktorému sa upravovaná úloha viaže
@@ -88,7 +90,8 @@ class NoteAdapter: CustomAdapter<Note?>(R.layout.note_item) {
         }
     }
 
-    override fun instantiateViewHolder(v: View): CustomViewHolder = NoteHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        NoteHolder(NoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun compare(a: Note?, b: Note?): Int {
         var cmp: Int = (a == null).compareTo(b == null)
@@ -141,54 +144,54 @@ class NoteAdapter: CustomAdapter<Note?>(R.layout.note_item) {
     /**
      * Blok v tejto inštancii vizualizuje jednu položku zo zoznamu (úlohu)
      */
-    inner class NoteHolder(view: View): CustomViewHolder(view) {
+    inner class NoteHolder(b: NoteItemBinding): CustomViewHolder(b) {
         override fun bind(pos: Int) {
             val editing = extras.getLong(ID, -1L) == (items[pos]?.id ?: -1L)
 
             // viditelnost prvkov
-            itemView.ni_editable.visibility = if (editing) VISIBLE else GONE
-            itemView.ni_select_date.visibility = if (editing) VISIBLE else GONE
-            itemView.ni_select_sub.visibility = if (editing) VISIBLE else GONE
-            itemView.cancel.visibility = if (editing) VISIBLE else GONE
-            itemView.save.visibility = if (editing) VISIBLE else GONE
-            itemView.ni_readable.visibility = if (editing) GONE else VISIBLE
-            itemView.edit.visibility = if (editing) GONE else VISIBLE
-            itemView.delete.visibility = if (editing) GONE else VISIBLE
+            binding.niEditable.visibility = if (editing) VISIBLE else GONE
+            binding.niSelectDate.visibility = if (editing) VISIBLE else GONE
+            binding.niSelectSub.visibility = if (editing) VISIBLE else GONE
+            binding.niTools.cancel.visibility = if (editing) VISIBLE else GONE
+            binding.niTools.save.visibility = if (editing) VISIBLE else GONE
+            binding.niReadable.visibility = if (editing) GONE else VISIBLE
+            binding.niTools.edit.visibility = if (editing) GONE else VISIBLE
+            binding.niTools.delete.visibility = if (editing) GONE else VISIBLE
 
             //značky
-            itemView.ni_editable.tag = this
-            itemView.ni_select_date.tag = this
-            itemView.ni_select_sub.tag = this
-            itemView.cancel.tag = this
-            itemView.save.tag = this
-            itemView.ni_readable.tag = this
-            itemView.edit.tag = this
-            itemView.delete.tag = this
+            binding.niEditable.tag = this
+            binding.niSelectDate.tag = this
+            binding.niSelectSub.tag = this
+            binding.niTools.cancel.tag = this
+            binding.niTools.save.tag = this
+            binding.niReadable.tag = this
+            binding.niTools.edit.tag = this
+            binding.niTools.delete.tag = this
 
             //udalosti
-            itemView.ni_editable.addTextChangedListener(onRewrite)
-            itemView.ni_select_date.setOnClickListener(clickAction)
-            itemView.ni_select_sub.setOnClickListener(clickAction)
-            itemView.cancel.setOnClickListener(clickAction)
-            itemView.save.setOnClickListener(clickAction)
-            itemView.ni_readable.setOnClickListener(clickAction)
-            itemView.edit.setOnClickListener(clickAction)
-            itemView.delete.setOnClickListener(clickAction)
+            binding.niEditable.addTextChangedListener(onRewrite)
+            binding.niSelectDate.setOnClickListener(clickAction)
+            binding.niSelectSub.setOnClickListener(clickAction)
+            binding.niTools.cancel.setOnClickListener(clickAction)
+            binding.niTools.save.setOnClickListener(clickAction)
+            binding.niReadable.setOnClickListener(clickAction)
+            binding.niTools.edit.setOnClickListener(clickAction)
+            binding.niTools.delete.setOnClickListener(clickAction)
 
-            itemView.ni_sub.text = if (editing) extras.getString(SUB_ABB) else item?.sub?.abb
+            binding.niSub.text = if (editing) extras.getString(SUB_ABB) else item?.sub?.abb
             val deadline = if (editing) extras.get(WHEN) as Long? else item?.deadline
-            itemView.ni_deadline.text = deadline?.let {
+            binding.niDeadline.text = deadline?.let {
                 "${dateFormat.getFormat(it)} ${timeFormat.getFormat(it)}"
             }
 
             if (editing) {
-                itemView.ni_editable.setText(extras.getString(INFO))
+                binding.niEditable.setText(extras.getString(INFO))
                 val st = extras.getInt(CURSOR_START, item?.info?.length ?: 0)
                 val en = extras.getInt(CURSOR_END, st)
-                Selection.setSelection(itemView.ni_editable.text, st, en)
-                onRewrite.setSpan(itemView.ni_editable.text)
-                itemView.ni_editable.requestFocus()
-            } else itemView.ni_readable.text = item?.info
+                Selection.setSelection(binding.niEditable.text, st, en)
+                onRewrite.setSpan(binding.niEditable.text)
+                binding.niEditable.requestFocus()
+            } else binding.niReadable.text = item?.info
         }
     }
 }

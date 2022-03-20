@@ -10,7 +10,7 @@ import com.moriak.schednote.fragments.SubActivity
 interface ISubContent {
     val parent: ISubContent?
     val button: Int
-    val fragmentClass: Class<out SubActivity>
+    val fragmentClass: Class<out SubActivity<*>>
 
     fun remember()
 
@@ -23,7 +23,6 @@ interface ISubContent {
     interface ISubContentCompanion {
         val container: Int
         val values: Array<out ISubContent>
-        val layout: Int
         val lastSet: ISubContent
     }
 }

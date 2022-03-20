@@ -3,7 +3,9 @@ package com.moriak.schednote.fragments.of_main
 import android.content.ContentValues
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -26,6 +28,7 @@ import com.moriak.schednote.adapters.NoteAdapter.Companion.WHEN
 import com.moriak.schednote.contracts.PermissionContract
 import com.moriak.schednote.data.Note
 import com.moriak.schednote.data.Subject
+import com.moriak.schednote.databinding.NotesBinding
 import com.moriak.schednote.dialogs.DateTimeDialog
 import com.moriak.schednote.enums.PermissionHandler.CALENDAR
 import com.moriak.schednote.enums.Redirection.Companion.EXTRA_NOTE_CATEGORY
@@ -39,15 +42,12 @@ import com.moriak.schednote.notifications.ReminderSetter
 import com.moriak.schednote.storage.Prefs.States.lastNoteCategory
 import com.moriak.schednote.storage.SQLite
 import com.moriak.schednote.views.OptionStepper
-import kotlinx.android.synthetic.main.notes.*
-import kotlinx.android.synthetic.main.notes.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 import android.provider.CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL as C_LVL
 import android.provider.CalendarContract.Calendars.CALENDAR_DISPLAY_NAME as C_NAME
 import android.provider.CalendarContract.Calendars.CONTENT_URI as C_URI
@@ -64,35 +64,36 @@ import kotlin.arrayOf as arr
 /**
  * Fragment zobrazí zoznam úloh vyhovujúcich danej kategórií a umožní tento zoznam spravovať.
  */
-class NoteList : ListSubActivity<Note?>(R.layout.notes, R.id.note_list, R.id.no_notes, 4) {
+class NoteList : ListSubActivity<Note?, NoteAdapter, NotesBinding>(4) {
     private companion object {
         private const val DIALOG = "DATE_TIME"
         private val cal by lazy { Calendar.getInstance() }
     }
 
     override val adapter = NoteAdapter()
+    override val adapterView by lazy { binding.noteList }
     private val launcher = registerForActivityResult(PermissionContract) {
         App.toast(if (it) R.string.permission_granted else CALENDAR.rationale, true)
     }
+    private val subjects = ArrayList<Subject>()
+    private val categories = ArrayList<NoteCategory>()
     private val clickListener = View.OnClickListener {
         when(it) {
-            clear_all_label -> {
+            binding.clearAllLabel -> {
                 setBundle(adapter.extras, null)
                 adapter.clearItems()
                 adapter.insertItem(null)
                 ReminderSetter.clearNotesOfCategory(requireContext(), category)
             }
-            out_of_calendar -> CALENDAR.allowMe(requireContext(), launcher) { fromCal() }
-            to_the_calendar -> CALENDAR.allowMe(requireContext(), launcher) { toCal() }
+            binding.outOfCalendar -> CALENDAR.allowMe(requireContext(), launcher) { fromCal() }
+            binding.toTheCalendar -> CALENDAR.allowMe(requireContext(), launcher) { toCal() }
         }
     }
 
-    private val subjects = ArrayList<Subject>()
-    private val categories = ArrayList<NoteCategory>()
-
-    private var category: NoteCategory get() = NoteCategory[lastNoteCategory]; set(value) {
-        lastNoteCategory = value.id
-    }
+    private var category: NoteCategory get() = NoteCategory[lastNoteCategory]
+        set(value) {
+            lastNoteCategory = value.id
+        }
 
     private fun itemById(n: Note?, data: Any?): Boolean = (n?.id ?: -1L) == data
 
@@ -219,7 +220,7 @@ class NoteList : ListSubActivity<Note?>(R.layout.notes, R.id.note_list, R.id.no_
                     if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                         loadInput()
                         loadByCategory(category)
-                        requireView().note_groups.index = categories.indexOf(category)
+                        binding.noteGroups.index = categories.indexOf(category)
                     }
                     App.toast(R.string.notes_received_from_calendar)
                 }
@@ -261,16 +262,16 @@ class NoteList : ListSubActivity<Note?>(R.layout.notes, R.id.note_list, R.id.no_
             requireActivity().intent.extras?.let { bdl ->
                 category = NoteCategory[bdl.getLong(EXTRA_NOTE_CATEGORY, lastNoteCategory)]
                 val id = bdl.getLong(EXTRA_NOTE_ID, -1L)
-                note_list.post {
+                binding.noteList.post {
                     val pos = adapter.findIndexOf(this::itemById, id)
-                    if (pos > -1) note_list.scrollToPosition(pos)
+                    if (pos > -1) binding.noteList.scrollToPosition(pos)
                 }
             }
             activity?.intent = null
         }
         else {
-            note_list.post {
-                note_list.scrollToPosition(adapter.itemCount - 1)
+            binding.noteList.post {
+                binding.noteList.scrollToPosition(adapter.itemCount - 1)
             }
         }
         setBundle(adapter.extras, null)
@@ -327,22 +328,25 @@ class NoteList : ListSubActivity<Note?>(R.layout.notes, R.id.note_list, R.id.no_
         activity?.setTitle(R.string.notes)
     }
 
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?) =
+        NotesBinding.inflate(inflater, container, false)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadInput()
         super.onViewCreated(view, savedInstanceState)
         findFragment<DateTimeDialog>(DIALOG)?.let(this::activateDialogConfirmFn)
-        view.note_groups.setOptions(categories)
-        view.note_groups.index = categories.indexOf(category)
-        view.note_groups.setOnChange(this::loadByCategory)
-        view.note_groups.setFormat(object: OptionStepper.Format {
+        binding.noteGroups.setOptions(categories)
+        binding.noteGroups.index = categories.indexOf(category)
+        binding.noteGroups.setOnChange(this::loadByCategory)
+        binding.noteGroups.setFormat(object: OptionStepper.Format {
             override fun getItemDescription(item: Any?): String = when (item) {
                 is TimeCategory -> requireContext().getString(item.res)
                 is Subject -> item.toString()
                 else -> ""
             }
         })
-        view.clear_all_label.setOnClickListener(clickListener)
-        view.to_the_calendar.setOnClickListener(clickListener)
-        view.out_of_calendar.setOnClickListener(clickListener)
+        binding.clearAllLabel.setOnClickListener(clickListener)
+        binding.toTheCalendar.setOnClickListener(clickListener)
+        binding.outOfCalendar.setOnClickListener(clickListener)
     }
 }

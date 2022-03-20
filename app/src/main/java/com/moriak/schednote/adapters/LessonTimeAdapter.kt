@@ -1,18 +1,20 @@
 package com.moriak.schednote.adapters
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import com.moriak.schednote.storage.Prefs.Settings.earliestMinute
-import com.moriak.schednote.storage.Prefs.Settings.timeFormat
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.R
 import com.moriak.schednote.data.LessonTime
-import kotlinx.android.synthetic.main.edit_tools.view.*
-import kotlinx.android.synthetic.main.lesson_data.view.*
+import com.moriak.schednote.databinding.LessonDataBinding
+import com.moriak.schednote.storage.Prefs.Settings.earliestMinute
+import com.moriak.schednote.storage.Prefs.Settings.timeFormat
 
 /**
  * Tento adaptér spravuje zoznam časových blokov rozvrhu.
  */
-class LessonTimeAdapter : CustomAdapter<LessonTime>(R.layout.lesson_data) {
+class LessonTimeAdapter : CustomAdapter<LessonTime, LessonDataBinding>() {
     /**
      * @property ACTION_EDIT Označenie pre pokus o zmenu trvania hodiny a prestávky
      * @property ACTION_DELETE Označenie pre pokus o odstránenie časového bloku
@@ -27,14 +29,15 @@ class LessonTimeAdapter : CustomAdapter<LessonTime>(R.layout.lesson_data) {
 
     private val clickAction = View.OnClickListener {
         val h = it.tag as LessonTimeHolder
-        triggerItemAction(h.adapterPosition, extras, when (it) {
-            h.itemView.edit -> ACTION_EDIT
-            h.itemView.delete -> ACTION_DELETE
+        triggerItemAction(h.adapterPosition, extras, when (it.id) {
+            R.id.edit -> ACTION_EDIT
+            R.id.delete -> ACTION_DELETE
             else -> 0
         })
     }
 
-    override fun instantiateViewHolder(v: View): CustomViewHolder = LessonTimeHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        LessonTimeHolder(LessonDataBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun bundleToItem(bundle: Bundle): LessonTime =
         bundle.let { LessonTime(it.getInt(ORDER), it.getInt(L_DUR), it.getInt(B_DUR)) }
@@ -59,18 +62,18 @@ class LessonTimeAdapter : CustomAdapter<LessonTime>(R.layout.lesson_data) {
     /**
      * Objekt vizualizuje položku zoznamu (Časový blok rozvrhu).
      */
-    inner class LessonTimeHolder(v: View): CustomViewHolder(v) {
+    inner class LessonTimeHolder(b: LessonDataBinding): CustomViewHolder(b) {
         override fun bind(pos: Int) {
             val st = computeStart(pos)
-            itemView.les_time_order.text = item!!.order.toString()
-            itemView.les_time_start.text = timeFormat.getFormat(st)
-            itemView.les_time_end.text = timeFormat.getFormat(st + item!!.lessonDuration)
-            itemView.save.visibility = View.GONE
-            itemView.cancel.visibility = View.GONE
-            itemView.edit.tag = this
-            itemView.delete.tag = this
-            itemView.edit.setOnClickListener(clickAction)
-            itemView.delete.setOnClickListener(clickAction)
+            binding.lesTimeOrder.text = item!!.order.toString()
+            binding.lesTimeStart.text = timeFormat.getFormat(st)
+            binding.lesTimeEnd.text = timeFormat.getFormat(st + item!!.lessonDuration)
+            binding.lesTools.save.visibility = View.GONE
+            binding.lesTools.cancel.visibility = View.GONE
+            binding.lesTools.edit.tag = this
+            binding.lesTools.delete.tag = this
+            binding.lesTools.edit.setOnClickListener(clickAction)
+            binding.lesTools.delete.setOnClickListener(clickAction)
         }
     }
 }

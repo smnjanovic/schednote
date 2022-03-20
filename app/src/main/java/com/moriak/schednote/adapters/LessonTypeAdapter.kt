@@ -2,21 +2,22 @@ package com.moriak.schednote.adapters
 
 import android.os.Bundle
 import android.text.Editable
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.Palette
 import com.moriak.schednote.R
 import com.moriak.schednote.TextCursorTracer
 import com.moriak.schednote.data.LessonType
-import kotlinx.android.synthetic.main.edit_tools.view.*
-import kotlinx.android.synthetic.main.lesson_type_data.view.*
-
+import com.moriak.schednote.databinding.LessonTypeDataBinding
 
 /**
  * Adaptér spravuje zoznam kategórii vyučovacích hodín.
  */
-class LessonTypeAdapter : CustomAdapter<LessonType?>(R.layout.lesson_type_data) {
+class LessonTypeAdapter : CustomAdapter<LessonType?, LessonTypeDataBinding>() {
     /**
      * @property MAX_COUNT Maximálny počet typov hodín
      * @property ID Kľúč pre ID upravovanej ketegórie vyučovvacích hodín
@@ -71,7 +72,10 @@ class LessonTypeAdapter : CustomAdapter<LessonType?>(R.layout.lesson_type_data) 
         }
         return cmp
     }
-    override fun instantiateViewHolder(v: View): CustomViewHolder = LessonTypesHolder(v)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return LessonTypesHolder(LessonTypeDataBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    }
     override fun bundleToItem(bundle: Bundle): LessonType? = when (val id = bundle.getInt(ID, -1)) {
         -1 -> null
         else -> {
@@ -90,38 +94,38 @@ class LessonTypeAdapter : CustomAdapter<LessonType?>(R.layout.lesson_type_data) 
     /**
      * Objekt vizualizuje položku zoznamu (kategóriu vyučovacích hodín)
      */
-    inner class LessonTypesHolder(v: View): CustomViewHolder(v) {
+    inner class LessonTypesHolder(b: LessonTypeDataBinding): CustomViewHolder(b) {
         override fun bind(pos: Int) {
             val palette = item?.color ?: Palette()
-            itemView.line.background.setTint(palette.color)
-            itemView.lt_readable.setTextColor(palette.contrast)
-            itemView.lt_editable.setTextColor(palette.contrast)
-            itemView.edit.drawable.setTint(palette.contrast)
-            itemView.save.drawable.setTint(palette.contrast)
-            itemView.delete.drawable.setTint(palette.contrast)
+            binding.line.background.setTint(palette.color)
+            binding.ltReadable.setTextColor(palette.contrast)
+            binding.ltEditable.setTextColor(palette.contrast)
+            binding.ltTools.edit.drawable.setTint(palette.contrast)
+            binding.ltTools.save.drawable.setTint(palette.contrast)
+            binding.ltTools.delete.drawable.setTint(palette.contrast)
 
             val editing = extras.getInt(ID, -1) == (item?.id ?: -1)
-            itemView.lt_readable.visibility = if (editing) GONE else VISIBLE
-            itemView.lt_editable.visibility = if (editing) VISIBLE else GONE
-            itemView.edit.visibility = if (editing) GONE else VISIBLE
-            itemView.save.visibility = if (editing) VISIBLE else GONE
-            itemView.lt_editable.addTextChangedListener(onRewrite)
+            binding.ltReadable.visibility = if (editing) GONE else VISIBLE
+            binding.ltEditable.visibility = if (editing) VISIBLE else GONE
+            binding.ltTools.edit.visibility = if (editing) GONE else VISIBLE
+            binding.ltTools.save.visibility = if (editing) VISIBLE else GONE
+            binding.ltEditable.addTextChangedListener(onRewrite)
             if (editing) {
                 val st = extras.getInt(CURSOR_START)
                 val en = extras.getInt(CURSOR_END)
-                itemView.lt_editable.setText(extras.getString(NAME))
-                itemView.lt_editable.setSelection(st, en)
-                itemView.lt_editable.requestFocus()
-            } else itemView.lt_readable.text = item?.name
-            itemView.lt_readable.tag = this
-            itemView.cancel.visibility = GONE
-            itemView.edit.tag = this
-            itemView.save. tag = this
-            itemView.delete.tag = this
-            itemView.lt_readable.setOnClickListener(clickAction)
-            itemView.edit.setOnClickListener(clickAction)
-            itemView.save.setOnClickListener(clickAction)
-            itemView.delete.setOnClickListener(clickAction)
+                binding.ltEditable.setText(extras.getString(NAME))
+                binding.ltEditable.setSelection(st, en)
+                binding.ltEditable.requestFocus()
+            } else binding.ltReadable.text = item?.name
+            binding.ltReadable.tag = this
+            binding.ltTools.cancel.visibility = GONE
+            binding.ltTools.edit.tag = this
+            binding.ltTools.save. tag = this
+            binding.ltTools.delete.tag = this
+            binding.ltReadable.setOnClickListener(clickAction)
+            binding.ltTools.edit.setOnClickListener(clickAction)
+            binding.ltTools.save.setOnClickListener(clickAction)
+            binding.ltTools.delete.setOnClickListener(clickAction)
         }
     }
 }

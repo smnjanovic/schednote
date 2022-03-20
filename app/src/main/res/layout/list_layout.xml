@@ -29,7 +29,7 @@
         android:layout_gravity="bottom|end"
         android:background="#00FFFFFF"
         android:contentDescription="@string/insert"
-        android:tint="@color/juicy"
+        app:tint="@color/juicy"
         app:srcCompat="@drawable/ic_add_circle_black_24dp" />
 
 </LinearLayout>

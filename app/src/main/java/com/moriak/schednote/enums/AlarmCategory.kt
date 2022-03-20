@@ -17,7 +17,7 @@ import com.moriak.schednote.storage.Prefs
  */
 enum class AlarmCategory(
     @IdRes override val button: Int,
-    override val fragmentClass: Class<out SubActivity>
+    override val fragmentClass: Class<out SubActivity<*>>
 ): ISubContent {
     REMINDER(R.id.reminders, ReminderSettings::class.java),
     ALARM(R.id.alarms, AlarmClockList::class.java);
@@ -26,7 +26,6 @@ enum class AlarmCategory(
     companion object: ISubContent.ISubContentCompanion {
         override val container: Int = R.id.alarm_set_zone
         override val values: Array<out ISubContent> = values()
-        override val layout: Int = R.layout.alarms
         override val lastSet: ISubContent get() = Prefs.States.lastAlarmCategory
     }
 }

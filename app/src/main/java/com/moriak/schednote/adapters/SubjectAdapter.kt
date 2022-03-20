@@ -1,18 +1,20 @@
 package com.moriak.schednote.adapters
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.R
 import com.moriak.schednote.data.Subject
-import com.moriak.schednote.storage.SQLite
+import com.moriak.schednote.databinding.SubjectBinding
 import com.moriak.schednote.enums.TimeCategory
-import kotlinx.android.synthetic.main.edit_tools.view.*
-import kotlinx.android.synthetic.main.subject.view.*
+import com.moriak.schednote.storage.SQLite
 
 /**
  * Adapter spravuje zoznam predmetov
  */
-class SubjectAdapter : CustomAdapter<Subject>(R.layout.subject) {
+class SubjectAdapter : CustomAdapter<Subject, SubjectBinding>() {
     /**
      * @property ACTION_EDIT Označenie pokusu o úpravu predmetu
      * @property ACTION_DELETE Označenie pokusu o odstránenie predmetu
@@ -35,7 +37,8 @@ class SubjectAdapter : CustomAdapter<Subject>(R.layout.subject) {
 
     override fun compare(a: Subject, b: Subject): Int = a.abb.compareTo(b.abb)
 
-    override fun instantiateViewHolder(v: View): CustomViewHolder = SubjectHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        SubjectHolder(SubjectBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun bundleToItem(bundle: Bundle): Subject {
         val id = bundle.get(SUB_ID) as Long? ?: throw Exception("Missing subject ID!")
@@ -53,18 +56,18 @@ class SubjectAdapter : CustomAdapter<Subject>(R.layout.subject) {
     /**
      * Blok v tejto inštancii vizualizuje jednu položku zo zoznamu (predmet)
      */
-    inner class SubjectHolder(view: View) : CustomAdapter<Subject>.CustomViewHolder(view) {
+    inner class SubjectHolder(b: SubjectBinding) : CustomViewHolder(b) {
         override fun bind(pos: Int) {
-            itemView.si_abb.text = item?.abb
-            itemView.si_name.text = item?.name
-            itemView.si_missed_notes.text = SQLite.notes(TimeCategory.LATE, item!!).count().toString()
-            itemView.si_upcoming_notes.text = SQLite.notes(TimeCategory.UPCOMING, item!!).count().toString()
-            itemView.save.visibility = View.GONE
-            itemView.cancel.visibility = View.GONE
-            itemView.edit.tag = this
-            itemView.edit.setOnClickListener(clickEvent)
-            itemView.delete.tag = this
-            itemView.delete.setOnClickListener(clickEvent)
+            binding.siAbb.text = item?.abb
+            binding.siName.text = item?.name
+            binding.siMissedNotes.text = SQLite.notes(TimeCategory.LATE, item!!).count().toString()
+            binding.siUpcomingNotes.text = SQLite.notes(TimeCategory.UPCOMING, item!!).count().toString()
+            binding.siTools.save.visibility = View.GONE
+            binding.siTools.cancel.visibility = View.GONE
+            binding.siTools.edit.tag = this
+            binding.siTools.edit.setOnClickListener(clickEvent)
+            binding.siTools.delete.tag = this
+            binding.siTools.delete.setOnClickListener(clickEvent)
         }
     }
 }

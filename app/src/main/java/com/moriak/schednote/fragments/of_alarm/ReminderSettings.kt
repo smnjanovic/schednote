@@ -11,18 +11,17 @@ import android.widget.CompoundButton
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import com.moriak.schednote.R
+import com.moriak.schednote.databinding.ReminderSetterBinding
 import com.moriak.schednote.fragments.SubActivity
 import com.moriak.schednote.notifications.ReminderSetter
 import com.moriak.schednote.storage.Prefs.Notifications.reminderAdvanceInMinutes
 import com.moriak.schednote.storage.Prefs.Notifications.reminderEnabled
-import kotlinx.android.synthetic.main.reminder_setter.*
-import kotlinx.android.synthetic.main.reminder_setter.view.*
 
 /**
  * V tomto fragmente uživateľ vypne / zapne oznámenia úloh a môže určiť
  * v akom časovom predstihu (v minútach) sa budú zjavovať.
  */
-class ReminderSettings : SubActivity() {
+class ReminderSettings : SubActivity<ReminderSetterBinding>() {
     private companion object {
         private const val TO_CONFIRM = "TO_CONFIRM"
         private const val MINUTE_ADVANCE = "MINUTE_ADVANCE"
@@ -36,11 +35,12 @@ class ReminderSettings : SubActivity() {
     }
 
     private val changeAdvance = NumberPicker.OnValueChangeListener { _, _, _ ->
-        view?.confirm_change?.visibility = View.VISIBLE
+        binding.confirmChange.visibility = View.VISIBLE
     }
 
     private val confirm = View.OnClickListener { v ->
-        val adv = (day_advance.value * 24 + hour_advance.value) * 60 + minute_advance.value
+        val adv = (binding.dayAdvance.value * 24 + binding.hourAdvance.value) *
+                60 + binding.minuteAdvance.value
         if (reminderAdvanceInMinutes != adv) {
             reminderAdvanceInMinutes = adv
             if (!ReminderSetter.enableReminders(v.context, true)) AlertDialog.Builder(v.context)
@@ -61,37 +61,37 @@ class ReminderSettings : SubActivity() {
         activity?.setTitle(R.string.reminders)
     }
 
-    override fun onCreateView(inf: LayoutInflater, par: ViewGroup?, saved: Bundle?): View = inf
-        .inflate(R.layout.reminder_setter, par, false)
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?) =
+        ReminderSetterBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        day_advance.maxValue = 7
-        hour_advance.maxValue = 23
-        minute_advance.maxValue = 59
+        binding.dayAdvance.maxValue = 7
+        binding.hourAdvance.maxValue = 23
+        binding.minuteAdvance.maxValue = 59
         var vAdvance = savedInstanceState?.getInt(MINUTE_ADVANCE)
             ?: reminderAdvanceInMinutes
-        minute_advance.value = vAdvance % 60; vAdvance /= 60
-        hour_advance.value = vAdvance % 24; vAdvance /= 24
-        day_advance.value = vAdvance.coerceIn(0..7)
+        binding.minuteAdvance.value = vAdvance % 60; vAdvance /= 60
+        binding.hourAdvance.value = vAdvance % 24; vAdvance /= 24
+        binding.dayAdvance.value = vAdvance.coerceIn(0..7)
         val format = NumberPicker.Formatter { String.format("%02d", it) }
-        hour_advance.setFormatter(format)
-        minute_advance.setFormatter(format)
+        binding.hourAdvance.setFormatter(format)
+        binding.minuteAdvance.setFormatter(format)
 
-        confirm_change.visibility = savedInstanceState?.getInt(TO_CONFIRM, View.GONE) ?: View.GONE
-        advance_enabled.isChecked = reminderEnabled
+        binding.confirmChange.visibility = savedInstanceState?.getInt(TO_CONFIRM, View.GONE) ?: View.GONE
+        binding.advanceEnabled.isChecked = reminderEnabled
 
-        advance_enabled.setOnCheckedChangeListener(enableDisable)
-        day_advance.setOnValueChangedListener(changeAdvance)
-        hour_advance.setOnValueChangedListener(changeAdvance)
-        minute_advance.setOnValueChangedListener(changeAdvance)
-        confirm_change.setOnClickListener(confirm)
+        binding.advanceEnabled.setOnCheckedChangeListener(enableDisable)
+        binding.dayAdvance.setOnValueChangedListener(changeAdvance)
+        binding.hourAdvance.setOnValueChangedListener(changeAdvance)
+        binding.minuteAdvance.setOnValueChangedListener(changeAdvance)
+        binding.confirmChange.setOnClickListener(confirm)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val adv = (day_advance.value * 24 + hour_advance.value) * 60 + minute_advance.value
+        val adv = (binding.dayAdvance.value * 24 + binding.hourAdvance.value) * 60 + binding.minuteAdvance.value
         outState.putInt(MINUTE_ADVANCE, adv)
-        outState.putInt(TO_CONFIRM, requireView().confirm_change.visibility)
+        outState.putInt(TO_CONFIRM, binding.confirmChange.visibility)
     }
 }

@@ -1,19 +1,21 @@
 package com.moriak.schednote.adapters
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.CompoundButton
-import com.moriak.schednote.storage.Prefs
-import com.moriak.schednote.R
+import androidx.recyclerview.widget.RecyclerView
+import com.moriak.schednote.databinding.DayAlarmBinding
 import com.moriak.schednote.enums.Day
 import com.moriak.schednote.enums.Regularity
 import com.moriak.schednote.notifications.AlarmClockSetter
-import kotlinx.android.synthetic.main.day_alarm.view.*
+import com.moriak.schednote.storage.Prefs
 
 /**
  * Adapter zobrazuje budíky pracovné dni v týždni. Na každý deň možno nastaviť max. 1 budík.
  */
-class AlarmAdapter(private var regularity: Regularity): CustomAdapter<Day>(R.layout.day_alarm) {
+class AlarmAdapter(private var regularity: Regularity): CustomAdapter<Day, DayAlarmBinding>() {
     /**
      * @property ACTION_ALARM_ON Označenie pre pokus o zapnutie budíka
      * @property ACTION_ALARM_OFF Označenie pre pokus o vypnutie budíka
@@ -42,23 +44,24 @@ class AlarmAdapter(private var regularity: Regularity): CustomAdapter<Day>(R.lay
         if (itemCount > 0) notifyItemRangeChanged(0, itemCount)
     }
 
-    override fun instantiateViewHolder(v: View): CustomViewHolder = AlarmHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        AlarmHolder(DayAlarmBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     override fun bundleToItem(bundle: Bundle): Day = throw Exception("Unimplemented!!!")
     override fun itemToBundle(item: Day, bundle: Bundle) { throw Exception("Unimplemented!!!") }
 
     /**
      * Objekt vizualizuje položku zoznamu (deň budenia)
      */
-    inner class AlarmHolder(v: View): CustomViewHolder(v) {
+    inner class AlarmHolder(b: DayAlarmBinding): CustomViewHolder(b) {
         override fun bind(pos: Int) {
-            itemView.alarm_day.text = itemView.context.getString(item!!.res)
+            binding.alarmDay.text = binding.root.context.getString(item!!.res)
             val minutes = AlarmClockSetter.getAlarm(item!!, regularity)
-            itemView.alarm_time.text = Prefs.Settings.timeFormat.getFormat(minutes)
-            itemView.alarm_edit.tag = this
-            itemView.alarm_on_off.tag = this
-            itemView.alarm_on_off.isChecked = AlarmClockSetter.isEnabled(item!!, regularity)
-            itemView.alarm_edit.setOnClickListener(clickAction)
-            itemView.alarm_on_off.setOnCheckedChangeListener(switchAction)
+            binding.alarmTime.text = Prefs.Settings.timeFormat.getFormat(minutes)
+            binding.alarmEdit.tag = this
+            binding.alarmOnOff.tag = this
+            binding.alarmOnOff.isChecked = AlarmClockSetter.isEnabled(item!!, regularity)
+            binding.alarmEdit.setOnClickListener(clickAction)
+            binding.alarmOnOff.setOnCheckedChangeListener(switchAction)
         }
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.NumberPicker
 import com.moriak.schednote.R
+import com.moriak.schednote.databinding.SemesterBinding
 import com.moriak.schednote.dialogs.DateTimeDialog
 import com.moriak.schednote.dialogs.DateTimeDialog.Companion.FLAG_DATE
 import com.moriak.schednote.fragments.SubActivity
@@ -18,7 +19,6 @@ import com.moriak.schednote.storage.Prefs.Settings.semesterValid
 import com.moriak.schednote.storage.Prefs.Settings.semesterWeek
 import com.moriak.schednote.storage.Prefs.Settings.semesterWeekCount
 import com.moriak.schednote.storage.Prefs.Settings.workWeek
-import kotlinx.android.synthetic.main.semester.view.*
 import java.util.*
 import java.util.Calendar.DAY_OF_WEEK
 import java.util.Calendar.HOUR_OF_DAY
@@ -29,7 +29,7 @@ import kotlin.math.abs
  * program bude počítať koľký je semestrálny týžden a úloham bude možné nastaviť úlohy na n-tý týždeň
  * bez znalosti presného dátumu
  */
-class SemesterSettings : SubActivity() {
+class SemesterSettings : SubActivity<SemesterBinding>() {
     private companion object {
         private const val START = "START"
         private val cal: Calendar by lazy { Calendar.getInstance() }
@@ -40,9 +40,9 @@ class SemesterSettings : SubActivity() {
         else if (!checked && semesterValid) {
             semesterStart = null
             semesterWeekCount = 0
-            view?.week_count?.value = 0
-            view?.semester_start?.text = null
-            view?.info?.text = getSemesterInfo()
+            binding.weekCount.value = 0
+            binding.semesterStart.text = null
+            binding.info.text = getSemesterInfo()
         }
     }
 
@@ -50,10 +50,10 @@ class SemesterSettings : SubActivity() {
         semesterWeekCount = newVal
         val st = semesterStart
         val wc = semesterWeekCount
-        requireView().semester_enabled.isChecked = semesterValid
+        binding.semesterEnabled.isChecked = semesterValid
         semesterStart = st
         semesterWeekCount = wc
-        requireView().info.text = getSemesterInfo()
+        binding.info.text = getSemesterInfo()
     }
 
     private val onDateClick = View.OnClickListener {
@@ -68,13 +68,10 @@ class SemesterSettings : SubActivity() {
             cal.setClean(HOUR_OF_DAY, 0)
             cal.timeInMillis
         }
-        view?.semester_enabled?.isChecked = semesterValid
-
-        view?.semester_start?.let { v ->
-            semesterStart?.let { ms -> v.text = dateFormat.getFormat(ms) }
-                ?: v.setText(R.string.choose_date)
-        }
-        view?.info?.text = getSemesterInfo()
+        binding.semesterEnabled.isChecked = semesterValid
+        semesterStart?.let { ms -> binding.semesterStart.text = dateFormat.getFormat(ms) }
+            ?: binding.semesterStart.setText(R.string.choose_date)
+        binding.info.text = getSemesterInfo()
     }
 
     private fun getSemesterInfo(): String = semesterStart?.let { _ ->
@@ -89,22 +86,22 @@ class SemesterSettings : SubActivity() {
         activity?.setTitle(R.string.semester)
     }
 
-    override fun onCreateView(inf: LayoutInflater, par: ViewGroup?, saved: Bundle?): View = inf
-        .inflate(R.layout.semester, par, false)
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?) =
+        SemesterBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setDate(semesterStart)
-        view.semester_enabled.isChecked = semesterValid
-        view.semester_enabled.setOnCheckedChangeListener(onSwitch)
-        view.semester_start.setOnClickListener(onDateClick)
-        view.week_count.apply {
+        binding.semesterEnabled.isChecked = semesterValid
+        binding.semesterEnabled.setOnCheckedChangeListener(onSwitch)
+        binding.semesterStart.setOnClickListener(onDateClick)
+        binding.weekCount.apply {
             minValue = 0
             maxValue = 52
             value = semesterWeekCount
             setOnValueChangedListener(onWeekCountChange)
         }
-        view.info.text = getSemesterInfo()
+        binding.info.text = getSemesterInfo()
         findFragment<DateTimeDialog>(START)?.setOnConfirm(this::setDate)
     }
 

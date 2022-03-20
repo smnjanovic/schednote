@@ -1,5 +1,6 @@
 package com.moriak.schednote.fragments.of_schedule
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -15,6 +16,7 @@ import com.moriak.schednote.TextCursorTracer
 import com.moriak.schednote.data.Lesson
 import com.moriak.schednote.data.LessonType
 import com.moriak.schednote.data.Subject
+import com.moriak.schednote.databinding.ScheduleEditorBinding
 import com.moriak.schednote.enums.Day
 import com.moriak.schednote.enums.Redirection
 import com.moriak.schednote.enums.Regularity
@@ -30,19 +32,13 @@ import com.moriak.schednote.views.OptionStepper
 import com.moriak.schednote.views.RangeView
 import com.moriak.schednote.views.ScheduleView
 import com.moriak.schednote.widgets.ScheduleWidget
-import kotlinx.android.synthetic.main.sch_requirements_not_met.*
-import kotlinx.android.synthetic.main.sch_schedule_editor.*
-import kotlinx.android.synthetic.main.sch_schedule_editor.view.*
-import kotlinx.android.synthetic.main.sch_schedule_view.*
-import kotlinx.android.synthetic.main.sch_schedule_view.view.*
-import kotlinx.android.synthetic.main.schedule_editor.*
 import java.util.*
 
 /**
  * Fragment umožňuje modifikovať rozvrh hodín. Musia k tomu však nejaké dáta už existovať.
  * Inak sa zobrazia odkazy na fragmenty, v ktorých tie dáta možno vytvoriť.
  */
-class ScheduleEditor : SubActivity() {
+class ScheduleEditor : SubActivity<ScheduleEditorBinding>() {
     private companion object { private const val STORED_VALUES = "STORED_VALUES" }
 
     private enum class EditTools { WHEN, WHAT, NOTHING }
@@ -94,12 +90,12 @@ class ScheduleEditor : SubActivity() {
         }
 
         override fun onChange(range: IntRange) {
-            time_reader.text = lessonTimeFormat.rangeFormat(range)
+            binding.scheduleEditor.timeReader.text = lessonTimeFormat.rangeFormat(range)
             describeLesson()
         }
 
         override fun onSet(range: IntRange) {
-            time_reader.text = lessonTimeFormat.rangeFormat(range)
+            binding.scheduleEditor.timeReader.text = lessonTimeFormat.rangeFormat(range)
         }
 
         override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -120,12 +116,12 @@ class ScheduleEditor : SubActivity() {
             R.id.sch_what_btn -> editTools = EditTools.WHAT
             R.id.confirm -> {
                 val les = Lesson(
-                    regularity_choice.option as Regularity,
-                    day_choice.option as Day,
-                    time_choice.value,
-                    (lesson_type_choice.option as LessonType).id,
-                    subject_choice.option as Subject,
-                    room.text?.toString()
+                    binding.scheduleEditor.regularityChoice.option as Regularity,
+                    binding.scheduleEditor.dayChoice.option as Day,
+                    binding.scheduleEditor.timeChoice.value,
+                    (binding.scheduleEditor.lessonTypeChoice.option as LessonType).id,
+                    binding.scheduleEditor.subjectChoice.option as Subject,
+                    binding.scheduleEditor.room.text?.toString()
                 )
 
                 if (regularityBelongs(editing?.reg)) free(editing!!.day, editing!!.time)
@@ -138,9 +134,9 @@ class ScheduleEditor : SubActivity() {
             }
             R.id.abort_or_free -> {
                 if (editing == null) {
-                    val reg = regularity_choice.option as Regularity
-                    val day = day_choice.option as Day
-                    val time = time_choice.value
+                    val reg = binding.scheduleEditor.regularityChoice.option as Regularity
+                    val day = binding.scheduleEditor.dayChoice.option as Day
+                    val time = binding.scheduleEditor.timeChoice.value
 
                     if (regularityBelongs(reg)) free(day, time)
                     SQLite.clearSchedule(day, time, reg)
@@ -158,9 +154,9 @@ class ScheduleEditor : SubActivity() {
                     editing = null
                 }
                 else {
-                    if (regularityBelongs(regularity_choice.option as Regularity)) {
-                        sv.clear()
-                        sv.clearTags()
+                    if (regularityBelongs(binding.scheduleEditor.regularityChoice.option as Regularity)) {
+                        binding.schedulePreview.sv.clear()
+                        binding.schedulePreview.sv.clearTags()
                     }
                     SQLite.clearSchedule(regularity)
                     ScheduleWidget.update(v.context)
@@ -201,11 +197,11 @@ class ScheduleEditor : SubActivity() {
     private var editTools: EditTools = EditTools.NOTHING; set(value) {
         field = value
         view?.let {
-            if (value != EditTools.WHAT) it.room.clearFocus()
-            it.sch_when.visibility = if (value == EditTools.WHEN) View.VISIBLE else View.GONE
-            it.sch_what.visibility = if (value == EditTools.WHAT) View.VISIBLE else View.GONE
-            it.sch_when_btn.alpha = if (value != EditTools.WHAT) 1F else 0.55F
-            it.sch_what_btn.alpha = if (value != EditTools.WHEN) 1F else 0.55F
+            if (value != EditTools.WHAT) binding.scheduleEditor.room.clearFocus()
+            binding.scheduleEditor.schWhen.visibility = if (value == EditTools.WHEN) View.VISIBLE else View.GONE
+            binding.scheduleEditor.schWhat.visibility = if (value == EditTools.WHAT) View.VISIBLE else View.GONE
+            binding.scheduleEditor.schWhenBtn.alpha = if (value != EditTools.WHAT) 1F else 0.55F
+            binding.scheduleEditor.schWhatBtn.alpha = if (value != EditTools.WHEN) 1F else 0.55F
         }
     }
 
@@ -222,50 +218,52 @@ class ScheduleEditor : SubActivity() {
     private var regularity: Regularity = EVERY
         set(value) {
             field = value
-            view?.let {
-                it.odd.visibility = if (value == EVERY) View.GONE else View.VISIBLE
-                it.even.visibility = it.odd.visibility
-                it.regularity_descriptor.visibility = it.even.visibility
-                it.odd.alpha = if (value == ODD) 1F else 0.55F
-                it.even.alpha = if (value == EVEN) 1F else 0.55F
+            if (isBound) {
+                binding.schedulePreview.odd.visibility = if (value == EVERY) View.GONE else View.VISIBLE
+                binding.schedulePreview.even.visibility = binding.schedulePreview.odd.visibility
+                binding.schedulePreview.regularityDescriptor.visibility = binding.schedulePreview.even.visibility
+                binding.schedulePreview.odd.alpha = if (value == ODD) 1F else 0.55F
+                binding.schedulePreview.even.alpha = if (value == EVEN) 1F else 0.55F
                 loadSchedule()
-                it.regularity_descriptor.setText(value.res)
+                binding.schedulePreview.regularityDescriptor.setText(value.res)
             }
         }
     private var editing: Lesson? = null; set(value) {
         field = value
-        if (value != null) {
-            regularity_choice.index = regularities.indexOf(value.reg)
-            day_choice.index = days.indexOf(value.day)
-            time_choice.value = value.time
-            lesson_type_choice.index = lessonTypes.indexOfFirst { it.id == value.type }
-            subject_choice.index = subjects.indexOfFirst { it.id == value.sub.id }
-            room.setText(value.room)
+        if (isBound) {
+            if (value != null) {
+                binding.scheduleEditor.regularityChoice.index = regularities.indexOf(value.reg)
+                binding.scheduleEditor.dayChoice.index = days.indexOf(value.day)
+                binding.scheduleEditor.timeChoice.value = value.time
+                binding.scheduleEditor.lessonTypeChoice.index = lessonTypes.indexOfFirst { it.id == value.type }
+                binding.scheduleEditor.subjectChoice.index = subjects.indexOfFirst { it.id == value.sub.id }
+                binding.scheduleEditor.room.setText(value.room)
+            }
+            binding.scheduleEditor.confirm.setText(value?.let { R.string.edit } ?: R.string.insert)
+            binding.scheduleEditor.abortOrFree.setText(value?.let { R.string.abort } ?: R.string.free)
+            binding.scheduleEditor.deleteOrEmptyOut.setText(value?.let { R.string.delete } ?: R.string.to_empty)
+            describeLesson()
         }
-        confirm.setText(value?.let { R.string.edit } ?: R.string.insert)
-        abort_or_free.setText(value?.let { R.string.abort } ?: R.string.free)
-        delete_or_empty_out.setText(value?.let { R.string.delete } ?: R.string.to_empty)
-        describeLesson()
     }
 
     private fun describeLesson() {
-        view?.lesson_description?.text = editing?.let {
+        binding.scheduleEditor.lessonDescription.text = editing?.let {
             StringBuilder().append(getString(R.string.lesson))
                 .append(": ").append(it.sub.abb)
                 .append(" — ").append(getString(it.day.res))
                 .append(" ").append(it.reg.toString())
                 .append(" ").append(lessonTimeFormat.rangeFormat(it.time))
                 .append("\n").append(getString(R.string.edits))
-                .append(": ").append((subject_choice.option as Subject).abb)
-                .append(" — ").append(getString((day_choice.option as Day).res))
-                .append(" ").append(regularity_choice.option as Regularity)
-                .append(" ").append(lessonTimeFormat.rangeFormat(time_choice.value))
+                .append(": ").append((binding.scheduleEditor.subjectChoice.option as Subject).abb)
+                .append(" — ").append(getString((binding.scheduleEditor.dayChoice.option as Day).res))
+                .append(" ").append(binding.scheduleEditor.regularityChoice.option as Regularity)
+                .append(" ").append(lessonTimeFormat.rangeFormat(binding.scheduleEditor.timeChoice.value))
                 .toString()
         } ?: StringBuilder().append(getString(R.string.lesson))
-            .append(": ").append((subject_choice.option as Subject).abb)
-            .append(" — ").append(getString((day_choice.option as Day).res))
-            .append(" ").append(regularity_choice.option as Regularity)
-            .append(" ").append(lessonTimeFormat.rangeFormat(time_choice.value))
+            .append(": ").append((binding.scheduleEditor.subjectChoice.option as Subject).abb)
+            .append(" — ").append(getString((binding.scheduleEditor.dayChoice.option as Day).res))
+            .append(" ").append(binding.scheduleEditor.regularityChoice.option as Regularity)
+            .append(" ").append(lessonTimeFormat.rangeFormat(binding.scheduleEditor.timeChoice.value))
             .toString()
     }
 
@@ -276,18 +274,18 @@ class ScheduleEditor : SubActivity() {
     }
 
     private fun addLesson(les: Lesson) {
-        sv.addLesson(les.day, les.time, les.type, les.sub.abb, les.room)
-        sv.setTag(les.day, les.time, les)
+        binding.schedulePreview.sv.addLesson(les.day, les.time, les.type, les.sub.abb, les.room)
+        binding.schedulePreview.sv.setTag(les.day, les.time, les)
     }
 
     private fun free(day: Day, time: IntRange) {
-        sv.free(day, time)
-        sv.setTag(day, time, null)
+        binding.schedulePreview.sv.free(day, time)
+        binding.schedulePreview.sv.setTag(day, time, null)
     }
 
     private fun loadSchedule() {
-        sv.clear()
-        sv.clearTags()
+        binding.schedulePreview.sv.clear()
+        binding.schedulePreview.sv.clearTags()
         SQLite.getLessons(workWeek, regularity).forEach(this::addLesson)
         if (regularity != EVERY) SQLite.getLessons(workWeek, EVERY).forEach(this::addLesson)
     }
@@ -302,13 +300,13 @@ class ScheduleEditor : SubActivity() {
         editing?.room,
         editTools.ordinal.toString(),
         "${regularity.ordinal}",
-        "${regularity_choice.index}",
-        "${day_choice.index}",
-        "${time_choice.value.first}",
-        "${time_choice.value.last}",
-        "${lesson_type_choice.index}",
-        "${subject_choice.index}",
-        room.text?.toString()
+        "${binding.scheduleEditor.regularityChoice.index}",
+        "${binding.scheduleEditor.dayChoice.index}",
+        "${binding.scheduleEditor.timeChoice.value.first}",
+        "${binding.scheduleEditor.timeChoice.value.last}",
+        "${binding.scheduleEditor.lessonTypeChoice.index}",
+        "${binding.scheduleEditor.subjectChoice.index}",
+        binding.scheduleEditor.room.text?.toString()
     )
 
     private fun fromStorage(arr: Array<String?>) {
@@ -321,25 +319,26 @@ class ScheduleEditor : SubActivity() {
         }
         editTools = EditTools.values()[int(7)]
         regularity = Regularity.values()[int(8)]
-        regularity_choice.index = int(9)
-        day_choice.index = int(10)
-        time_choice.value = int(11)..int(12)
-        lesson_type_choice.index = int(13)
-        subject_choice.index = int(14)
-        room.setText(arr[15])
+        binding.scheduleEditor.regularityChoice.index = int(9)
+        binding.scheduleEditor.dayChoice.index = int(10)
+        binding.scheduleEditor.timeChoice.value = int(11)..int(12)
+        binding.scheduleEditor.lessonTypeChoice.index = int(13)
+        binding.scheduleEditor.subjectChoice.index = int(14)
+        binding.scheduleEditor.room.setText(arr[15])
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun ifRequirementsMet(saved: Bundle?) {
-        requirements_met.visibility = View.VISIBLE
-        requirements_not_met.visibility = View.GONE
+        binding.requirementsMet.visibility = View.VISIBLE
+        binding.requirementsNotMet.root.visibility = View.GONE
 
         // data pred obnovou alebo inicializaciou
-        regularity_choice.setOptions(regularities)
-        day_choice.setOptions(days)
-        time_choice.extreme = lessonTimes.count().let { if (it > 0) 1..it else 0..0 }
-        lesson_type_choice.setOptions(lessonTypes)
-        subject_choice.setOptions(subjects)
-        sv.setWorkWeek(workWeek)
+        binding.scheduleEditor.regularityChoice.setOptions(regularities)
+        binding.scheduleEditor.dayChoice.setOptions(days)
+        binding.scheduleEditor.timeChoice.extreme = lessonTimes.count().let { if (it > 0) 1..it else 0..0 }
+        binding.scheduleEditor.lessonTypeChoice.setOptions(lessonTypes)
+        binding.scheduleEditor.subjectChoice.setOptions(subjects)
+        binding.schedulePreview.sv.setWorkWeek(workWeek)
 
         if (saved != null) saved.getStringArray(STORED_VALUES)?.let(this::fromStorage)
         else regularity = Calendar.getInstance().getRegularity(workWeek, dualWeekSchedule)
@@ -347,45 +346,49 @@ class ScheduleEditor : SubActivity() {
         describeLesson()
 
         // udalosti
-        sv.setOnTouchListener(eventListener)
-        sch_when_btn.setOnClickListener(eventListener)
-        sch_what_btn.setOnClickListener(eventListener)
-        confirm.setOnClickListener(eventListener)
-        abort_or_free.setOnClickListener(eventListener)
-        delete_or_empty_out.setOnClickListener(eventListener)
-        odd.setOnClickListener(eventListener)
-        even.setOnClickListener(eventListener)
-        regularity_choice.setOnChange(eventListener)
-        day_choice.setOnChange(eventListener)
-        lesson_type_choice.setOnChange(eventListener)
-        subject_choice.setOnChange(eventListener)
-        time_choice.setRangeChangeListener(eventListener)
-        room.addTextChangedListener(roomWatcher)
-        room.onFocusChangeListener = eventListener
+        binding.schedulePreview.sv.setOnTouchListener(eventListener)
+        binding.scheduleEditor.schWhenBtn.setOnClickListener(eventListener)
+        binding.scheduleEditor.schWhatBtn.setOnClickListener(eventListener)
+        binding.scheduleEditor.confirm.setOnClickListener(eventListener)
+        binding.scheduleEditor.abortOrFree.setOnClickListener(eventListener)
+        binding.scheduleEditor.deleteOrEmptyOut.setOnClickListener(eventListener)
+        binding.schedulePreview.odd.setOnClickListener(eventListener)
+        binding.schedulePreview.even.setOnClickListener(eventListener)
+        binding.scheduleEditor.regularityChoice.setOnChange(eventListener)
+        binding.scheduleEditor.dayChoice.setOnChange(eventListener)
+        binding.scheduleEditor.lessonTypeChoice.setOnChange(eventListener)
+        binding.scheduleEditor.subjectChoice.setOnChange(eventListener)
+        binding.scheduleEditor.timeChoice.setRangeChangeListener(eventListener)
+        binding.scheduleEditor.room.addTextChangedListener(roomWatcher)
+        binding.scheduleEditor.room.onFocusChangeListener = eventListener
 
         //formaty
-        regularity_choice.setFormat(format)
-        day_choice.setFormat(format)
-        lesson_type_choice.setFormat(format)
-        subject_choice.setFormat(format)
-        sv.setFormat(format)
+        binding.scheduleEditor.regularityChoice.setFormat(format)
+        binding.scheduleEditor.dayChoice.setFormat(format)
+        binding.scheduleEditor.lessonTypeChoice.setFormat(format)
+        binding.scheduleEditor.subjectChoice.setFormat(format)
+        binding.schedulePreview.sv.setFormat(format)
 
         // vzhlad a stavy
-        IColorGroup.getGroups().forEach { sv.setTypeColor(it.id, it.color.color, it.color.contrast) }
-        time_reader.text = lessonTimeFormat.rangeFormat(time_choice.value)
+        IColorGroup.getGroups().forEach {
+            binding.schedulePreview.sv
+                .setTypeColor(it.id, it.color.color, it.color.contrast)
+        }
+        binding.scheduleEditor.timeReader.text = lessonTimeFormat
+            .rangeFormat(binding.scheduleEditor.timeChoice.value)
     }
 
     private fun ifRequirementsNotMet() {
         // neda sa upravovať rozvrh, pretože treba ešte vytvoriť nejaké dáta
-        requirements_met.visibility = View.GONE
-        requirements_not_met.visibility = View.VISIBLE
-        rnm_subjects_required.setOnClickListener(eventListener)
-        rnm_lesson_times_required.setOnClickListener(eventListener)
-        rnm_lesson_types_required.setOnClickListener(eventListener)
+        binding.requirementsMet.visibility = View.GONE
+        binding.requirementsNotMet.root.visibility = View.VISIBLE
+        binding.requirementsNotMet.rnmSubjectsRequired.setOnClickListener(eventListener)
+        binding.requirementsNotMet.rnmLessonTimesRequired.setOnClickListener(eventListener)
+        binding.requirementsNotMet.rnmLessonTypesRequired.setOnClickListener(eventListener)
 
-        if (subjects.isNotEmpty()) rnm_subjects_required.visibility = View.GONE
-        if (lessonTypes.isNotEmpty()) rnm_lesson_types_required.visibility = View.GONE
-        if (lessonTimes.isNotEmpty()) rnm_lesson_times_required.visibility = View.GONE
+        if (subjects.isNotEmpty()) binding.requirementsNotMet.rnmSubjectsRequired.visibility = View.GONE
+        if (lessonTypes.isNotEmpty()) binding.requirementsNotMet.rnmLessonTypesRequired.visibility = View.GONE
+        if (lessonTimes.isNotEmpty()) binding.requirementsNotMet.rnmLessonTimesRequired.visibility = View.GONE
     }
 
     override fun onAttach(context: Context) {
@@ -393,8 +396,8 @@ class ScheduleEditor : SubActivity() {
         activity?.setTitle(R.string.lesson_schedule)
     }
 
-    override fun onCreateView(inf: LayoutInflater, par: ViewGroup?, saved: Bundle?): View = inf
-        .inflate(R.layout.schedule_editor, par, false)!!
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?) =
+        ScheduleEditorBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, saved: Bundle?) {
         super.onViewCreated(view, saved)

@@ -1,19 +1,15 @@
 package com.moriak.schednote.adapters
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
 /**
  * Rozšírený [RecyclerView.Adapter], so zoradenými obnoviteľnými prvkami.
  * @property extras doplňujúce dáta
  * @property items zoznam položiek adaptéra
  */
-abstract class CustomAdapter<T>(@LayoutRes private val itemLayout: Int)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class CustomAdapter<T, B: ViewBinding> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private companion object { private const val ITEMS = "CUSTOM_ARRAY_ADAPTER_ITEMS" }
     private var itemAction: (Int, Bundle, Int)->Unit = fun(_, _, _) = Unit
     protected val items: ArrayList<T> = ArrayList()
@@ -60,23 +56,10 @@ abstract class CustomAdapter<T>(@LayoutRes private val itemLayout: Int)
         }
     }
 
-    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val v: View = inflater.inflate(itemLayout, parent, false)
-        return instantiateViewHolder(v)
-    }
-
     final override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int)
-            = (holder as CustomAdapter<*>.CustomViewHolder).bind(position)
+            = (holder as CustomAdapter<*, *>.CustomViewHolder).bind(position)
 
     final override fun getItemCount(): Int = items.size
-
-    /**
-     * Vytvorí a vráti potomka inštancie [CustomViewHolder]
-     * @param v Blok, ktorý bude pri tvorbe inštancie potoma [CustomViewHolder] použitý ako parameter.
-     * @return potomok inštancie [CustomViewHolder]
-     */
-    protected abstract fun instantiateViewHolder(v: View): CustomViewHolder
 
     /**
      * Porovnávajú sa 2 položky
@@ -233,7 +216,7 @@ abstract class CustomAdapter<T>(@LayoutRes private val itemLayout: Int)
      * Rozšírený [RecyclerView.ViewHolder]
      * @property item súvisiaca položka
      */
-    abstract inner class CustomViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    abstract inner class CustomViewHolder(protected val binding: B): RecyclerView.ViewHolder(binding.root) {
         val item: T? get() = if (adapterPosition in items.indices) items[adapterPosition] else null
 
         /**

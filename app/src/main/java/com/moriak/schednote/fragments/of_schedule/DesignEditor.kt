@@ -19,6 +19,7 @@ import com.moriak.schednote.contracts.PermissionContract
 import com.moriak.schednote.contracts.PickContract
 import com.moriak.schednote.data.Lesson
 import com.moriak.schednote.data.LessonType
+import com.moriak.schednote.databinding.StyleLayoutBinding
 import com.moriak.schednote.enums.ColorGroup
 import com.moriak.schednote.enums.PermissionHandler.IMAGE_ACCESS
 import com.moriak.schednote.enums.Redirection
@@ -44,10 +45,6 @@ import com.moriak.schednote.views.WallpaperView
 import com.moriak.schednote.views.WallpaperView.ImageFit
 import com.moriak.schednote.views.WallpaperView.ImageFit.*
 import com.moriak.schednote.widgets.ScheduleWidget
-import kotlinx.android.synthetic.main.style_layout.*
-import kotlinx.android.synthetic.main.style_layout.view.*
-import kotlinx.android.synthetic.main.wpp_color_editor.*
-import kotlinx.android.synthetic.main.wpp_image_editor.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.Main
@@ -62,7 +59,7 @@ import java.util.*
  * ktorý možno na plátno rozložiť 3 rôznymi spôsobmi a nastaviť rotáciu
  * na 4 možné uhly (0°, 90°, 180°, 270°).
  */
-class DesignEditor : SubActivity() {
+class DesignEditor : SubActivity<StyleLayoutBinding>() {
     private companion object {
         private const val INT_DATA = "INT_DATA"
     }
@@ -98,19 +95,19 @@ class DesignEditor : SubActivity() {
         override fun onChange(v: View?, item: Any?) {
             val p = (item as IColorGroup).color
             val f = v!!.tag as DesignEditor
-            f.palette_h_range.progress = p.hue
-            f.palette_s_range.progress = p.saturation
-            f.palette_l_range.progress = p.luminance
-            f.palette_a_range.progress = p.alpha
-            f.palette_h_number.text = "${p.hue}"
-            f.palette_s_number.text = "${p.saturation}"
-            f.palette_l_number.text = "${p.luminance}"
-            f.palette_a_number.text = "${p.alpha}"
+            f.binding.inPalette.paletteHRange.progress = p.hue
+            f.binding.inPalette.paletteSRange.progress = p.saturation
+            f.binding.inPalette.paletteLRange.progress = p.luminance
+            f.binding.inPalette.paletteARange.progress = p.alpha
+            f.binding.inPalette.paletteHNumber.text = "${p.hue}"
+            f.binding.inPalette.paletteSNumber.text = "${p.saturation}"
+            f.binding.inPalette.paletteLNumber.text = "${p.luminance}"
+            f.binding.inPalette.paletteANumber.text = "${p.alpha}"
         }
     }
 
     private val pickerLauncher = registerForActivityResult(PickContract) {
-        screen_view.setUri(it)
+        binding.screenView.setUri(it)
         bgImage = it
     }
 
@@ -120,7 +117,7 @@ class DesignEditor : SubActivity() {
 
     private val clickListener = View.OnClickListener {
         when (it) {
-            wallpaper -> {
+            binding.wallpaper -> {
                 AlertDialog.Builder(requireContext())
                     .setTitle(R.string.set_as_wallpaper)
                     .setItems(arrayOf(
@@ -130,9 +127,9 @@ class DesignEditor : SubActivity() {
                         getString(R.string.abort)
                     )) { _, which ->
                         if (which < 3) {
-                            val bmp = screen_view.getWallpaperBitmap()
+                            val bmp = binding.screenView.getWallpaperBitmap()
                             CoroutineScope(Default).launch {
-                                screen_view.setAsWallpaper(bmp, when (which) {
+                                binding.screenView.setAsWallpaper(bmp, when (which) {
                                     0 -> FLAG_SYSTEM
                                     1 -> FLAG_LOCK
                                     else -> FLAG_SYSTEM or FLAG_LOCK
@@ -143,45 +140,45 @@ class DesignEditor : SubActivity() {
                     }
                     .show()
             }
-            odd_btn, even_btn -> {
-                regularity = if (it == odd_btn) ODD else EVEN
-                odd_btn.alpha = if (regularity == ODD) 1F else 0.5F
-                even_btn.alpha = if (regularity == EVEN) 1F else 0.5F
-                loadSchedule(screen_view)
+            binding.oddBtn, binding.evenBtn -> {
+                regularity = if (it == binding.oddBtn) ODD else EVEN
+                binding.oddBtn.alpha = if (regularity == ODD) 1F else 0.5F
+                binding.evenBtn.alpha = if (regularity == EVEN) 1F else 0.5F
+                loadSchedule(binding.screenView)
             }
-            palette_open -> show(PALETTE)
-            palette_close -> if (setting == PALETTE) show(NOTHING)
-            bg_img_open -> show(BG_IMG)
-            bg_img_close -> if (setting == BG_IMG) show(NOTHING)
-            bg_img_set -> IMAGE_ACCESS.allowMe(requireContext(), permissionLauncher) {
+            binding.paletteOpen -> show(PALETTE)
+            binding.inPalette.paletteClose -> if (setting == PALETTE) show(NOTHING)
+            binding.bgImgOpen -> show(BG_IMG)
+            binding.inBgImg.bgImgClose -> if (setting == BG_IMG) show(NOTHING)
+            binding.inBgImg.bgImgSet -> IMAGE_ACCESS.allowMe(requireContext(), permissionLauncher) {
                 pickerLauncher.launch(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             }
-            bg_img_remove -> {
-                screen_view.setUri(null)
+            binding.inBgImg.bgImgRemove -> {
+                binding.screenView.setUri(null)
                 bgImage = null
             }
-            bg_rotate_left -> bgImageAngle = screen_view.bgRotateLeft()
-            bg_rotate_right -> bgImageAngle = screen_view.bgRotateRight()
+            binding.bgRotateLeft -> bgImageAngle = binding.screenView.bgRotateLeft()
+            binding.bgRotateRight -> bgImageAngle = binding.screenView.bgRotateRight()
         }
     }
 
     private val colorChangeListener = object: SeekBar.OnSeekBarChangeListener {
         override fun onStartTrackingTouch(seekBar: SeekBar?) {}
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-            val type = palette_category.option as IColorGroup
+            val type = binding.inPalette.paletteCategory.option as IColorGroup
             val pair = when (seekBar) {
-                palette_h_range -> palette_h_number to type.color::setHue
-                palette_s_range -> palette_s_number to type.color::setSaturation
-                palette_l_range -> palette_l_number to type.color::setLuminance
-                palette_a_range -> palette_a_number to type.color::setAlpha
+                binding.inPalette.paletteHRange -> binding.inPalette.paletteHNumber to type.color::setHue
+                binding.inPalette.paletteSRange -> binding.inPalette.paletteSNumber to type.color::setSaturation
+                binding.inPalette.paletteLRange -> binding.inPalette.paletteLNumber to type.color::setLuminance
+                binding.inPalette.paletteARange -> binding.inPalette.paletteANumber to type.color::setAlpha
                 else -> return
             }
             pair.first.text = "$progress"
             pair.second(progress)
-            screen_view.setTypeColor(type.id, type.color.color, type.color.contrast)
+            binding.screenView.setTypeColor(type.id, type.color.color, type.color.contrast)
         }
         override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            when (val opt = palette_category.option) {
+            when (val opt = binding.inPalette.paletteCategory.option) {
                 is ColorGroup -> setColor(opt, opt.color)
                 is LessonType -> SQLite.setColor(opt.id, opt.color)
             }
@@ -215,76 +212,76 @@ class DesignEditor : SubActivity() {
     }
 
     private fun show(sw: SettingWindow) {
-        palette_open.visibility = if (sw == PALETTE) GONE else VISIBLE
-        palette_box.visibility = if (sw == PALETTE) VISIBLE else GONE
-        bg_img_open.visibility = if (sw == BG_IMG) GONE else VISIBLE
-        bg_img_box.visibility = if (sw == BG_IMG) VISIBLE else GONE
+        binding.paletteOpen.visibility = if (sw == PALETTE) GONE else VISIBLE
+        binding.paletteBox.visibility = if (sw == PALETTE) VISIBLE else GONE
+        binding.bgImgOpen.visibility = if (sw == BG_IMG) GONE else VISIBLE
+        binding.bgImgBox.visibility = if (sw == BG_IMG) VISIBLE else GONE
         setting = sw
     }
 
     private fun loadSchedule(v: ScheduleView) {
-        screen_view.clear()
+        binding.screenView.clear()
         val fn = fun(l: Lesson) = v.addLesson(l.day, l.time, l.type, l.sub.abb, l.room)
         lessons[regularity]?.forEach(fn)
         if (regularity != EVERY) lessons[EVERY]?.forEach(fn)
     }
 
     private fun setUpEvents() {
-        screen_view.addScreenWatcher(ScheduleScreenWatcher)
-        odd_btn.setOnClickListener(clickListener)
-        even_btn.setOnClickListener(clickListener)
-        bg_img_open.setOnClickListener(clickListener)
-        bg_img_close.setOnClickListener(clickListener)
-        palette_open.setOnClickListener(clickListener)
-        palette_close.setOnClickListener(clickListener)
-        wallpaper.setOnClickListener(clickListener)
-        bg_img_set.setOnClickListener(clickListener)
-        bg_img_remove.setOnClickListener(clickListener)
-        bg_rotate_left.setOnClickListener(clickListener)
-        bg_rotate_right.setOnClickListener(clickListener)
-        palette_category.setOnChange(OnCTypeChange)
-        palette_h_range.setOnSeekBarChangeListener(colorChangeListener)
-        palette_s_range.setOnSeekBarChangeListener(colorChangeListener)
-        palette_l_range.setOnSeekBarChangeListener(colorChangeListener)
-        palette_a_range.setOnSeekBarChangeListener(colorChangeListener)
-        radios.setOnCheckedChangeListener(ImgFitChange)
+        binding.screenView.addScreenWatcher(ScheduleScreenWatcher)
+        binding.oddBtn.setOnClickListener(clickListener)
+        binding.evenBtn.setOnClickListener(clickListener)
+        binding.bgImgOpen.setOnClickListener(clickListener)
+        binding.inBgImg.bgImgClose.setOnClickListener(clickListener)
+        binding.paletteOpen.setOnClickListener(clickListener)
+        binding.inPalette.paletteClose.setOnClickListener(clickListener)
+        binding.wallpaper.setOnClickListener(clickListener)
+        binding.inBgImg.bgImgSet.setOnClickListener(clickListener)
+        binding.inBgImg.bgImgRemove.setOnClickListener(clickListener)
+        binding.bgRotateLeft.setOnClickListener(clickListener)
+        binding.bgRotateRight.setOnClickListener(clickListener)
+        binding.inPalette.paletteCategory.setOnChange(OnCTypeChange)
+        binding.inPalette.paletteHRange.setOnSeekBarChangeListener(colorChangeListener)
+        binding.inPalette.paletteSRange.setOnSeekBarChangeListener(colorChangeListener)
+        binding.inPalette.paletteLRange.setOnSeekBarChangeListener(colorChangeListener)
+        binding.inPalette.paletteARange.setOnSeekBarChangeListener(colorChangeListener)
+        binding.inBgImg.radios.setOnCheckedChangeListener(ImgFitChange)
     }
 
     private fun setUpState(saved: Bundle?) {
-        radios.tag = screen_view
-        palette_category.tag = this
+        binding.inBgImg.radios.tag = binding.screenView
+        binding.inPalette.paletteCategory.tag = this
         saved?.getIntArray(INT_DATA)?.let {
-            palette_category.index = it[0]
+            binding.inPalette.paletteCategory.index = it[0]
             setting = SettingWindow.values()[it[1]]
             regularity = Regularity.values()[it[2]]
         }
-        if (!dualWeekSchedule) odd_btn.visibility = GONE
-        if (!dualWeekSchedule) even_btn.visibility = GONE
-        if (regularity == ODD) even_btn.alpha = 0.5F
-        if (regularity == EVEN) odd_btn.alpha = 0.5F
-        if (setting == BG_IMG) bg_img_box.visibility = VISIBLE
-        else if (setting == PALETTE) palette_box.visibility = VISIBLE
-        val type = palette_category.option as IColorGroup
-        palette_h_range.progress = type.color.hue
-        palette_s_range.progress = type.color.saturation
-        palette_l_range.progress = type.color.luminance
-        palette_a_range.progress = type.color.alpha
-        palette_h_number.text = "${type.color.hue}"
-        palette_s_number.text = "${type.color.saturation}"
-        palette_l_number.text = "${type.color.luminance}"
-        palette_a_number.text = "${type.color.alpha}"
+        if (!dualWeekSchedule) binding.oddBtn.visibility = GONE
+        if (!dualWeekSchedule) binding.evenBtn.visibility = GONE
+        if (regularity == ODD) binding.evenBtn.alpha = 0.5F
+        if (regularity == EVEN) binding.oddBtn.alpha = 0.5F
+        if (setting == BG_IMG) binding.bgImgBox.visibility = VISIBLE
+        else if (setting == PALETTE) binding.paletteBox.visibility = VISIBLE
+        val type = binding.inPalette.paletteCategory.option as IColorGroup
+        binding.inPalette.paletteHRange.progress = type.color.hue
+        binding.inPalette.paletteSRange.progress = type.color.saturation
+        binding.inPalette.paletteLRange.progress = type.color.luminance
+        binding.inPalette.paletteARange.progress = type.color.alpha
+        binding.inPalette.paletteHNumber.text = "${type.color.hue}"
+        binding.inPalette.paletteSNumber.text = "${type.color.saturation}"
+        binding.inPalette.paletteLNumber.text = "${type.color.luminance}"
+        binding.inPalette.paletteANumber.text = "${type.color.alpha}"
         val fit = bgImageFit
-        fill.isChecked = fit == FILL
-        cover.isChecked = fit == COVER
-        contain.isChecked = fit == CONTAIN
-        (screen_view as ScheduleView).setWorkWeek(workWeek)
-        screen_view.setFit(fit)
-        screen_view.setFormat(SchFormat)
-        screen_view.imgPercent = bgImagePos
-        screen_view.schPercent = schedulePos
-        screen_view.setBgRotation(bgImageAngle)
-        colorTypes.forEach { screen_view.setTypeColor(it.id, it.color.color, it.color.contrast) }
-        screen_view.post { screen_view.setUri(bgImage) }
+        binding.inBgImg.fill.isChecked = fit == FILL
+        binding.inBgImg.cover.isChecked = fit == COVER
+        binding.inBgImg.contain.isChecked = fit == CONTAIN
+        (binding.screenView as ScheduleView).setWorkWeek(workWeek)
+        binding.screenView.setFit(fit)
+        binding.screenView.setFormat(SchFormat)
+        binding.screenView.imgPercent = bgImagePos
+        binding.screenView.schPercent = schedulePos
+        binding.screenView.setBgRotation(bgImageAngle)
+        colorTypes.forEach { binding.screenView.setTypeColor(it.id, it.color.color, it.color.contrast) }
+        binding.screenView.post { binding.screenView.setUri(bgImage) }
     }
 
     override fun onAttach(context: Context) {
@@ -292,15 +289,15 @@ class DesignEditor : SubActivity() {
         activity?.setTitle(R.string.design)
     }
 
-    override fun onCreateView(inf: LayoutInflater, par: ViewGroup?, saved: Bundle?) = inf
-        .inflate(R.layout.style_layout, par, false)!!
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?): StyleLayoutBinding =
+        StyleLayoutBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        palette_category.setOptions(colorTypes)
-        palette_category.setFormat(colorDescriptor)
+        binding.inPalette.paletteCategory.setOptions(colorTypes)
+        binding.inPalette.paletteCategory.setFormat(colorDescriptor)
         setUpState(savedInstanceState)
-        loadSchedule(screen_view)
+        loadSchedule(binding.screenView)
         setUpEvents()
         Redirection.detectRedirection(activity?.intent)?.let { _ ->
             val index = colorTypes.indexOfFirst {
@@ -308,8 +305,8 @@ class DesignEditor : SubActivity() {
             }
             if (index > -1) {
                 show(PALETTE)
-                palette_category.index = index
-                OnCTypeChange.onChange(palette_category, palette_category.option)
+                binding.inPalette.paletteCategory.index = index
+                OnCTypeChange.onChange(binding.inPalette.paletteCategory, binding.inPalette.paletteCategory.option)
             }
             activity?.intent = null
         }
@@ -317,11 +314,11 @@ class DesignEditor : SubActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putIntArray(INT_DATA, intArrayOf(palette_category.index, setting.ordinal, regularity.ordinal))
+        outState.putIntArray(INT_DATA, intArrayOf(binding.inPalette.paletteCategory.index, setting.ordinal, regularity.ordinal))
     }
 
     override fun onDestroyView() {
-        requireView().screen_view.setUri(null)
+        binding.screenView.setUri(null)
         super.onDestroyView()
     }
 }

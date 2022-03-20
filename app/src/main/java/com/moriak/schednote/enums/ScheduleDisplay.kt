@@ -21,7 +21,7 @@ import com.moriak.schednote.storage.Prefs
 
 enum class ScheduleDisplay(
     @IdRes override val button: Int,
-    override val fragmentClass: Class<out SubActivity>
+    override val fragmentClass: Class<out SubActivity<*>>
 ): ISubContent {
     DESIGN(R.id.sched_view_btn, DesignEditor::class.java),
     LESSON_SCHEDULE(R.id.sched_edit_btn, ScheduleEditor::class.java),
@@ -32,7 +32,6 @@ enum class ScheduleDisplay(
     companion object: ISubContent.ISubContentCompanion {
         @IdRes override val container: Int = R.id.schedule_part
         override val values: Array<out ISubContent> = values()
-        override val layout: Int = R.layout.schedule
         override val lastSet: ISubContent get() = Prefs.States.lastScheduleDisplay
     }
 }

@@ -16,7 +16,6 @@ import com.moriak.schednote.notifications.AlarmClockSetter
 import com.moriak.schednote.storage.Prefs.Settings
 import com.moriak.schednote.views.OptionStepper
 import com.moriak.schednote.widgets.ScheduleWidget
-import kotlinx.android.synthetic.main.activity_settings.*
 import java.lang.System.currentTimeMillis as now
 
 /**
@@ -94,7 +93,7 @@ class Settings : ShakeCompatActivity<ActivitySettingsBinding>() {
         Settings.dateFormat = dateFormat
         Settings.timeFormat = timeFormat
         if (Settings.lessonTimeFormat == LessonTimeFormat.START_TIME) ScheduleWidget.update(this)
-        dtf_choice.index = dateTimeFormat.indexOfFirst {
+        binding.dtfChoice.index = dateTimeFormat.indexOfFirst {
             it.d == dateFormat && it.t == timeFormat
         }
     }
@@ -111,45 +110,47 @@ class Settings : ShakeCompatActivity<ActivitySettingsBinding>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // nastavit data
-        workweek_choice.setOptions(workWeeks)
-        les_label_choice.setOptions(lessonLabeling)
-        snooze_choice.setOptions(snooze)
-        dtf_choice.setOptions(dateTimeFormat)
+        binding.workweekChoice.setOptions(workWeeks)
+        binding.lesLabelChoice.setOptions(lessonLabeling)
+        binding.snoozeChoice.setOptions(snooze)
+        binding.dtfChoice.setOptions(dateTimeFormat)
 
         // nastavit format
-        workweek_choice.setFormat(optionFormat)
-        les_label_choice.setFormat(optionFormat)
-        snooze_choice.setFormat(optionFormat)
-        dtf_choice.setFormat(optionFormat)
+        binding.workweekChoice.setFormat(optionFormat)
+        binding.lesLabelChoice.setFormat(optionFormat)
+        binding.snoozeChoice.setFormat(optionFormat)
+        binding.dtfChoice.setFormat(optionFormat)
+
+        binding.alarmSnooze
 
         // vyplnit konfiguraciu
-        dualWeekEnabled.isChecked = Settings.dualWeekSchedule
-        voice_cmd_enabled.isChecked = Settings.shakeEventEnabled
-        alarm_tune_name.text = Settings.alarmTone.label.replace("^(.*)\\..*$".toRegex(), "$1")
-        workweek_choice.index = workWeeks.indexOf(Settings.workWeek)
-        les_label_choice.index = lessonLabeling.indexOf(Settings.lessonTimeFormat)
-        snooze_choice.index = snooze.indexOf(Settings.snoozeTime).coerceAtLeast(0)
-        dtf_choice.index = dateTimeFormat.indexOfFirst {
+        binding.dualWeekEnabled.isChecked = Settings.dualWeekSchedule
+        binding.voiceCmdEnabled.isChecked = Settings.shakeEventEnabled
+        binding.alarmTuneName.text = Settings.alarmTone.label.replace("^(.*)\\..*$".toRegex(), "$1")
+        binding.workweekChoice.index = workWeeks.indexOf(Settings.workWeek)
+        binding.lesLabelChoice.index = lessonLabeling.indexOf(Settings.lessonTimeFormat)
+        binding.snoozeChoice.index = snooze.indexOf(Settings.snoozeTime).coerceAtLeast(0)
+        binding.dtfChoice.index = dateTimeFormat.indexOfFirst {
             it.d == Settings.dateFormat && it.t == Settings.timeFormat
         }
 
         // reakcie na zmeny
-        dualWeekEnabled.setOnCheckedChangeListener(ChangeReactor)
-        voice_cmd_enabled.setOnCheckedChangeListener(ChangeReactor)
-        workweek_choice.setOnChange(ChangeReactor)
-        les_label_choice.setOnChange(ChangeReactor)
-        snooze_choice.setOnChange(ChangeReactor)
-        dtf_choice.setOnChange(ChangeReactor)
+        binding.dualWeekEnabled.setOnCheckedChangeListener(ChangeReactor)
+        binding.voiceCmdEnabled.setOnCheckedChangeListener(ChangeReactor)
+        binding.workweekChoice.setOnChange(ChangeReactor)
+        binding.lesLabelChoice.setOnChange(ChangeReactor)
+        binding.snoozeChoice.setOnChange(ChangeReactor)
+        binding.dtfChoice.setOnChange(ChangeReactor)
 
         // dialog nastavenia formatu datumu a casu
-        dtf_choice.setOnClickListener {
+        binding.dtfChoice.setOnClickListener {
             val dialog = DateTimeFormatDialog()
             dialog.setOnConfirm(this::confirmDateTimeFormat)
             dialog.show(supportFragmentManager, DATE_TIME_FORMAT)
         }
 
         // odkaz na aktivitu kde sa nastavuje ton zvonenia
-        alarm_tone.setOnClickListener {
+        binding.alarmTone.setOnClickListener {
             startActivity(Intent(this@Settings, AlarmToneActivity::class.java))
         }
 

@@ -2,12 +2,16 @@ package com.moriak.schednote.fragments.of_schedule
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.App
 import com.moriak.schednote.R
 import com.moriak.schednote.adapters.LessonTimeAdapter
 import com.moriak.schednote.data.LessonTime
+import com.moriak.schednote.databinding.LessonTimeSchedulerBinding
 import com.moriak.schednote.dayMinutes
 import com.moriak.schednote.dialogs.DateTimeDialog
 import com.moriak.schednote.dialogs.DateTimeDialog.Companion.FLAG_TIME
@@ -22,7 +26,6 @@ import com.moriak.schednote.storage.Prefs.States.lastSetBreakDuration
 import com.moriak.schednote.storage.Prefs.States.lastSetLessonDuration
 import com.moriak.schednote.storage.SQLite
 import com.moriak.schednote.widgets.ScheduleWidget
-import kotlinx.android.synthetic.main.lesson_time_scheduler.*
 import java.util.*
 
 /**
@@ -30,7 +33,7 @@ import java.util.*
  * Tu používateľ nastaví začiatok rozvrhu a následne trvanie jednotlivých
  * hodín a prestávok po nich v minútach
  */
-class LessonTimeList : ListSubActivity<LessonTime>(R.layout.lesson_time_scheduler, R.id.lesson_list, R.id.sched_empty, 5) {
+class LessonTimeList : ListSubActivity<LessonTime, LessonTimeAdapter, LessonTimeSchedulerBinding>(5) {
     private companion object {
         private const val START = "START_SCHEDULE"
         private const val SET = "LESSON_SETTER"
@@ -38,28 +41,22 @@ class LessonTimeList : ListSubActivity<LessonTime>(R.layout.lesson_time_schedule
         private val cal by lazy { Calendar.getInstance() }
     }
 
-    private enum class EditState(@StringRes val res: Int?) {
-        SUCCESS(null),
-        MINUTES_EXCEEDED(R.string.lesson_time_limit_exceeded),
-        LESSONS_EXCEEDED(R.string.too_many_lessons)
-    }
-
-    private data class SaveResult(val state: EditState, val resultOrder: Int, val isNew: Boolean)
+    override val adapter = LessonTimeAdapter()
+    override val adapterView: RecyclerView by lazy { binding.lessonList }
+    override val emptyView: View? by lazy { binding.schedEmpty }
 
     private val click = View.OnClickListener {
         when (it) {
-            schedule_start, edit_schedule_start -> {
+            binding.scheduleStart, binding.editScheduleStart -> {
                 val ms = cal.apply { dayMinutes = earliestMinute }.timeInMillis
                 showDialog(START, DateTimeDialog(ms, FLAG_TIME).setOnConfirm(this::changeScheduleStart))
             }
-            addLessonUnit -> {
+            binding.addLessonUnit -> {
                 if (adapter.itemCount < MAX) changeStart(null)
                 else App.toast(R.string.too_many_lessons)
             }
         }
     }
-
-    override val adapter = LessonTimeAdapter()
 
     private fun changeScheduleStart(ms: Long?) {
         ms ?: return
@@ -68,7 +65,7 @@ class LessonTimeList : ListSubActivity<LessonTime>(R.layout.lesson_time_schedule
             earliestMinute = dayMinutes
             if (lessonTimeFormat == LessonTimeFormat.START_TIME)
                 ScheduleWidget.update(requireContext())
-            schedule_start.text = timeFormat.getFormat(earliestMinute)
+            binding.scheduleStart.text = timeFormat.getFormat(earliestMinute)
             adapter.notifyItemRangeChanged(0, adapter.itemCount)
         }
         else App.toast(R.string.lesson_time_limit_exceeded)
@@ -131,14 +128,25 @@ class LessonTimeList : ListSubActivity<LessonTime>(R.layout.lesson_time_schedule
         activity?.setTitle(R.string.time_schedule)
     }
 
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?) =
+        LessonTimeSchedulerBinding.inflate(inflater, container, false)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // prvotne nastavenie hodnot
-        schedule_start.text = timeFormat.getFormat(earliestMinute)
-        schedule_start.setOnClickListener(click)
-        edit_schedule_start.setOnClickListener(click)
-        addLessonUnit.setOnClickListener(click)
+        binding.scheduleStart.text = timeFormat.getFormat(earliestMinute)
+        binding.scheduleStart.setOnClickListener(click)
+        binding.editScheduleStart.setOnClickListener(click)
+        binding.addLessonUnit.setOnClickListener(click)
         findFragment<DateTimeDialog>(START)?.setOnConfirm(this::changeScheduleStart)
         findFragment<LessonDurationSetter>(SET)?.setOnConfirm(this::changeLessonTime)
     }
+
+    private enum class EditState(@StringRes val res: Int?) {
+        SUCCESS(null),
+        MINUTES_EXCEEDED(R.string.lesson_time_limit_exceeded),
+        LESSONS_EXCEEDED(R.string.too_many_lessons)
+    }
+
+    private data class SaveResult(val state: EditState, val resultOrder: Int, val isNew: Boolean)
 }

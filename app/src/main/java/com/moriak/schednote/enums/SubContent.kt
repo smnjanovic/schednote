@@ -19,7 +19,7 @@ import com.moriak.schednote.storage.Prefs
  */
 enum class SubContent(
     @IdRes override val button: Int,
-    override val fragmentClass: Class<out SubActivity>
+    override val fragmentClass: Class<out SubActivity<*>>
 ): ISubContent {
     SCHEDULE(R.id.schedule, ScheduleContent::class.java),
     SUBJECTS(R.id.subjects, SubjectList::class.java),
@@ -31,7 +31,6 @@ enum class SubContent(
     companion object: ISubContent.ISubContentCompanion {
         @IdRes override val container: Int = R.id.content
         override val values: Array<out ISubContent> = values()
-        override val layout: Int = R.layout.activity_main
         override val lastSet: ISubContent get() = Prefs.States.lastMenuChoice
     }
 }

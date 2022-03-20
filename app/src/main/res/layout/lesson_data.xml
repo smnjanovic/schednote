@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/les_tools"
         layout="@layout/edit_tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

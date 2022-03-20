@@ -2,22 +2,26 @@ package com.moriak.schednote.fragments.of_schedule
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.recyclerview.widget.RecyclerView
 import com.moriak.schednote.App
 import com.moriak.schednote.Palette
 import com.moriak.schednote.R
 import com.moriak.schednote.data.LessonType
+import com.moriak.schednote.databinding.LessonTypesBinding
 import com.moriak.schednote.storage.SQLite
 import com.moriak.schednote.fragments.ListSubActivity
 import com.moriak.schednote.fragments.of_schedule.LessonTypeList.EditResult.*
 import com.moriak.schednote.widgets.ScheduleWidget
 import java.util.*
-import com.moriak.schednote.adapters.LessonTypeAdapter as LTA
+import com.moriak.schednote.adapters.LessonTypeAdapter
 
 /**
  * Fragment obsahuje abecedný zoznam a správu kategórií vyučovaných hodín.
  */
-class LessonTypeList : ListSubActivity<LessonType?>(R.layout.lesson_types, R.id.lesson_type_list, 0, 5) {
+class LessonTypeList : ListSubActivity<LessonType?, LessonTypeAdapter, LessonTypesBinding>(5) {
     private enum class EditResult(@StringRes val res: Int?) {
         SUCCESS(null),
         INVALID_FORMAT(R.string.lesson_type_invalid_name),
@@ -26,20 +30,21 @@ class LessonTypeList : ListSubActivity<LessonType?>(R.layout.lesson_types, R.id.
 
     private data class SaveResult(val state: EditResult, val type: LessonType, val isNew: Boolean)
 
-    override val adapter = LTA()
+    override val adapter = LessonTypeAdapter()
+    override val adapterView: RecyclerView by lazy { binding.lessonTypeList }
 
     private fun setBundle(bdl: Bundle, lt: LessonType?) = bdl.apply {
-        putInt(LTA.ID, lt?.id ?: -1)
-        putString(LTA.NAME, lt?.name)
-        remove(LTA.CURSOR_START)
-        remove(LTA.CURSOR_END)
+        putInt(LessonTypeAdapter.ID, lt?.id ?: -1)
+        putString(LessonTypeAdapter.NAME, lt?.name)
+        remove(LessonTypeAdapter.CURSOR_START)
+        remove(LessonTypeAdapter.CURSOR_END)
     }
 
     private fun findLTByID(lt: LessonType?, data: Any?) = (lt?.id ?: -1) == data
 
     private fun saveChanges(bdl: Bundle, color: Palette?): SaveResult {
-        var id = bdl.getInt(LTA.ID, -1)
-        val name = bdl.getString(LTA.NAME, "")
+        var id = bdl.getInt(LessonTypeAdapter.ID, -1)
+        val name = bdl.getString(LessonTypeAdapter.NAME, "")
         val state = when {
             !name.matches("^[a-zA-ZÀ-ž0-9][a-zA-ZÀ-ž0-9 ]{0,23}$".toRegex()) -> INVALID_FORMAT
             SQLite.lessonType(name)?.let { it.id != id } == true -> LT_EXISTS
@@ -61,8 +66,8 @@ class LessonTypeList : ListSubActivity<LessonType?>(R.layout.lesson_types, R.id.
 
     override fun onItemAction(pos: Int, data: Bundle, code: Int) {
         when (code) {
-            LTA.ACTION_EDIT -> {
-                val oldPos = adapter.findIndexOf(this::findLTByID, data.getInt(LTA.ID, -1))
+            LessonTypeAdapter.ACTION_EDIT -> {
+                val oldPos = adapter.findIndexOf(this::findLTByID, data.getInt(LessonTypeAdapter.ID, -1))
                 if (oldPos == -1) {
                     setBundle(data, adapter.getItemAt(pos))
                     adapter.notifyItemChanged(pos)
@@ -82,18 +87,18 @@ class LessonTypeList : ListSubActivity<LessonType?>(R.layout.lesson_types, R.id.
                     saved.state.res?.let(App::toast)
                 }
             }
-            LTA.ACTION_SAVE -> {
+            LessonTypeAdapter.ACTION_SAVE -> {
                 val saved = saveChanges(data, adapter.getItemAt(pos)?.color)
                 if (saved.state == SUCCESS) {
                     if (saved.isNew) SQLite.getTypeColor(saved.type.id, saved.type.color)
                     setBundle(data, null)
                     adapter.updateItem(saved.type, pos)
-                    if (adapter.itemCount < LTA.MAX_COUNT)
+                    if (adapter.itemCount < LessonTypeAdapter.MAX_COUNT)
                         adapter.insertItem(null)
                 } else App.toast(saved.state.res!!)
             }
-            LTA.ACTION_DELETE -> {
-                val oldPos = adapter.findIndexOf(this::findLTByID, data.getInt(LTA.ID, -1))
+            LessonTypeAdapter.ACTION_DELETE -> {
+                val oldPos = adapter.findIndexOf(this::findLTByID, data.getInt(LessonTypeAdapter.ID, -1))
                 val item = adapter.getItemAt(pos)
 
                 if (item == null) {
@@ -118,11 +123,14 @@ class LessonTypeList : ListSubActivity<LessonType?>(R.layout.lesson_types, R.id.
         activity?.setTitle(R.string.lesson_types)
     }
 
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?) =
+        LessonTypesBinding.inflate(inflater, container, false)
+
     override fun firstLoad(): List<LessonType?> {
         setBundle(adapter.extras, null)
         val list = ArrayList<LessonType?>()
         list.addAll(SQLite.lessonTypes())
-        if (list.size < LTA.MAX_COUNT) list.add(null)
+        if (list.size < LessonTypeAdapter.MAX_COUNT) list.add(null)
         return list
     }
 }

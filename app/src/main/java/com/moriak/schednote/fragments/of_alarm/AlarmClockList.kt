@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.appcompat.app.AlertDialog
 import com.moriak.schednote.R
 import com.moriak.schednote.adapters.AlarmAdapter
+import com.moriak.schednote.databinding.AlarmSetterBinding
 import com.moriak.schednote.dayMinutes
 import com.moriak.schednote.dialogs.AlarmClockAdvance
 import com.moriak.schednote.dialogs.DateTimeDialog
@@ -21,15 +24,13 @@ import com.moriak.schednote.notifications.AlarmClockSetter
 import com.moriak.schednote.now
 import com.moriak.schednote.storage.Prefs.Settings.dualWeekSchedule
 import com.moriak.schednote.storage.Prefs.Settings.workWeek
-import kotlinx.android.synthetic.main.alarm_setter.*
-import kotlinx.android.synthetic.main.alarm_setter.view.*
 import java.util.*
 
 /**
  * V tomto fragmente sa nastavujú budíky. V adaptéri sa zobrazia budíky pre nastavený pracovný deň
  * a ak je povolený 2-týždenný rozvrh dá sa prepínať medzi budíkmi párneho a nepárneho týždňa
  */
-class AlarmClockList : ListSubActivity<Day>(R.layout.alarm_setter, R.id.alarms_list, 0, 0, false) {
+class AlarmClockList : ListSubActivity<Day, AlarmAdapter, AlarmSetterBinding>(0, false) {
     private companion object {
         const val ADVANCE = "ADVANCE"
         const val DAY = "DAY"
@@ -37,6 +38,7 @@ class AlarmClockList : ListSubActivity<Day>(R.layout.alarm_setter, R.id.alarms_l
     }
 
     private val cal = Calendar.getInstance()
+    override val adapterView by lazy { binding.alarmsList }
 
     private var regularity: Regularity = cal.now.getRegularity(workWeek, dualWeekSchedule)
 
@@ -67,14 +69,14 @@ class AlarmClockList : ListSubActivity<Day>(R.layout.alarm_setter, R.id.alarms_l
     }
 
     private fun setRegularity(reg: Regularity) {
-        view?.odd_week?.visibility = if (reg == Regularity.EVERY) View.GONE else View.VISIBLE
-        view?.even_week?.visibility = if (reg == Regularity.EVERY) View.GONE else View.VISIBLE
-        view?.odd_week?.alpha = if (reg == Regularity.ODD) 1F else 0.5F
-        view?.even_week?.alpha = if (reg == Regularity.EVEN) 1F else 0.5F
+        binding.oddWeek.visibility = if (reg == Regularity.EVERY) View.GONE else View.VISIBLE
+        binding.evenWeek.visibility = if (reg == Regularity.EVERY) View.GONE else View.VISIBLE
+        binding.oddWeek.alpha = if (reg == Regularity.ODD) 1F else 0.5F
+        binding.evenWeek.alpha = if (reg == Regularity.EVEN) 1F else 0.5F
         if (regularity != reg) {
             regularity = reg
             adapter.setRegularity(reg)
-            view?.all_alarms_switch?.isChecked = AlarmClockSetter.isEnabled(reg)
+            binding.allAlarmsSwitch.isChecked = AlarmClockSetter.isEnabled(reg)
         }
     }
 
@@ -91,7 +93,7 @@ class AlarmClockList : ListSubActivity<Day>(R.layout.alarm_setter, R.id.alarms_l
     private fun onAdvanceSet() {
         val success = AlarmClockSetter.setAlarmsBySchedule(requireContext())
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
-        all_alarms_switch.isChecked = AlarmClockSetter.isEnabled(regularity)
+        binding.allAlarmsSwitch.isChecked = AlarmClockSetter.isEnabled(regularity)
         if (!success) cantSetAlarm()
     }
 
@@ -109,12 +111,15 @@ class AlarmClockList : ListSubActivity<Day>(R.layout.alarm_setter, R.id.alarms_l
         else {
             val onOff = code == AlarmAdapter.ACTION_ALARM_ON
             val success = AlarmClockSetter.enableAlarm(requireContext(), adapter.getItemAt(pos), regularity, onOff)
-            requireView().all_alarms_switch.isChecked = AlarmClockSetter.isEnabled(regularity)
+            binding.allAlarmsSwitch.isChecked = AlarmClockSetter.isEnabled(regularity)
             if (!success) cantSetAlarm()
         }
     }
 
     override fun firstLoad(): List<Day> = workWeek.workDays.toList()
+
+    override fun makeBinder(inflater: LayoutInflater, container: ViewGroup?) =
+        AlarmSetterBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -123,19 +128,19 @@ class AlarmClockList : ListSubActivity<Day>(R.layout.alarm_setter, R.id.alarms_l
         findFragment<AlarmClockAdvance>(ADVANCE)?.setOnConfirm(this::onAdvanceSet)
         findFragment<DateTimeDialog>(TIME)?.setOnConfirm(this::setAlarm)
 
-        view.odd_week.tag = Regularity.ODD
-        view.even_week.tag = Regularity.EVEN
+        binding.oddWeek.tag = Regularity.ODD
+        binding.evenWeek.tag = Regularity.EVEN
         setRegularity(regularity)
-        view.all_alarms_switch.isChecked = AlarmClockSetter.isEnabled(regularity)
+        binding.allAlarmsSwitch.isChecked = AlarmClockSetter.isEnabled(regularity)
 
-        view.all_alarms_switch.setOnCheckedChangeListener(alarmOnOff)
-        view.auto_alarm_set.setOnClickListener {
+        binding.allAlarmsSwitch.setOnCheckedChangeListener(alarmOnOff)
+        binding.autoAlarmSet.setOnClickListener {
             val dialog = AlarmClockAdvance()
             dialog.setOnConfirm(this::onAdvanceSet)
             showDialog(ADVANCE, dialog)
         }
-        view.odd_week.setOnClickListener(regChoice)
-        view.even_week.setOnClickListener(regChoice)
+        binding.oddWeek.setOnClickListener(regChoice)
+        binding.evenWeek.setOnClickListener(regChoice)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
