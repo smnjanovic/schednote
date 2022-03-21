@@ -59,7 +59,7 @@ class DateTimeDialog(
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             if (mode and FLAG_SEMESTER > 0) {
-                when (val newSel = (parent?.selectedItem as Item<*>).data) {
+                when (val newSel = (parent?.selectedItem as Item<*>?)?.data) {
                     is Day -> day += newSel.value - dow
                     is Int -> day += 7 * (newSel - week)
                 }

@@ -41,7 +41,7 @@ import java.util.*
 class ScheduleEditor : SubActivity<ScheduleEditorBinding>() {
     private companion object { private const val STORED_VALUES = "STORED_VALUES" }
 
-    private enum class EditTools { WHEN, WHAT, NOTHING }
+    private enum class EditTools { WHEN, WHAT }
 
     private class RoomWatcher: TextCursorTracer("^[a-zA-ZÀ-ž0-9][a-zA-ZÀ-ž0-9 ]{0,19}".toRegex()) {
         override fun onCursorChanged(range: IntRange) {}
@@ -194,14 +194,20 @@ class ScheduleEditor : SubActivity<ScheduleEditorBinding>() {
     private val format = Format()
 
     private val roomWatcher = RoomWatcher()
-    private var editTools: EditTools = EditTools.NOTHING; set(value) {
+    private var editTools: EditTools = EditTools.WHEN; set(value) {
         field = value
-        view?.let {
+        if (isBound) {
             if (value != EditTools.WHAT) binding.scheduleEditor.room.clearFocus()
             binding.scheduleEditor.schWhen.visibility = if (value == EditTools.WHEN) View.VISIBLE else View.GONE
             binding.scheduleEditor.schWhat.visibility = if (value == EditTools.WHAT) View.VISIBLE else View.GONE
-            binding.scheduleEditor.schWhenBtn.alpha = if (value != EditTools.WHAT) 1F else 0.55F
-            binding.scheduleEditor.schWhatBtn.alpha = if (value != EditTools.WHEN) 1F else 0.55F
+            binding.scheduleEditor.schWhenBtn.drawable.setTint(when(value) {
+                EditTools.WHEN -> resources.getColor(R.color.juicy, null)
+                EditTools.WHAT -> resources.getColor(R.color.veryDark, null)
+            })
+            binding.scheduleEditor.schWhatBtn.drawable.setTint(when(value) {
+                EditTools.WHAT -> resources.getColor(R.color.juicy, null)
+                EditTools.WHEN -> resources.getColor(R.color.veryDark, null)
+            })
         }
     }
 
@@ -339,6 +345,9 @@ class ScheduleEditor : SubActivity<ScheduleEditorBinding>() {
         binding.scheduleEditor.lessonTypeChoice.setOptions(lessonTypes)
         binding.scheduleEditor.subjectChoice.setOptions(subjects)
         binding.schedulePreview.sv.setWorkWeek(workWeek)
+
+        // volba tyzdna skryta, ak nie je k dispozicii viac hodnot
+        binding.scheduleEditor.regularityChoice.visibility =  if (regularities.count() > 1) View.VISIBLE else View.GONE
 
         if (saved != null) saved.getStringArray(STORED_VALUES)?.let(this::fromStorage)
         else regularity = Calendar.getInstance().getRegularity(workWeek, dualWeekSchedule)

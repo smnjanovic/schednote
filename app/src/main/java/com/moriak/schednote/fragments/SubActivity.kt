@@ -18,7 +18,7 @@ abstract class SubActivity<B: ViewBinding> : Fragment() {
 
     private var _binding: B? = null
     protected val binding: B get() = _binding!!
-    protected val isBound: Boolean get() = _binding == null
+    protected val isBound: Boolean get() = _binding != null
 
     /**
      * Zobrazenie obsahu dialógoveho fragmentu [dialog], ak ešte zobrazený nie je

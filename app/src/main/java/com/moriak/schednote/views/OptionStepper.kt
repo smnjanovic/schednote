@@ -284,24 +284,20 @@ class OptionStepper : CustomView {
         rect.left = width - arrowWidth
         canvas.drawRect(rect, arrowBgPaint)
 
-        // sipky - viditelne iba, ak je na vyber viacero hodnot
-        val count = options?.count() ?: 0
-        if (count > 1) {
-            val verticalPadding = (height - arrowWidth) / 2
-            val arrowHeadX = dp(5F)
-            val arrowButtX = dp(12F)
-            val arrowHeadY = verticalPadding + dp(8F)
-            val arrowButtY1 = verticalPadding + dp(2F)
-            val arrowButtY2 = height - verticalPadding - dp(2F)
-            path.reset()
-            path.moveTo(arrowButtX, arrowButtY1)
-            path.lineTo(arrowHeadX, arrowHeadY)
-            path.lineTo(arrowButtX, arrowButtY2)
-            path.moveTo(width - arrowButtX, arrowButtY1)
-            path.lineTo(width - arrowHeadX, arrowHeadY)
-            path.lineTo(width - arrowButtX, arrowButtY2)
-            canvas.drawPath(path, arrowPaint)
-        }
+        val verticalPadding = (height - arrowWidth) / 2
+        val arrowHeadX = dp(5F)
+        val arrowButtX = dp(12F)
+        val arrowHeadY = verticalPadding + dp(8F)
+        val arrowButtY1 = verticalPadding + dp(2F)
+        val arrowButtY2 = height - verticalPadding - dp(2F)
+        path.reset()
+        path.moveTo(arrowButtX, arrowButtY1)
+        path.lineTo(arrowHeadX, arrowHeadY)
+        path.lineTo(arrowButtX, arrowButtY2)
+        path.moveTo(width - arrowButtX, arrowButtY1)
+        path.lineTo(width - arrowHeadX, arrowHeadY)
+        path.lineTo(width - arrowButtX, arrowButtY2)
+        canvas.drawPath(path, arrowPaint)
 
         txtPaint.getTextBounds(text, 0, text.length, rect)
         val txtY = height - (height - rect.height()) / 2F

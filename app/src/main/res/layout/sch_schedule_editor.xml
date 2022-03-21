@@ -17,6 +17,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageButton
@@ -24,10 +26,9 @@
                 android:layout_width="36dp"
                 android:layout_height="48dp"
                 android:layout_margin="2dp"
-                android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/time"
-                android:tint="@color/veryDark"
+                android:tint="@color/juicy"
                 app:srcCompat="@drawable/ic_schedule_black_24dp" />
 
             <ImageButton
@@ -35,7 +36,6 @@
                 android:layout_width="36dp"
                 android:layout_height="48dp"
                 android:layout_margin="2dp"
-                android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/lesson"
                 android:tint="@color/veryDark"
@@ -49,7 +49,14 @@
             android:layout_margin="8dp"
             android:gravity="center|top"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="1 / 2" />
 
             <com.moriak.schednote.views.OptionStepper
                 android:id="@+id/regularity_choice"
@@ -84,12 +91,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:gravity="bottom|center"
-                android:text="1 / 2" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,6 +101,13 @@
             android:gravity="center|top"
             android:orientation="vertical"
             android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="2 / 2" />
 
             <com.moriak.schednote.views.OptionStepper
                 android:id="@+id/lesson_type_choice"
@@ -128,12 +136,6 @@
                 android:inputType="text"
                 android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:gravity="bottom|center"
-                android:text="2 / 2" />
         </LinearLayout>
     </LinearLayout>
 
