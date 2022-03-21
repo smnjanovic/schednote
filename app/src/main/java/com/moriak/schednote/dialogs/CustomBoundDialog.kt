@@ -24,13 +24,13 @@ abstract class CustomBoundDialog<T: ViewBinding>: DialogFragment() {
     protected open fun setupContent(saved: Bundle?) = Unit
     final override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = setupBinding(LayoutInflater.from(requireContext()))
+        setupContent(savedInstanceState)
         val builder = AlertDialog.Builder(requireContext()).setView(binding.root)
         if (title != 0) builder.setTitle(title)
         if (message != 0) builder.setMessage(message)
         positiveButton?.let { builder.setPositiveButton(it.textId) { _, _ -> it.action() } }
         neutralButton?.let { builder.setNeutralButton(it.textId) { _, _ -> it.action() } }
         negativeButton?.let { builder.setNegativeButton(it.textId) { _, _ -> it.action() } }
-        setupContent(savedInstanceState)
         return builder.create()
     }
 }

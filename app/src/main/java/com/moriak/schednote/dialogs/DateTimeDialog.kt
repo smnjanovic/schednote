@@ -39,9 +39,6 @@ class DateTimeDialog(
         override fun toString() = description
     }
 
-    override val positiveButton = ActionButton(R.string.confirm) { onConfirm(cal.timeInMillis) }
-    override val neutralButton = ActionButton(R.string.delete) { onConfirm(null) }
-    override val negativeButton = ActionButton(R.string.abort) {}
     private val change = object: OnDateChangeListener, OnTimeChangedListener, OnItemSelectedListener {
         override fun onSelectedDayChange(view: CalendarView, y: Int, m: Int, d: Int) {
             if (mode and FLAG_DATE > 0) {
@@ -149,23 +146,37 @@ class DateTimeDialog(
         }
 
         val chooseMode = View.OnClickListener { v ->
-            if (v.tag != mode) affectVisibility(v.tag as Int)
-            else if (v.tag == FLAG_DATE) binding.dateSetter.date = System.currentTimeMillis()
-            else if (v.tag == FLAG_TIME) {
-                val oldMs = cal.timeInMillis
-                cal.timeInMillis = System.currentTimeMillis()
-                val h = hour
-                val m = minute
-                cal.timeInMillis = oldMs
-                binding.timeSetter.hour = h
-                binding.timeSetter.minute = m
+            if (v.id == R.id.confirmBtn) {
+                onConfirm(cal.timeInMillis)
+                dismiss()
             }
-            else if (v.tag == FLAG_SEMESTER && semesterValid) {
-                cal.timeInMillis = System.currentTimeMillis()
-                val isWeekend = Day[dow] in workWeek.weekend
-                binding.week.setSelection(if (isWeekend) week - 1 else week)
-                binding.day.setSelection(if (isWeekend) workWeek.workDays.lastIndex
-                else workWeek.workDays.indexOf(Day[dow]))
+            else if (v.id == R.id.abortBtn) {
+                dismiss()
+            }
+            else if (v.id == R.id.deleteBtn) {
+                onConfirm(null)
+                dismiss()
+            }
+            else if (v.tag is Int) {
+                if (v.tag != mode) affectVisibility(v.tag as Int)
+                else if (v.tag == FLAG_DATE) binding.dateSetter.date = System.currentTimeMillis()
+                else if (v.tag == FLAG_TIME) {
+                    val oldMs = cal.timeInMillis
+                    cal.timeInMillis = System.currentTimeMillis()
+                    val h = hour
+                    val m = minute
+                    cal.timeInMillis = oldMs
+                    binding.timeSetter.hour = h
+                    binding.timeSetter.minute = m
+                } else if (v.tag == FLAG_SEMESTER && semesterValid) {
+                    cal.timeInMillis = System.currentTimeMillis()
+                    val isWeekend = Day[dow] in workWeek.weekend
+                    binding.week.setSelection(if (isWeekend) week - 1 else week)
+                    binding.day.setSelection(
+                        if (isWeekend) workWeek.workDays.lastIndex
+                        else workWeek.workDays.indexOf(Day[dow])
+                    )
+                }
             }
         }
 
@@ -186,6 +197,9 @@ class DateTimeDialog(
         binding.dateBtn.setOnClickListener(chooseMode)
         binding.timeBtn.setOnClickListener(chooseMode)
         binding.semesterBtn.setOnClickListener(chooseMode)
+        binding.confirmBtn.setOnClickListener(chooseMode)
+        binding.abortBtn.setOnClickListener(chooseMode)
+        binding.deleteBtn.setOnClickListener(chooseMode)
 
         binding.root.post { affectVisibility(mode) }
     }

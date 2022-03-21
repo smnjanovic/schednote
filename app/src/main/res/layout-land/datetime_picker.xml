@@ -6,28 +6,54 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
+    <LinearLayout
+        android:id="@+id/mode_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/confirmBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/date"
+            android:src="@drawable/ic_date_range_black_40dp"
+            app:tint="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/semester_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/time"
+            android:src="@drawable/ic_semester_40dp"
+            app:tint="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/time_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/time"
+            android:src="@drawable/ic_schedule_black_40dp"
+            app:tint="@color/colorPrimaryDark" />
+    </LinearLayout>
+
     <CalendarView
         android:id="@+id/date_setter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:theme="@style/CalendarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/semester_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TimePicker
-        android:id="@+id/time_setter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:layout_weight="1"
-        android:headerBackground="@color/colorPrimaryDark"
-        android:numbersSelectorColor="@color/colorPrimary"
-        android:timePickerMode="spinner"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/semester_btn"
+        app:layout_constraintBottom_toTopOf="@+id/abortBtn"
+        app:layout_constraintEnd_toStartOf="@id/mode_menu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,8 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/semester_btn"
+        app:layout_constraintBottom_toTopOf="@+id/abortBtn"
+        app:layout_constraintEnd_toStartOf="@id/mode_menu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -90,44 +116,53 @@
 
     </TableLayout>
 
-    <ImageView
-        android:id="@+id/time_btn"
+    <TimePicker
+        android:id="@+id/time_setter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
         android:layout_weight="1"
-        android:contentDescription="@string/time"
-        android:src="@drawable/ic_schedule_black_40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/semester_btn"
-        app:layout_constraintStart_toStartOf="@+id/semester_btn"
-        app:layout_constraintTop_toBottomOf="@+id/semester_btn"
-        app:tint="@color/colorPrimaryDark" />
+        android:headerBackground="@color/colorPrimaryDark"
+        android:numbersSelectorColor="@color/colorPrimary"
+        android:timePickerMode="spinner"
+        app:layout_constraintBottom_toTopOf="@+id/abortBtn"
+        app:layout_constraintEnd_toStartOf="@id/mode_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/date_btn"
+    <Button
+        android:id="@+id/deleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/date"
-        android:src="@drawable/ic_date_range_black_40dp"
-        app:layout_constraintBottom_toTopOf="@+id/semester_btn"
-        app:layout_constraintEnd_toEndOf="@+id/semester_btn"
-        app:layout_constraintStart_toStartOf="@+id/semester_btn"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorPrimaryDark" />
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:text="@string/delete"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/semester_btn"
+    <Button
+        android:id="@+id/abortBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/time"
-        android:src="@drawable/ic_semester_40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:text="@string/abort"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorPrimaryDark" />
+        app:layout_constraintEnd_toStartOf="@+id/confirmBtn" />
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:text="@string/confirm"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

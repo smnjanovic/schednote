@@ -41,7 +41,7 @@ import java.util.*
 class ScheduleEditor : SubActivity<ScheduleEditorBinding>() {
     private companion object { private const val STORED_VALUES = "STORED_VALUES" }
 
-    private enum class EditTools { WHEN, WHAT }
+    private enum class EditTools(val pageNum: String) { WHEN("1 / 2"), WHAT("2 / 2") }
 
     private class RoomWatcher: TextCursorTracer("^[a-zA-ZÀ-ž0-9][a-zA-ZÀ-ž0-9 ]{0,19}".toRegex()) {
         override fun onCursorChanged(range: IntRange) {}
@@ -208,6 +208,7 @@ class ScheduleEditor : SubActivity<ScheduleEditorBinding>() {
                 EditTools.WHAT -> resources.getColor(R.color.juicy, null)
                 EditTools.WHEN -> resources.getColor(R.color.veryDark, null)
             })
+            binding.scheduleEditor.editorPage.text = value.pageNum
         }
     }
 
