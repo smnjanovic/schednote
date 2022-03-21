@@ -17,6 +17,7 @@
             layout="@layout/sch_schedule_editor"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:layout_weight="1" />
 
         <include
@@ -24,6 +25,7 @@
             layout="@layout/sch_schedule_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:layout_weight="1" />
 
     </LinearLayout>
