@@ -153,7 +153,11 @@ class NoteList : ListSubActivity<Note?, NoteAdapter, NotesBinding>(4) {
     private fun loadByCategory(cat: Any?) {
         if (category != cat) category = cat as NoteCategory
         adapter.clearItems()
-        adapter.putItems(SQLite.notes(category))
+        var notes: List<Note> = SQLite.notes(category)
+        if (category is Subject) notes = notes.filter { note ->
+            note.deadline?.let { it <= now() } == true
+        }
+        adapter.putItems(notes)
         //vkladaci prvok
         setBundle(adapter.extras, null)
         adapter.insertItem(null)

@@ -73,11 +73,11 @@ class VoiceRecognitionDialog : CustomBoundDialog<VoiceBinding>(), View.OnClickLi
 
     override fun onClick(clicked: View?) {
         when (clicked) {
-            binding.info -> state = State.HINTED
-            binding.hideInfo -> {
-                state = State.READY
+            binding.info -> {
+                state = State.HINTED
                 binding.message.text = getSpanned(command)
             }
+            binding.hideInfo -> state = State.READY
             binding.prevCmd -> {
                 command = command.prev
                 binding.message.text = getSpanned(command)

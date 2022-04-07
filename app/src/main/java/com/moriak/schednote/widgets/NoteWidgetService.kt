@@ -8,6 +8,8 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.moriak.schednote.R
 import com.moriak.schednote.data.Note
+import com.moriak.schednote.data.Subject
+import com.moriak.schednote.enums.TimeCategory
 import com.moriak.schednote.interfaces.NoteCategory
 import com.moriak.schednote.storage.Prefs
 import com.moriak.schednote.storage.Prefs.Settings.dateFormat
@@ -58,7 +60,11 @@ class NoteWidgetService : RemoteViewsService() {
         override fun getItemId(position: Int) = items[position].id
         override fun onDataSetChanged() {
             items.clear()
-            items.addAll(SQLite.notes(category))
+            var notes: List<Note> = SQLite.notes(category)
+            if (category is Subject) notes = notes.filter { note ->
+                note.deadline?.let { it <= System.currentTimeMillis() } == true
+            }
+            items.addAll(notes)
         }
 
         override fun hasStableIds() = true

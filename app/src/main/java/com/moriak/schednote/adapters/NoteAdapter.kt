@@ -178,7 +178,7 @@ class NoteAdapter: CustomAdapter<Note?, NoteItemBinding>() {
             binding.niTools.edit.setOnClickListener(clickAction)
             binding.niTools.delete.setOnClickListener(clickAction)
 
-            binding.niSub.text = if (editing) extras.getString(SUB_ABB) else item?.sub?.abb
+            binding.niSub.text = (if (editing) extras.getString(SUB_ABB) else item?.sub?.abb) ?: "?"
             val deadline = if (editing) extras.get(WHEN) as Long? else item?.deadline
             binding.niDeadline.text = deadline?.let {
                 "${dateFormat.getFormat(it)} ${timeFormat.getFormat(it)}"
