@@ -150,14 +150,17 @@ class NoteList : ListSubActivity<Note?, NoteAdapter, NotesBinding>(4) {
         remove(CURSOR_END)
     }
 
+    private fun getNotesByCategory(cat: NoteCategory): List<Note> = when (cat) {
+        is TimeCategory -> SQLite.notes(category)
+        else -> SQLite.notes(category).filter { note ->
+            note.deadline?.let { it <= now() } != true
+        }
+    }
+
     private fun loadByCategory(cat: Any?) {
         if (category != cat) category = cat as NoteCategory
         adapter.clearItems()
-        var notes: List<Note> = SQLite.notes(category)
-        if (category is Subject) notes = notes.filter { note ->
-            note.deadline?.let { it <= now() } == true
-        }
-        adapter.putItems(notes)
+        adapter.putItems(getNotesByCategory(category))
         //vkladaci prvok
         setBundle(adapter.extras, null)
         adapter.insertItem(null)
@@ -280,7 +283,7 @@ class NoteList : ListSubActivity<Note?, NoteAdapter, NotesBinding>(4) {
             }
         }
         setBundle(adapter.extras, null)
-        return arrayListOf<Note?>(null).also { it.addAll(0, SQLite.notes(category)) }
+        return arrayListOf<Note?>(null).also { getNotesByCategory(category) }
     }
 
     override fun onItemAction(pos: Int, data: Bundle, code: Int) {

@@ -62,7 +62,7 @@ class NoteWidgetService : RemoteViewsService() {
             items.clear()
             var notes: List<Note> = SQLite.notes(category)
             if (category is Subject) notes = notes.filter { note ->
-                note.deadline?.let { it <= System.currentTimeMillis() } == true
+                note.deadline?.let { it <= System.currentTimeMillis() } != true
             }
             items.addAll(notes)
         }
