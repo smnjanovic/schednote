@@ -83,7 +83,7 @@ enum class Redirection(
             false -> Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         })
         if (putExtras != null) intent.putExtras(Bundle().also(putExtras))
-        return PendingIntent.getActivity(context, code, intent, FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, code, intent, PendingIntent.FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
     }
 
     /**

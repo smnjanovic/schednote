@@ -14,7 +14,10 @@ import android.content.Intent
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.O
 import androidx.annotation.StringRes
-import androidx.core.app.NotificationCompat.*
+import androidx.core.app.NotificationCompat.Builder
+import androidx.core.app.NotificationCompat.CATEGORY_ALARM
+import androidx.core.app.NotificationCompat.PRIORITY_HIGH
+import androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.moriak.schednote.R.drawable.ic_schednote
@@ -24,7 +27,11 @@ import com.moriak.schednote.enums.AlarmClockBit
 import com.moriak.schednote.enums.Redirection.Companion.EXTRA_NOTE_ID
 import com.moriak.schednote.enums.Redirection.NOTES
 import com.moriak.schednote.notifications.AlarmClockSetter.getAlarm
-import com.moriak.schednote.notifications.NotificationHandler.UniqueIntent.*
+import com.moriak.schednote.notifications.NotificationHandler.UniqueIntent.F_SCR
+import com.moriak.schednote.notifications.NotificationHandler.UniqueIntent.REMIND
+import com.moriak.schednote.notifications.NotificationHandler.UniqueIntent.SNOOZE
+import com.moriak.schednote.notifications.NotificationHandler.UniqueIntent.STOP
+import com.moriak.schednote.notifications.NotificationHandler.UniqueIntent.WAKE_UP
 import com.moriak.schednote.storage.Prefs.Notifications.reminderAdvanceInMinutes
 import com.moriak.schednote.storage.Prefs.Notifications.reminderEnabled
 import com.moriak.schednote.storage.Prefs.Settings.snoozeTime
@@ -89,7 +96,7 @@ object NotificationHandler {
             Activity::class.java.isAssignableFrom(cls) -> PI::getActivity
             BroadcastReceiver::class.java.isAssignableFrom(cls) -> PI::getBroadcast
             else -> throw ClassCastException("Unreachable exception!!!")
-        }(context, ordinal, intent(context, tag), FLAG_UPDATE_CURRENT)!!
+        }(context, ordinal, intent(context, tag), FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)!!
     }
     const val AC_CHANNEL = "ALARM_CLOCK_CHANNEL"
     const val R_CHANNEL = "REMINDER_CHANNEL"

@@ -35,6 +35,7 @@
     <string name="no_subjects">No subjects!</string>
     <string name="subject_abb">Abbreviation</string>
     <string name="subject_name">Full name</string>
+    <string name="hour_abbreviation">hr</string>
     <string name="minute_abbreviation">min</string>
     <string name="schedule_start">Schedule start</string>
     <string name="edit_schedule_start">Edit schedule start</string>
