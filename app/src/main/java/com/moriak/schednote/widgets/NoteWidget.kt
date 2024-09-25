@@ -1,8 +1,10 @@
 package com.moriak.schednote.widgets
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.AlarmManager.RTC_WAKEUP
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.getBroadcast
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.*
@@ -52,8 +54,7 @@ class NoteWidget : AppWidgetProvider() {
          */
         fun update(context: Context) = context.sendBroadcast(makeIntent(context))
 
-        private fun updatePI(context: Context): PendingIntent =
-            getBroadcast(context, widgetUpdateRequest, makeIntent(context), 0)
+        private fun updatePI(context: Context): PendingIntent = getBroadcast(context, widgetUpdateRequest, makeIntent(context), FLAG_IMMUTABLE)
 
         /**
          * Aktualizuje sa konkrétny widget
@@ -71,9 +72,17 @@ class NoteWidget : AppWidgetProvider() {
                 .putExtra(TARGET_CATEGORY, catId)
                 .also { it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME)) }
 
-            val itemAction = getBroadcast(context, 1,
-                Intent(ITEM_ACTION, Uri.parse("note_widget://$id"), context, NoteWidget::class.java)
-                    .putExtra(EXTRA_APPWIDGET_ID, id), 0)
+            val itemAction = getBroadcast(
+                context,
+                1,
+                Intent(
+                    ITEM_ACTION,
+                    Uri.parse("note_widget://$id"),
+                    context,
+                    NoteWidget::class.java
+                ).putExtra(EXTRA_APPWIDGET_ID, id),
+                FLAG_IMMUTABLE
+            )
             val openPIntent = NOTES.prepare(context, 0, true, Uri.parse("category:/$catId")) {
                 putLong(EXTRA_NOTE_CATEGORY, catId)
             }
@@ -97,6 +106,7 @@ class NoteWidget : AppWidgetProvider() {
     /**
      * Aktualizujú sa všetky widgety so zoznamami úloh a naplánuje sa ďaľšia aktualizácia
      */
+    @SuppressLint("ScheduleExactAlarm")
     override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
         for (id in ids) updateAppWidget(context, manager, id)
         val alarm = context.getSystemService(ALARM_SERVICE) as AlarmManager

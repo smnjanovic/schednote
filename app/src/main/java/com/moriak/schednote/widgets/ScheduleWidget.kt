@@ -2,6 +2,7 @@ package com.moriak.schednote.widgets
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -57,8 +58,7 @@ class ScheduleWidget : AppWidgetProvider() {
          * @param context
          */
         fun update(context: Context) = context.sendBroadcast(newIntent(context))
-        private fun updatePI(context: Context) =
-            PendingIntent.getBroadcast(context, broadcast, newIntent(context), 0)!!
+        private fun updatePI(context: Context) = PendingIntent.getBroadcast(context, broadcast, newIntent(context), FLAG_IMMUTABLE)!!
     }
 
     private val cal = Calendar.getInstance()
